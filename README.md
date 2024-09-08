@@ -10,6 +10,7 @@
 - [ ] Alacritty
 - [ ] tmux
 - [ ] Zsh
+- [ ] Starship
 - [ ] Cica
 - [ ] Neovim
 - [ ] VS Code
@@ -26,5 +27,58 @@
 - [ ] ここで管理したいソフトウェアをリストアップする (-> [Tool List](#tool-list))
     - **まずは本当に最低限だけ！！**
         - 余分なツールを追加するのは、最低限が形になってから
-- [ ] chezmoi の導入を検討
-- [ ] tpm の導入を検討
+- [ ] 導入を検討：
+    - [ ] chezmoi
+    - [ ] tpm
+    - [ ] sheldon
+- [ ] 各ツールの進行状況：
+    - [ ] Alacritty
+        - [x] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] Starship
+        - [x] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] mise
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] yay
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] Git
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] ghq
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] fzf
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] tmux
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] Zsh
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] Cica
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] Neovim
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] VS Code
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] Obsidian
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] tree
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] xclip
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] editorconfig
+        - [ ] Add config file
+        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
+    - [ ] myenv-v3
+    - [ ] proper7y
