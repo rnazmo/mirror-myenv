@@ -31,6 +31,7 @@
     - [ ] chezmoi
     - [ ] tpm
     - [ ] sheldon
+    - [ ] ripgrep
 - [ ] 各ツールの進行状況：
     - [ ] Alacritty
         - [x] Add config file
