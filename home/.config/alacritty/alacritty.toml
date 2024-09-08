@@ -1,0 +1,21 @@
+import = [
+    "~/.config/alacritty/theme-zenburn.toml"
+]
+
+[window]
+opacity = 0.95
+
+[cursor]
+style.shape = "Block"
+style.blinking = "On"
+
+[font]
+size = 13.0
+normal.family = "Cica"
+normal.style = "Regular"
+bold.family = "Cica"
+bold.style = "Bold"
+italic.family = "Cica"
+italic.style = "Italic"
+bold_italic.family = "Cica"
+bold_italic.style = "Bold Italic"
