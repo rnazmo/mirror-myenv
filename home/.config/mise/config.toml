@@ -1,0 +1,10 @@
+[tools]
+go = "latest"
+node = "latest"
+# node = "lts"
+# deno = "latest"
+# python = "latest"
+# ruby = "latest"
+
+[settings]
+experimental = true
