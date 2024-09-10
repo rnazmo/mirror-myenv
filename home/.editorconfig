@@ -1,0 +1,53 @@
+# Ref: https://editorconfig.org/
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+indent_size = 4
+
+[Dockerfile]
+indent_size = 2
+
+[Makefile]
+# Makefiles always use tabs for indentation
+indent_style = tab
+indent_size = 8
+
+[*.{json,yml,yaml,toml}]
+indent_size = 2
+
+[*.{sh,bash,zsh}]
+indent_size = 2
+
+[*.bat]
+# Batch files use tabs for indentation
+indent_style = tab
+
+[*.go]
+indent_style = tab
+indent_size = 4
+
+[*.py]
+indent_size = 4
+max_line_length = 80
+
+[*.rb]
+indent_size = 2
+
+[*.{js,ts}]
+indent_size = 2
+# Minified JavaScript files shouldn't be changed
+[**.min.js]
+indent_style = ignore
+insert_final_newline = ignore
+
+[*.{cpp,c}]
+indent_size = 4
