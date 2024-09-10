@@ -2,5 +2,61 @@
     name = rnazmo
     email = rnazmo@gmail.com
 
+[init]
+    defaultBranch = "main"
+
+[alias]
+    b  = branch -a
+    co = checkout
+    sw = switch
+    swc = switch -c
+
+    s  = status --short --branch
+    a  = add
+    ci   = commit
+    l    = log --graph -n 20 --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %C(green)- %an, %cr%Creset'
+
+    f  = fetch --prune
+
+    d   = diff
+    dc  = diff --cached
+
+    # Whatis:
+    #  Change files from staged to unstaged.
+    # Usage:
+    #   $ git unstage            # -> Unsage all staged files.
+    #   $ git unstage <filename> # -> Unsage a specific staged file.
+    # Example:
+    #  - Unstage all staged changes.
+    #   $ git unstage
+    #  - Unstage specific files.
+    #   $ git unstage ./foo.txt ./bar/baz.txt
+    unstage = reset HEAD --
+
+    # Whatis:
+    #  Discard unstaged changes.
+    # Usage:
+    #  $ git discard <filepath>
+    # Example:
+    #  - Discard all unstaged changes.
+    #   $ git discard .
+    #  - Discard unstaged changes for specific files.
+    #   $ git discard ./foo.txt ./bar/baz.txt
+    # NOTE:
+    #  - Staged changes will not change by this command.
+    # Ref:
+    #  https://stackoverflow.com/q/52704
+    #  https://intellipaat.com/community/2841/git-discard-changes-how-do-i-discard-unstaged-changes-in-git
+    #  https://blog.web-apps.tech/git-aliases/
+    #  https://fumiyas.github.io/2016/12/15/positional-parameters.sh-advent-calendar.html
+    # TODO:
+    #  - This may not work well.
+    discard = "!f(){ git clean -df \"$*\" && git checkout -- \"$*\";}; f"
+
+    # # Uncommit
+    # # Ref:
+    # #  https://blog.web-apps.tech/git-aliases/
+    # uncommit = reset --mixed HEAD~
+
 [ghq]
     root = ~/repos
