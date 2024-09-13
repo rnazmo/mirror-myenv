@@ -10,7 +10,7 @@ main() {
 
     # devel
     setup_lazygit
-    setup_lazydelta
+    setup_delta
     setup_gpg # -> credential?
     setup_golang
     setup_nodejs
