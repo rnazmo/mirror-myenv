@@ -7,11 +7,11 @@ _check_if_file_exists() {}
 
 _check_if_dir_exists() {}
 
-check_if_installed() {}
+check_if_command_exists() {}
 
-link_file() {}
+symlink_file() {}
 
-link_dir() {}
+symlink_dir() {}
 
 _clone_git_repo() {}
 

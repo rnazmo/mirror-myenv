@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+main() {
+
 # ../../modules/03_chassis/vbox_guest.arch_based.x64.bash
 # ../../modules/04_os/arch.arch_based.x64.bash
 # ../../modules/10_core.arch_based.x64.bash
@@ -17,3 +19,7 @@ set -eu
 ../../modules/10_core/cli/ghq/setup.arch_based.x64.bash
 ../../modules/10_core/cli/ripgrep/setup.arch_based.x64.bash
 # ...
+
+}
+
+main
