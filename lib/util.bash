@@ -9,9 +9,11 @@ _check_if_dir_exists() {}
 
 check_if_command_exists() {}
 
-symlink_file() {}
+link_file() {}
 
-symlink_dir() {}
+link_dir() {}
+
+add_path() {} # Add a new path to `PATH`
 
 _clone_git_repo() {}
 
