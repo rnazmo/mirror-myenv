@@ -1,45 +1,53 @@
 n#!/bin/bash
 set -eu
 
+# TODO: Load ../../lib/util.bash
+
 main() {
-    # phase 01 - Update system
+    install_packages
+    twea_configs
+}
+
+install_packages() {
+    # パッケージマネージャの更新
     sudo pacman -Syu --noconfirm
 
-    # phase 02 - Install dependencies
+    # yay のインストール
     sudo pacman -S --needed --noconfirm git base-devel
     # TODO: Install yay
-    # TODO: Install mise
-    # TODO: Install aqua -> Use `aqua-installer`(shell script)
 
-    # phase 03 - Instakk packages
-    # Install packages via pacman
-    yay -S starship foo bar
- 
-    # Install packages via yay
-    yay -S alacritty foo bar
+    # mise のインストール
+    curl https://mise.run | sh
 
-    # Install packages via mise
-    mise install # install all
-    # or
-    mise install foo
-    mise install bar
+    # aqua のインストール
+    curl -sSfL https://raw.githubusercontent.com/aquaproj/aqua-installer/v2.1.1/aqua-installer | bash
 
-    # Install packages via aqua
-    # aqua install -l -a # install all
+    # pacman でインストール可能なパッケージのインストール
+    sudo pacman -S --needed --noconfirm \
+    bat delta exa fzf ripgrep tree xclip neovim alacritty tmux zsh \
+    go nodejs python ruby neofetch chromium firefox
 
-    # phase 04
+    # yay でインストール可能な AUR パッケージのインストール
+    yay -S --needed --noconfirm \
+    ghq lazygit cica-git starship bottom obsidian visual-studio-code-bin google-chrome
 
-    # phase 05
+    # miseを使用して言語バージョンをインストール
+    mise use -g go@latest
+    mise use -g node@lts
+    mise use -g python@latest
+    mise use -g ruby@latest
 
-    # phase 06
+    # aquaを使用してツールをインストール
+    aqua i -l
 
-    # phase 07
+    # その他：
+    # AstroNvimのインストール
+    # git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+}
 
-    # phase 08
-
-    # phase 09
-
+tweak_configs() {
     # phase 10 - Setup font config
+    # TODO:
 
     # phase 11 - Setup terminal cofig
     link_file "../../config/home/.config/alacritty/alacritty.toml" "~/.config/alacritty/alacritty.toml"
@@ -53,25 +61,6 @@ main() {
     # phase 16 - Setup chrome config
     # phase 17 - Setup chromium config
     # phase 18 - Setup firefox config
-
-
-# ../../modules/03_chassis/vbox_guest.arch_based.x64.bash
-# ../../modules/04_os/arch.arch_based.x64.bash
-# ../../modules/10_core.arch_based.x64.bash
-# ../../modules/20_core.arch_based.x64.bash
-
-
-# ../../modules/00_dependencies/myenv-v3/setup.arch_based.x64.bash
-../../modules/00_dependencies/git/setup.arch_based.x64.bash
-../../modules/00_dependencies/aqua/setup.arch_based.x64.bash
-../../modules/00_dependencies/mise/setup.arch_based.x64.bash
-
-../../modules/10_core/cli/ghq/setup.arch_based.x64.bash
-../../modules/10_core/cli/fzf/setup.arch_based.x64.bash
-../../modules/10_core/cli/ghq/setup.arch_based.x64.bash
-../../modules/10_core/cli/ripgrep/setup.arch_based.x64.bash
-# ...
-
 }
 
 main
