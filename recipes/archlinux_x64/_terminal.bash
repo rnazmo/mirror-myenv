@@ -48,14 +48,14 @@ main() {
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/theme-zenburn.toml"
 
     # ======================================================
-    # ======== starship (& theme)                         =
+    # ======== starship (& theme)                          =
     # ======================================================
 
     sudo pacman -S --needed starship
     link_file "${MYENV_ROOT}/config/home/.config/starship.toml" "${HOME}/.config/starship.toml"
 
     # ======================================================
-    # ======== tmux (& plugin-manager & plugins)            =
+    # ======== tmux (& plugin-manager & plugins)           =
     # ======================================================
 
     # ======== tmux
