@@ -1,12 +1,12 @@
-# ==================================
-# ======== Import                  =
-# ==================================
+# ======================================================
+# ======== Import                                      =
+# ======================================================
 
-[ -f "${HOME}/.config/zsh/_functions.zsh" ] && source "${HOME}/.config/zsh/_functions.zsh"
+[ -f "${ZDOTDIR}/_functions.zsh" ] && source "${ZDOTDIR}/_functions.zsh"
 
-# ==================================
-# ======== Set Zsh options         =
-# ==================================
+# ======================================================
+# ======== Set Zsh options                             =
+# ======================================================
 
 setopt autocd              # change directory just by typing its name
 #setopt correct            # auto correct mistakes
@@ -22,9 +22,9 @@ WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 # hide EOL sign ('%')
 PROMPT_EOL_MARK=""
 
-# ==================================
-# ======== History                 =
-# ==================================
+# ======================================================
+# ======== History                                     =
+# ======================================================
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -35,9 +35,9 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 setopt share_history          # share command history data ref: https://askubuntu.com/a/23631
 
-# ==================================
-# ======== Keybinding              =
-# ==================================
+# ======================================================
+# ======== Keybinding                                  =
+# ======================================================
 
 bindkey -e                                        # emacs key bindings
 bindkey ' ' magic-space                           # do history expansion on space
@@ -54,9 +54,9 @@ bindkey '^[[Z' undo                               # shift + tab undo last action
 zle -N _fzf_cd_ghq
 bindkey "^g" _fzf_cd_ghq
 
-# ==================================
-# ======== Completion              =
-# ==================================
+# ======================================================
+# ======== Basic Completion                            =
+# ======================================================
 
 # enable completion features
 autoload -Uz compinit
@@ -65,16 +65,16 @@ zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # case insensitive tab completion
 
 
-# ==================================
-# ======== Prompt                  =
-# ==================================
+# ======================================================
+# ======== Prompt                                      =
+# ======================================================
 
 # Using starship
 eval "$(starship init zsh)"
 
-# ==================================
-# ======== Extra                   =
-# ==================================
+# ======================================================
+# ======== Extra keybinding&completion                 =
+# ======================================================
 
 # Ref: https://archlinux.org/packages/extra/any/zsh-syntax-highlighting/
 [ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
@@ -83,20 +83,31 @@ eval "$(starship init zsh)"
 # Ref: https://archlinux.org/packages/extra/any/zsh-history-substring-search/
 [ -f "/usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" ] && source "/usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
 
-# Set up fzf key bindings and fuzzy completion
+# Load fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
-# ==================================
-# ======== Aliase                  =
-# ==================================
+# Load git completion
+# Ref:
+#     https://github.com/git/git/blob/ed155187b429a2a6b6475efe1767053df37ccfe1/contrib/completion/git-completion.zsh
+#     [【初級者向け】ターミナル（zsh）にgitのブランチ名表示＆補完機能を公式ドキュメントをじっくり読み解いて実装 - Qiita]
+#         (https://qiita.com/yamaday0u/items/ee8acb35709bcc8c7fc7#tab%E8%A3%9C%E5%AE%8C%E6%A9%9F%E8%83%BD%E3%82%92%E5%AE%9F%E8%A3%85git-completion)
+# TODO: This work????
+local -r ZSH_COMPLETION_DIR="${ZDOTDIR}/completion"
+fpath=($ZSH_COMPLETION_DIR $fpath)
+zstyle ':completion:*:*:git:*' script "${ZSH_COMPLETION_DIR}/git-completion.bash"
+autoload -Uz compinit && compinit
 
-[ -f "${HOME}/.config/zsh/_aliases.zsh" ] && source "${HOME}/.config/zsh/_aliases.zsh"
+# ======================================================
+# ======== Aliase                                      =
+# ======================================================
 
-# ==================================
-# ======== PATH                    =
-# ==================================
+[ -f "${ZDOTDIR}/_aliases.zsh" ] && source "${ZDOTDIR}/_aliases.zsh"
 
-# [ -f "${HOME}/.config/zsh/_path.zsh" ] && source "${HOME}/.config/zsh/_path.zsh"
+# ======================================================
+# ======== PATH                                        =
+# ======================================================
+
+# [ -f "${ZDOTDIR}/_path.zsh" ] && source "${ZDOTDIR}/_path.zsh"
 # TODO:
 
 export PATH=$HOME/bin:$PATH
