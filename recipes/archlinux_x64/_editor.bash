@@ -30,11 +30,12 @@ main() {
         mv ~/.cache/nvim ~/.cache/nvim.bak
 
         # Install astronvim
-        # TODO:
-        git clone --depth 1 https://github.com/AstroNvim/template "${ASTRONVIM_DIR}"
-        # remove template's git connection to set up your own later
-        rm -rf "${ASTRONVIM_DIR}/.git"
-        nvim
+        # TODO: Install astronvim
+        # git clone --depth 1 https://github.com/AstroNvim/template "${ASTRONVIM_DIR}"
+        # # remove template's git connection to set up your own later
+        # rm -rf "${ASTRONVIM_DIR}/.git"
+        # nvim
+        # TODO: Link neovim, astrovim config files
     fi
 
     # ======================================================
@@ -46,28 +47,37 @@ main() {
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/keybindings.json" "${HOME}/.config/Code/User/keybindings.json"
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/snippets" "${HOME}/.config/Code/User/snippets" # NOTE: dir
 
-    # TODO: install extensions
-    # TODO: ~~indent-rainbow~~
-    # TODO: ~~zenkaku~~
-    # TODO: ~~Trailing Spaces~~
-    # TODO: EditorConfig
-    # ======== prettier
-    ext install esbenp.prettier-vscode
-    # TODO: githHub copilot
-    # TODO: codeium
-    # TODO: Code Spell Checker
-    # TODO: Git History # 必要なときだけ有効にする
-    # TODO: GitLens # 重め。必要なときだけ有効にする
-    # TODO: Dev Containers
-    # 言語系はどうする？
-    # TODO: golang
-    # TODO: html
-    # TODO: css
-    # TODO: markdown
-    # TODO: javascript
-    # TODO: typescript
-    # TODO: etc...
+    # Install extensions
+    EXTENSIONS=(
+        "golang.Go"
+        # "ms-azuretools.vscode-docker"
+        # "ms-vscode-remote.remote-containers"
+        # "GitHub.copilot"
+        # "Codeium.codeium"
+        "editorconfig.editorconfig"
+        # "esbenp.prettier-vscode"
+        # "dbaeumer.vscode-eslint"
+        # "streetsidesoftware.code-spell-checker"
+        # "eamodio.gitlens"
+        # "donjayamanne.githistory"
+    )
+    for EXT in "${EXTENSIONS[@]}"; do
+        code --install-extension "$EXT"
+    done
 
+    # ======================================================
+    # ======== obsidian                                    =
+    # ======================================================
+
+    sudo pacman -S --needed obsidian
+
+
+    # ======================================================
+    # ======== misc                                        =
+    # ======================================================
+
+    # Editorconfig
+    link_file "${MYENV_ROOT}/config/home/.editorconfig" "${HOME}/.editorconfig"
 }
 
 # この関数は次のリポジトリ構成に基づいて判別しています：
@@ -82,22 +92,3 @@ check_if_astronvim_is_installed() {
 }
 
 main
-
-
-# - core/editor:
-#     - Install via pacman:
-#         - [ ] neovim
-#             - Link config files
-
-#         - [ ] vscode
-#             - Link config files
-#                 - `~/.config/Code/User`
-#         - [ ] obsidian
-#     - Misc:
-#         - [ ] editorconfig
-#             - Link config files
-#                 - `~/.editorconfig`
-#     - ?:
-#         - [ ] neovim-plugin
-#         - [ ] neovim-framework-astronvim
-#             - astronvim は plugin というよりもはや framework
