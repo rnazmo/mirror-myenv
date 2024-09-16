@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-# TODO: MYENV_ROOT="${HOME}/.myenv" ??
+export MYENV_ROOT="${HOME}/.myenv"
 
 source ${MYENV_ROOT}/lib/util.bash
 
