@@ -1,25 +1,35 @@
 # myenv-v3
 
-## Tool List
+my provisioning scripts.
 
-- [ ] yay
-- [ ] mise
-- [ ] Git
-- [ ] ghq
-- [ ] fzf
-- [ ] Alacritty
-- [ ] tmux
-- [ ] Zsh
-- [ ] Starship
-- [ ] Cica
-- [ ] Neovim
-- [ ] VS Code
-- [ ] Obsidian
-- [ ] tree
-- [ ] xclip
-- [ ] editorconfig
-- [ ] myenv-v3
-- [ ] proper7y
+## 方針
+
+- 管理するツールをなるべく増やさない：
+    - 何でもかんでもここで管理しようとしない。管理するツールは絞る
+    - そのツール、本当にここで管理する必要ありますか？
+- 管理する設定を増やさない：
+    - 各種設定やツールのバージョンを、完璧に復元しようとしない
+    - だいたい動けば十分。そも厳密な環境が環境が必要なら Docker 使え
+- その他：
+    - メンテナンスコストを下げる
+    - Bash でコードをたくさん書くな。巨大な Bash スクリプトはメンテナンス性が低い
+    - Bash のテストをちゃんと書く
+    - Windows 対応は原則諦める
+        - 開発環境として WLS を使うことはあっても Windows を使うことはないでしょ
+    - CI でテストさせる
+    - テスト駆動開発
+    - このリポジトリの管理にあまり労力を割かない
+        - このリポジトリはあくまで道具。これを使って何を作るかが重要
+            - いや、「斧を研ぐ」ことは重要では？
+    - ちょこちょこタグを付ける
+        - `v2024-XX-XX` みたいな日付形式が良さそう
+
+## ここでやること
+
+- ツールのインストール
+- ツールのバージョン管理
+- ツールの設定
+- OS の設定
 
 ## TODO
 
@@ -27,59 +37,3 @@
 - [ ] ここで管理したいソフトウェアをリストアップする (-> [Tool List](#tool-list))
     - **まずは本当に最低限だけ！！**
         - 余分なツールを追加するのは、最低限が形になってから
-- [ ] 導入を検討：
-    - [ ] chezmoi
-    - [ ] tpm
-    - [ ] sheldon
-    - [ ] ripgrep
-- [ ] 各ツールの進行状況：
-    - [ ] Alacritty
-        - [x] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] Starship
-        - [x] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] mise
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] yay
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] Git
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] ghq
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] fzf
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] tmux
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] Zsh
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] Cica
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] Neovim
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] VS Code
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] Obsidian
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] tree
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] xclip
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] editorconfig
-        - [ ] Add config file
-        - [ ] mypubte: Write `Manual`: "setup］Hoge：セットアップ手順"
-    - [ ] myenv-v3
-    - [ ] proper7y

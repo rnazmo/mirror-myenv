@@ -1,0 +1,4 @@
+# dependencies:
+#     node.js
+#     ripgrep
+#     ...
