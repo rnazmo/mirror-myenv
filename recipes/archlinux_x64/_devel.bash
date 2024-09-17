@@ -6,6 +6,8 @@ source ${MYENV_ROOT}/lib/util.bash
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
+    sudo pacman -Syu
+    
     # ======================================================
     # ======== many cli tools                              =
     # ======================================================
