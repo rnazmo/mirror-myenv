@@ -7,6 +7,7 @@ main() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu
+    yay -Syu
 
     # ======================================================
     # ======== neovim (& plugin-manager & plugins)         =
@@ -47,7 +48,7 @@ main() {
     # ======== vscode (& extensions)                       =
     # ======================================================
 
-    sudo pacman -S --needed code
+    yay -S --needed visual-studio-code-bin
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json"    "${HOME}/.config/Code/User/settings.json"
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/keybindings.json" "${HOME}/.config/Code/User/keybindings.json"
     link_dir  "${MYENV_ROOT}/config/home/.config/Code/User/snippets"         "${HOME}/.config/Code/User/snippets" # NOTE: dir
