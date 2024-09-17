@@ -33,6 +33,7 @@ my provisioning scripts.
 
 ## TODO
 
+- [ ] feat: "Code - OSS" -> "VS Code
 - [ ] ci: Migrate GitLab -> GitHub
 - [ ] feat: Support ErgoDox EZ config
 - [ ] ci: Add test for 
@@ -49,7 +50,6 @@ my provisioning scripts.
 - [ ] feat: Update tmux plugins
 - [ ] feat: Support AstroNvim
 - [ ] feat: Update AstroNvim config
-
 - [ ] doc: できること・できないことをまとめる
     - `init.bash`：
         - できること：
