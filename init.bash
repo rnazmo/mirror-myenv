@@ -63,7 +63,7 @@ main() {
 
         if ssh -T git@github.com &>/dev/null && ssh -T git@gitlab.com &>/dev/null; then
             : # Do nothing. (The SSH connection settings are already done)
-        elif
+        else
             # Register SSH public key to GitLab(/GitHub)
             [ ! -f "${HOME}/.ssh/id_ed25519.pub" ] && ssh-keygen -t ed25519
             cat "${HOME}/.ssh/id_ed25519.pub"
