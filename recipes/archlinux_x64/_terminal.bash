@@ -11,12 +11,6 @@ main() {
     yay -Syu
 
     # ======================================================
-    # ======== default shell                               =
-    # ======================================================
-
-    chsh -s "$(which zsh)"
-
-    # ======================================================
     # ======== zsh (& plugin-manager & plugins)            =
     # ======================================================
 
@@ -48,6 +42,16 @@ main() {
         mkdir -p "$ZSH_COMPLETION_DIR"
         curl -o "${ZSH_COMPLETION_DIR}/_git"                https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
         curl -o "${ZSH_COMPLETION_DIR}/git-completion.bash" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+    fi
+
+    # ======================================================
+    # ======== default shell                               =
+    # ======================================================
+
+    if check_if_command_exists "zsh" && [ "$SHELL" != "$(which zsh)" ]; then
+        # NOTE: Reboot machine to reflect changes made in `chsh`
+        chsh -s "$(which zsh)"
+        info "Changed your default login shell to Zsh"
     fi
 
     # ======================================================

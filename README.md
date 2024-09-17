@@ -43,9 +43,15 @@ my provisioning scripts.
 - [ ] feat: Support browser extension
 - [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
 - [ ] feat: Update VS Code config
+- [ ] feat: Update VS Code keybindigs
+- [ ] feat: Update VS Code extensions
+- [ ] feat: Support Zsh plugin-manager
+- [ ] feat: Update Zsh plugins
+- [ ] feat: Support tmux plugin-manager
+- [ ] feat: Update tmux plugins
 - [ ] feat: Support AstroNvim
 - [ ] feat: Update AstroNvim config
-- [ ] feat: Support 
+
 - [ ] doc: できること・できないことをまとめる
     - `init.bash`：
         - できること：
