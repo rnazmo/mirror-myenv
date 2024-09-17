@@ -65,7 +65,7 @@ main() {
             : # Do nothing. (The SSH connection settings are already done)
         elif
             # Register SSH public key to GitLab(/GitHub)
-            if [ ! -f "${HOME}/.ssh/id_ed25519.pub" ] && ssh-keygen -t ed25519
+            [ ! -f "${HOME}/.ssh/id_ed25519.pub" ] && ssh-keygen -t ed25519
             cat "${HOME}/.ssh/id_ed25519.pub"
             echo "Open https://github.com/settings/ssh/new and register the SSH public key"
             echo "Open https://gitlab.com/-/user_settings/ssh_keys and register the SSH public key"
