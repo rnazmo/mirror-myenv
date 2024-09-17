@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+source "${MYENV_ROOT}/lib/util.bash"
+
 main() {
     log_debug "START: ${BASH_SOURCE}"
     

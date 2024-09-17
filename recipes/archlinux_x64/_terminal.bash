@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-source ${MYENV_DIR}/lib/util.bash
+source "${MYENV_ROOT}/lib/util.bash"
 
 main() {
     log_debug "START: ${BASH_SOURCE}"
@@ -18,6 +18,10 @@ main() {
 
     # ======== zsh
     sudo pacman -S --needed zsh
+    [ -L "${HOME}/.zshrc" ] && unlink "${HOME}/.zshrc"
+    [ -f "${HOME}/.zshrc" ] && mv "${HOME}/.zshrc" "${HOME}/.zshrc.old"
+    [ -L "${HOME}/.zshenv" ] && unlink "${HOME}/.zshenv"
+    [ -f "${HOME}/.zshenv" ] && mv "${HOME}/.zshenv" "${HOME}/.zshenv.old"
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
     link_file "${MYENV_ROOT}/config/home/.config/zsh" "${ZDOTDIR}/zsh" # NOTE: the path is directory
 
