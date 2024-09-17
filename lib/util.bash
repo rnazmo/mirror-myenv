@@ -136,10 +136,17 @@ is_not_virtualized_environment() {
     fi
 }
 
-_log() {}
+log_info() {
+  local -r PREFIX="INFO :"
+  echo "$PREFIX $1"
+}
 
-log_info() {}
+log_warn() {
+  local -r PREFIX="WARN :" >&2
+  echo "$PREFIX $1"
+}
 
-log_warn() {}
-
-log_error() {}
+log_err() {
+  local -r PREFIX="ERROR:" >&2
+  echo "$PREFIX $1"
+}
