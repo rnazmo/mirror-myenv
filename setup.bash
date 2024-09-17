@@ -15,7 +15,7 @@ set -eu
 
 export MYENV_ROOT="${HOME}/.myenv-v3"
 
-source ${MYENV_ROOT}/lib/util.bash
+source "${MYENV_ROOT}/lib/util.bash"
 
 parse_args() {
     # Parse arguments

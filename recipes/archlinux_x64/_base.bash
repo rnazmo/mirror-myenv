@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-source ${MYENV_ROOT}/lib/util.bash
+source "${MYENV_ROOT}/lib/util.bash"
 
 main() {
     # ======================================================
