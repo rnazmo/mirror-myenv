@@ -48,9 +48,9 @@ main() {
     # ======================================================
 
     sudo pacman -S --needed code
-    link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
+    link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json"    "${HOME}/.config/Code/User/settings.json"
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/keybindings.json" "${HOME}/.config/Code/User/keybindings.json"
-    link_dir "${MYENV_ROOT}/config/home/.config/Code/User/snippets" "${HOME}/.config/Code/User/snippets" # NOTE: dir
+    link_dir  "${MYENV_ROOT}/config/home/.config/Code/User/snippets"         "${HOME}/.config/Code/User/snippets" # NOTE: dir
 
     # Install extensions
     EXTENSIONS=(

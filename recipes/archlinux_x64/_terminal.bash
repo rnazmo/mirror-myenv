@@ -24,8 +24,8 @@ main() {
     [ -L "${HOME}/.zshenv" ] && unlink "${HOME}/.zshenv"
     [ -f "${HOME}/.zshrc" ]  && mv "${HOME}/.zshrc"  "${HOME}/.zshrc.old"
     [ -f "${HOME}/.zshenv" ] && mv "${HOME}/.zshenv" "${HOME}/.zshenv.old"
-    link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
-    link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
+    link_file "${MYENV_ROOT}/config/home/.zshenv"     "${HOME}/.zshenv"
+    link_dir  "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
 
     # ======== sheldon
     # sudo pacman -S --needed sheldon
@@ -61,7 +61,7 @@ main() {
     # ======================================================
 
     sudo pacman -S --needed alacritty
-    link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
+    link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml"     "${HOME}/.config/alacritty/alacritty.toml"
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/theme-zenburn.toml" "${HOME}/.config/alacritty/my-theme.toml"
 
     # ======================================================
