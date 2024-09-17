@@ -123,7 +123,7 @@ link_file() {
 #
 # Arguments:
 #     source_dir:
-#         must be a directory. (symbolic link is not allowed)
+#         must be a regular directory. (symbolic link is not allowed)
 #         TODO: symbolic link は許してもよいかも？
 #     target_dir:
 #         If it's already a symbolic link, remove and recreate it.
@@ -149,7 +149,7 @@ link_dir() {
         return 1
     fi
     if [[ -L "$SOURCE_DIR" ]]; then
-        log_err "Source directory '$SOURCE_DIR' is symbolic link. Must be a directory."
+        log_err "Source directory '$SOURCE_DIR' is symbolic link. Must be a regular directory."
     fi
     if [[ ! -d "$SOURCE_DIR" ]]; then
         log_err "Source directory '$SOURCE_DIR' must be a regular directory."
