@@ -6,6 +6,9 @@ source ${MYENV_ROOT}/lib/util.bash
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
+    sudo pacman -Syu
+    yay -Syu
+
     # ======================================================
     # ======== Chromium                                    =
     # ======================================================
@@ -21,7 +24,7 @@ main() {
     # ======== Chrome                                      =
     # ======================================================
 
-    sudo pacman -S --needed google-chrome
+    yay -S --needed google-chrome
 
     # ======== extensions
     # TODO:
