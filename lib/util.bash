@@ -136,6 +136,11 @@ is_not_virtualized_environment() {
     fi
 }
 
+log_debug() {
+  local -r PREFIX="DEBUG:"
+  echo "$PREFIX $1"
+}
+
 log_info() {
   local -r PREFIX="INFO :"
   echo "$PREFIX $1"

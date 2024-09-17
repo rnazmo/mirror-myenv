@@ -1,11 +1,19 @@
 #!/bin/bash
 set -eu
 
+# What is this:
+#     Provision the machine.
+#
+# Prerequisites:
+#     myenv-v3 repository (~/.myenv-v3)
+#
 # Usage:
 #     foo/bar/myenv-v3/setup.bash "<host_name>"
 #
 # Example:
 #     ~/myenv-v3/setup.bash "soba"
+
+export MYENV_ROOT="${HOME}/.myenv-v3"
 
 source ${MYENV_ROOT}/lib/util.bash
 
@@ -20,12 +28,19 @@ parse_args() {
     readonly HOST_NAME="$1"
 }
 
+check_prerequisites() {
+    if [ ! -d "$MYENV_ROOT" ]; then
+        log_err "The myenv-3 repository not found"
+        exit 1
+    fi
+}
+
 main() {
     parse_args
 
-    # TODO: Setup myenv-v3 (git clone)
+    check_prerequisites
 
-    source "${MYENV_ROOT}/hosts/${HOST_NAME}/default.bash"
+    source "${MYENV_ROOT}/hosts/${HOST_NAME}/setup.bash"
 }
 
 main "$@"
