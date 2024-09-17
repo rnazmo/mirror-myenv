@@ -6,6 +6,8 @@ source ${MYENV_ROOT}/lib/util.bash
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
+    yay -Syu
+
     # ======================================================
     # ======== normal font                                 =
     # ======================================================
