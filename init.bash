@@ -24,7 +24,7 @@ set -eu
 #         ./install.sh --without_login
 
 main() {
-    local OPTION_WITHOUT_LOGIN=false
+    local WITHOUT_LOGIN=false
     local -r GIT_GLOBAL_NAME="rnazmo"
     local -r GIT_GLOBAL_ENAIL="rnazmo@gmail.com"
     local -r SRC_URL="git@gitlab.com:rnazmo/myenv-v3.git"
@@ -36,7 +36,7 @@ main() {
     if [ $# -eq 1 ]; then
         if [ "$1" = "--without-login" ]; then
             echo "オプション '--without-login' が指定されました"
-            OPTION_WITHOUT_LOGIN=true
+            WITHOUT_LOGIN=true
         else
             echo "Error: Wrong option. Only '--without-login' can use"
             exit 1
@@ -52,22 +52,26 @@ main() {
         exit 1
     fi
 
-    if ! OPTION_WITHOUT_LOGIN; then
+    if ! WITHOUT_LOGIN; then
         # ======================================================
         # ======== git                                         =
         # ======================================================
 
         # Set git global config
-        git config --global user.name "rnazmo"
-        git config --global user.email "rnazmo@gmail.com"
+        git config --global user.name "$GIT_GLOBAL_NAME"
+        git config --global user.email "$GIT_GLOBAL_ENAIL"
 
-        # Register SSH public key to GitLab(/GitHub)
-        ssh-keygen -t ed25519
-        cat ~/.ssh/id_ed25519.pub
-        echo "Open https://github.com/settings/ssh/new and register the SSH public key"
-        echo "Open https://gitlab.com/-/user_settings/ssh_keys and register the SSH public key"
-        ssh -T git@github.com
-        ssh -T git@gitlab.com
+        if ssh -T git@github.com &>/dev/null && ssh -T git@gitlab.com &>/dev/null; then
+            : # Do nothing. (The SSH connection settings are already done)
+        elif
+            # Register SSH public key to GitLab(/GitHub)
+            if [ ! -f "${HOME}/.ssh/id_ed25519.pub" ] && ssh-keygen -t ed25519
+            cat "${HOME}/.ssh/id_ed25519.pub"
+            echo "Open https://github.com/settings/ssh/new and register the SSH public key"
+            echo "Open https://gitlab.com/-/user_settings/ssh_keys and register the SSH public key"
+            ssh -T git@github.com
+            ssh -T git@gitlab.com
+        fi
     fi
 
     # ======================================================
