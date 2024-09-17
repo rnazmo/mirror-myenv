@@ -1,13 +1,15 @@
 # ==================================================
-# Copy from https://github.com/alacritty/alacritty-theme/blob/e759dafb8e2e00abb428592979ce006da7fba4a7/themes/zenburn.toml
+# Based on https://github.com/alacritty/alacritty-theme/blob/e759dafb8e2e00abb428592979ce006da7fba4a7/themes/zenburn.toml
+#     Colors (Zenburn) - Orginally designed by jnurmine for vim.
+# Change:
+#     colors.primary
+#         background '#3A3A3A' -> '#2D2D2D'
+#             デフォルトだと青い文字が見づらいから
 # ==================================================
-
-# Colors (Zenburn)
-# Orginally designed by jnurmine for vim.
 
 # Default colors
 [colors.primary]
-background = '#212121'
+background = '#2D2D2D'
 foreground = '#DCDCCC'
 
 # Normal colors
