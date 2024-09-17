@@ -47,7 +47,12 @@ main() {
     # ======================================================
 
     if ! check_if_command_exists "mise"; then
-        curl https://mise.run | sh
+        # curl https://mise.run | sh
+        cd "$(mktemp -d)"
+        curl -sSfL -O https://mise.run
+        # TODO: Check sha256sum
+        chmod +x mise.run
+        ./mise.run
     fi
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 
@@ -56,7 +61,11 @@ main() {
     # ======================================================
 
     if ! check_if_command_exists "aqua"; then
-        curl -sSfL https://raw.githubusercontent.com/aquaproj/aqua-installer/v3.0.1/aqua-installer | bash
+        cd "$(mktemp -d)"
+        curl -sSfL -O https://raw.githubusercontent.com/aquaproj/aqua-installer/v3.0.1/aqua-installer
+        echo "fb4b3b7d026e5aba1fc478c268e8fbd653e01404c8a8c6284fdba88ae62eda6a  aqua-installer" | sha256sum -c
+        chmod +x aqua-installer
+        ./aqua-installer
     fi
     link_file "${MYENV_ROOT}/config/home/.config/aquaproj-aqua/aqua.yaml" "${HOME}/.config/aquaproj-aqua/aqua.yaml"
 
