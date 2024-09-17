@@ -4,6 +4,8 @@ set -eu
 source ${MYENV_ROOT}/lib/util.bash
 
 main() {
+    log_debug "START: ${BASH_SOURCE}"
+
     # ======================================================
     # ======== neovim (& plugin-manager & plugins)         =
     # ======================================================
@@ -78,6 +80,8 @@ main() {
 
     # Editorconfig
     link_file "${MYENV_ROOT}/config/home/.editorconfig" "${HOME}/.editorconfig"
+
+    log_debug "END  : ${BASH_SOURCE}"
 }
 
 # この関数は次のリポジトリ構成に基づいて判別しています：

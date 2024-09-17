@@ -4,6 +4,8 @@ set -eu
 source ${MYENV_DIR}/lib/util.bash
 
 main() {
+    log_debug "START: ${BASH_SOURCE}"
+
     # ======================================================
     # ======== default shell                               =
     # ======================================================
@@ -63,10 +65,12 @@ main() {
     link_file "${MYENV_ROOT}/config/home/.config/tmux/tmux.conf" "${HOME}/.config/tmux/tmux.conf"
 
     # ======== tpm
-    yay -S --needed tpm
+    # yay -S --needed tpm
 
     # ======== plugins
     # TODO:
+
+    log_debug "END  : ${BASH_SOURCE}"
 }
 
 _zsh_git_completion_exists() {

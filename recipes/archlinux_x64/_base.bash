@@ -4,7 +4,7 @@ set -eu
 source "${MYENV_ROOT}/lib/util.bash"
 
 main() {
-    log_debug "START: ${BASH_SOURCE##*/}"
+    log_debug "START: ${BASH_SOURCE}"
 
     # ======================================================
     # ======== system update                               =
@@ -81,7 +81,7 @@ main() {
     mkdir -p -v ~/workspace/sandboxes
     mkdir -p -v ~/workspace/temp
 
-    log_debug "END  : ${BASH_SOURCE##*/}"
+    log_debug "END  : ${BASH_SOURCE}"
 }
 
 main

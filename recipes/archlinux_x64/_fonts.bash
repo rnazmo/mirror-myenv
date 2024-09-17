@@ -4,6 +4,8 @@ set -eu
 source ${MYENV_ROOT}/lib/util.bash
 
 main() {
+    log_debug "START: ${BASH_SOURCE}"
+
     # ======================================================
     # ======== normal font                                 =
     # ======================================================
@@ -35,6 +37,8 @@ main() {
 
     # フォントキャッシュの更新（不要かも）
     fc-cache -v
+    
+    log_debug "END  : ${BASH_SOURCE}"
 }
 
 main

@@ -4,6 +4,8 @@ set -eu
 source ${MYENV_ROOT}/lib/util.bash
 
 main() {
+    log_debug "START: ${BASH_SOURCE}"
+
     # ======================================================
     # ======== Chromium                                    =
     # ======================================================
@@ -37,6 +39,8 @@ main() {
     # TODO:
     # ======== bookmarklets
     # TODO: HTML file??
+
+    log_debug "END  : ${BASH_SOURCE}"
 }
 
 main

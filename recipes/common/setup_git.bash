@@ -1,10 +1,11 @@
-
+    # TODO: 以下は仮
 
 main() {
+
+    log_debug "START: ${BASH_SOURCE}"
     # ======================================================
     # ======== git                                         =
     # ======================================================
-    # TODO: 以下は仮
 
     local -r GIT_GLOBAL_NAME="rnazmo"
     local -r GIT_GLOBAL_ENAIL="rnazmo@gmail.com"
@@ -24,21 +25,8 @@ main() {
         ssh -T git@github.com
         ssh -T git@gitlab.com
     fi
-}
-
-log_info() {
-  local -r PREFIX="INFO :"
-  echo "$PREFIX $1"
-}
-
-log_warn() {
-  local -r PREFIX="WARN :" >&2
-  echo "$PREFIX $1"
-}
-
-log_err() {
-  local -r PREFIX="ERROR:" >&2
-  echo "$PREFIX $1"
+  
+    log_debug "END  : ${BASH_SOURCE}"
 }
 
 main

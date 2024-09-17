@@ -4,6 +4,8 @@ set -eu
 source ${MYENV_ROOT}/lib/util.bash
 
 main() {
+    log_debug "START: ${BASH_SOURCE}"
+
     # ======================================================
     # ======== many cli tools                              =
     # ======================================================
@@ -28,6 +30,8 @@ main() {
     mise install
     # mise install go
     # mise install node
+
+    log_debug "END  : ${BASH_SOURCE}"
 }
 
 main
