@@ -1,5 +1,5 @@
 import = [
-    "~/.config/alacritty/theme-zenburn.toml"
+    # "~/.config/alacritty/theme-zenburn.toml"
 ]
 
 [window]
