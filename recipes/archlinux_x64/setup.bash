@@ -5,7 +5,7 @@ main() {
     log_debug "START: ${BASH_SOURCE}"
     
     source "${MYENV_ROOT}/recipes/archlinux_x64/_base.bash"
-    # source "${MYENV_ROOT}/recipes/archlinux_x64/_fonts.bash"
+    source "${MYENV_ROOT}/recipes/archlinux_x64/_fonts.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_terminal.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_devel.bash"
 
