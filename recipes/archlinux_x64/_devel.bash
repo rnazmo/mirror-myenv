@@ -13,7 +13,7 @@ main() {
     # ======================================================
 
     sudo pacman -S --needed \
-    ghq fzf tree xclip unzip neofetch lazygit \
+    ghq fzf tree xclip unzip fastfetch lazygit \
     ripgrep bat eza fd git-delta bottom
 
     # ======== proper7y                          =
