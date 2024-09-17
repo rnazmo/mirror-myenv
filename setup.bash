@@ -36,7 +36,7 @@ check_prerequisites() {
 }
 
 main() {
-    parse_args
+    parse_args "$@"
 
     check_prerequisites
 
