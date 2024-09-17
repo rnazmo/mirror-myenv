@@ -2,7 +2,7 @@
 set -eu
 
 main() {
-    log_debug "Hello! from archlinux_x64/setup.bash"
+    log_debug "START: $(basename $0)"
     
     source "${MYENV_ROOT}/recipes/archlinux_x64/_base.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_fonts.bash"
@@ -17,6 +17,8 @@ main() {
 
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_japanese_input.bash"
     # # source "${MYENV_ROOT}/recipes/archlinux_x64/_apps.bash"
+
+    log_debug "END  : $(basename $0)"
 }
 
 main

@@ -4,6 +4,8 @@ set -eu
 source "${MYENV_ROOT}/lib/util.bash"
 
 main() {
+    log_debug "START: $(basename $0)"
+
     # ======================================================
     # ======== system update                               =
     # ======================================================
@@ -78,6 +80,8 @@ main() {
     mkdir -p -v ~/workspace
     mkdir -p -v ~/workspace/sandboxes
     mkdir -p -v ~/workspace/temp
+
+    log_debug "END  : $(basename $0)"
 }
 
 main
