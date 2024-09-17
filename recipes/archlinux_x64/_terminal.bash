@@ -24,7 +24,7 @@ main() {
     [ -L "${HOME}/.zshenv" ] && unlink "${HOME}/.zshenv"
     [ -f "${HOME}/.zshenv" ] && mv "${HOME}/.zshenv" "${HOME}/.zshenv.old"
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
-    link_file "${MYENV_ROOT}/config/home/.config/zsh" "${HOME}/.config/zsh" # NOTE: the path is directory
+    link_dir "${MYENV_ROOT}/config/home/.config/zsh" "${HOME}/.config/zsh" # NOTE: the path is directory
 
     # ======== sheldon
     # sudo pacman -S --needed sheldon
