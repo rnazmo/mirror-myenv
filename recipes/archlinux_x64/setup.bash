@@ -18,7 +18,7 @@ main() {
     # is_not_virtualized_environment && source "${MYENV_ROOT}/recipes/archlinux_x64/_devel.ve_host.bash"
 
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_japanese_input.bash"
-    # # source "${MYENV_ROOT}/recipes/archlinux_x64/_apps.bash"
+    # # source "${MYENV_ROOT}/recipes/archlinux_x64/_apps.bash" # extra (GUI) apps
 
     log_debug "END  : ${BASH_SOURCE}"
 }
