@@ -1,6 +1,6 @@
 [tools]
 go = "latest"
-node = "latest"
+node = "lts"
 # node = "lts"
 # deno = "latest"
 # python = "latest"

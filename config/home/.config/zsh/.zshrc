@@ -112,7 +112,7 @@ typeset -U path PATH
 # [ -f "${ZDOTDIR}/_path.zsh" ] && source "${ZDOTDIR}/_path.zsh"
 # TODO:
 
-export PATH=$HOME/bin:$PATH
+export PATH="$HOME/bin:$PATH"
 
 # mise
 # Ref: https://mise.jdx.dev/getting-started.html#_2a-activate-mise

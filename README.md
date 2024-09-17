@@ -33,7 +33,26 @@ my provisioning scripts.
 
 ## TODO
 
-- [ ] WIP: とりあえず作った設定ファイルを放り込んでいく
-- [ ] ここで管理したいソフトウェアをリストアップする (-> [Tool List](#tool-list))
-    - **まずは本当に最低限だけ！！**
-        - 余分なツールを追加するのは、最低限が形になってから
+- [ ] refactor: Remove `/modules_old1/`
+- [ ] refactor: Remove `/modules_old2/`
+- [ ] ci: Migrate GitLab -> GitHub
+- [ ] feat: Support ErgoDox EZ config
+- [ ] ci: Add test for 
+- [ ] Add Makefile (`pull`, `push`, `update`, `lint`, `format`)
+- [ ] feat: Support browser bookmarklet
+- [ ] feat: Support browser extension
+- [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
+- [ ] feat: Update VS Code config
+- [ ] feat: Support AstroNvim
+- [ ] feat: Update AstroNvim config
+- [ ] feat: Support 
+- [ ] doc: できること・できないことをまとめる
+    - `init.bash`：
+        - できること：
+        - できないこと：
+    - `setup.bash`：
+        - `soba`：
+            - できること：
+            - できないこと：
+                - 日本語入力の設定（GUI でやって）
+                - 時刻同期
