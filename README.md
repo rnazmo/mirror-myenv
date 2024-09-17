@@ -31,6 +31,33 @@ my provisioning scripts.
 - ツールの設定
 - OS の設定
 
+## Workflow (例：`soba`)
+
+### 前提
+
+- git, curl
+- GitLab, (GitHub) への SSH 公開鍵の登録
+
+### 新規マシンのセットアップ
+
+```bash
+/bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv-v3/-/raw/main/init.bash)"
+
+cd ~/.myenv-v3 && ./setup.bash "soba"
+```
+
+### 日々の更新
+
+```bash
+# Apply changes
+cd ~/.myenv-v3 && git pull && ./setup.bash "soba"
+```
+
+```bash
+# Push changes
+cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
+```
+
 ## TODO
 
 - [ ] feat: "Code - OSS" -> "VS Code
@@ -52,11 +79,10 @@ my provisioning scripts.
 - [ ] feat: Update AstroNvim config
 - [ ] doc: できること・できないことをまとめる
     - `init.bash`：
-        - できること：
-        - できないこと：
     - `setup.bash`：
         - `soba`：
             - できること：
             - できないこと：
                 - 日本語入力の設定（GUI でやって）
-                - 時刻同期
+                - 時刻同期 (Manjaro は GUI が楽)
+                - Git の初期設定。GitHub, GitLab への SSH 公開鍵の登録
