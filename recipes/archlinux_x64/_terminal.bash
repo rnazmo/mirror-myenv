@@ -78,13 +78,4 @@ main() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-_zsh_git_completion_exists() {
-    local -r ZSH_COMPLETION_DIR=$1
-    if ; then
-        return 0
-    else
-        return 1
-    fi
-}
-
 main
