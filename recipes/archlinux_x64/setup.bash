@@ -2,7 +2,9 @@
 set -eu
 
 main() {
-    source "${MYENV_ROOT}/recipes/archlinux_x64/_base.bash"
+    log_debug "Hello! from archlinux_x64/setup.bash"
+    
+    # source "${MYENV_ROOT}/recipes/archlinux_x64/_base.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_fonts.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_devel.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_terminal.bash"
