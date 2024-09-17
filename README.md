@@ -35,6 +35,7 @@ my provisioning scripts.
 
 ### 前提
 
+- Bash 4.0+
 - git, curl
 - GitLab, (GitHub) への SSH 公開鍵の登録
 

@@ -7,30 +7,6 @@ set -eu
 
 # TDOO: Add tests
 
-_check_if_path_exists() {
-    echo "TODO:"
-}
-
-_check_if_path_is_file() {
-    echo "TODO:"
-}
-
-_check_if_path_is_dir() {
-    echo "TODO:"
-}
-
-_check_if_path_is_symlink() {
-    echo "TODO:"
-}
-
-_check_if_file_exists() {
-    echo "TODO:"
-}
-
-_check_if_dir_exists() {
-    echo "TODO:"
-}
-
 # What is this:
 #     Check if the command exists or not.
 #
@@ -214,51 +190,6 @@ copy_file() {
 
     cp $SRC_PATH $DEST_PATH
     log_info "Copied file: '$SRC_PATH' -> '$DEST_PATH'"
-}
-
-# Add a new path to `PATH`
-add_path() {
-    echo "TODO:"
-}
-
-_clone_git_repo() {
-    echo "TODO:"
-}
-
-clone_git_repo_from_github() {
-    echo "TODO:"
-}
-
-clone_git_repo_from_gitlab() {
-    echo "TODO:"
-}
-
-_download_git_repo() {
-    echo "TODO:"
-}
-
-download_git_repo_from_github() {
-    echo "TODO:"
-}
-
-download_git_repo_from_gitlab() {
-    echo "TODO:"
-}
-
-install_via_pacman() {
-    echo "TODO:"
-}
-
-install_via_yay() {
-    echo "TODO:"
-}
-
-install_via_mise() {
-    echo "TODO:"
-}
-
-install_via_aqua() {
-    echo "TODO:"
 }
 
 # VirtualBoxのゲストマシンかどうかを判別する関数
