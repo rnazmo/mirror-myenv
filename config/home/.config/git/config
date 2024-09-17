@@ -14,6 +14,8 @@
     s  = status --short --branch
     a  = add
     ci   = commit
+    cim   = commit -m
+    ciam   = commit -am
     l    = log --graph -n 20 --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %C(green)- %an, %cr%Creset'
 
     f  = fetch --prune
