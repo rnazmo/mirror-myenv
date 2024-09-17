@@ -33,8 +33,6 @@ my provisioning scripts.
 
 ## TODO
 
-- [ ] refactor: Remove `/modules_old1/`
-- [ ] refactor: Remove `/modules_old2/`
 - [ ] ci: Migrate GitLab -> GitHub
 - [ ] feat: Support ErgoDox EZ config
 - [ ] ci: Add test for 

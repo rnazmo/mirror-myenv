@@ -1,9 +1,12 @@
 # soba
 
-- Keyboard: ErgoDox EZ
-- Hardware: (VM)
-- Chassis: VM Guest
+## System Spec
+
+- Hardware: N/A
+- Chassis: VirtualBox VM
 - OS: Manjaro Linux
+
+- Keyboard: ErgoDox EZ
 
 ## セットアップ手順
 
