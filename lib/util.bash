@@ -1,6 +1,10 @@
 #!/bin/bash
 set -eu
 
+
+# Prerequisites:
+#     Bash 4.0+
+
 # TDOO: Add tests
 
 _check_if_path_exists() {
@@ -27,9 +31,26 @@ _check_if_dir_exists() {
     echo "TODO:"
 }
 
+# What is this:
+#     Check if the command exists or not.
+#
+# Usage:
+#     check_if_command_exists <command>
+#
+# Example:
+#     check_if_command_exists ls
+#         -> return 0
+#     check_if_command_exists non_existing_command
+#         -> return 1
 check_if_command_exists() {
-    local -r COMMAND=$1
-    return command -v "${COMMAND}" &> /dev/null
+    local -r COMMAND="$1"
+    if command -v "$COMMAND" &> /dev/null; then
+        log_info "Command '$1' exists"
+        return 0
+    else
+        log_info "Command '$1' does not exist."
+        return 1
+    fi
 }
 
 # What is this:
