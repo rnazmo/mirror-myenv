@@ -3,17 +3,29 @@ set -eu
 
 # TDOO: Add tests
 
-_check_if_path_exists() {}
+_check_if_path_exists() {
+    echo "TODO:"
+}
 
-_check_if_path_is_file() {}
+_check_if_path_is_file() {
+    echo "TODO:"
+}
 
-_check_if_path_is_dir() {}
+_check_if_path_is_dir() {
+    echo "TODO:"
+}
 
-_check_if_path_is_symlink() {}
+_check_if_path_is_symlink() {
+    echo "TODO:"
+}
 
-_check_if_file_exists() {}
+_check_if_file_exists() {
+    echo "TODO:"
+}
 
-_check_if_dir_exists() {}
+_check_if_dir_exists() {
+    echo "TODO:"
+}
 
 check_if_command_exists() {
     local -r COMMAND=$1
@@ -86,27 +98,50 @@ link_dir() {
     ln -s $SOURCE_DIR $TARGET_DIR
 }
 
-add_path() {} # Add a new path to `PATH`
+# Add a new path to `PATH`
+add_path() {
+    echo "TODO:"
+}
 
-_clone_git_repo() {}
+_clone_git_repo() {
+    echo "TODO:"
+}
 
-clone_git_repo_from_github() {}
+clone_git_repo_from_github() {
+    echo "TODO:"
+}
 
-clone_git_repo_from_gitlab() {}
+clone_git_repo_from_gitlab() {
+    echo "TODO:"
+}
 
-_download_git_repo() {}
+_download_git_repo() {
+    echo "TODO:"
+}
 
-download_git_repo_from_github() {}
+download_git_repo_from_github() {
+    echo "TODO:"
+}
 
-download_git_repo_from_gitlab() {}
+download_git_repo_from_gitlab() {
+    echo "TODO:"
+}
 
-install_via_pacman() {}
+install_via_pacman() {
+    echo "TODO:"
+}
 
-install_via_yay() {}
+install_via_yay() {
+    echo "TODO:"
+}
 
-install_via_mise() {}
+install_via_mise() {
+    echo "TODO:"
+}
 
-install_via_aqua() {}
+install_via_aqua() {
+    echo "TODO:"
+}
 
 # VirtualBoxのゲストマシンかどうかを判別する関数
 # 戻り値：
