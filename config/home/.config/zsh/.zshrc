@@ -107,6 +107,8 @@ autoload -Uz compinit && compinit
 # ======== PATH                                        =
 # ======================================================
 
+typeset -U path PATH
+
 # [ -f "${ZDOTDIR}/_path.zsh" ] && source "${ZDOTDIR}/_path.zsh"
 # TODO:
 
