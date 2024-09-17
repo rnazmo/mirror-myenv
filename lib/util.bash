@@ -174,6 +174,48 @@ link_dir() {
     log_info "Symbolic link created: '$TARGET_DIR' -> '$SOURCE_DIR'"
 }
 
+# What is this:
+#     Copy a file from <src_path> to <dest_path>.
+#
+# Usage:
+#     copy_file <src_path> <dest_path>.
+#
+# Arguments:
+#     src_path:
+#         must be a regular file. (symbolic link is not allowed)
+#     dest_path:
+#         There must not be anything (regular file, symbolic, directory, ...) in its path.
+# 
+# Example:
+#     copy_file "~/.myenv-v3/config/home/.config/alacritty/alacritty.toml" "~/.config/alacritty/theme-zenburn.toml"
+copy_file() {
+    # 引数の受け取り
+    local -r SRC_PATH=$1
+    local -r DEST_PATH=$2
+    local -r TARGET_PARENT_DIR="$(dirname "$DEST_PATH")"
+
+    # バリデーション
+    if [[ ! -e "$SRC_PATH" ]]; then
+        log_err "Source file '$SRC_PATH' does not exist."
+        return 1
+    fi
+    if [[ -L "$SRC_PATH" ]]; then
+        log_err "Source file '$SRC_PATH' is symbolic link. Must be a regular file."
+    fi
+    if [[ ! -f "$SRC_PATH" ]]; then
+        log_err "Source file '$SRC_PATH' must be a regular file."
+        return 1
+    fi
+
+    if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
+        log_info "Created diractory $TARGET_PARENT_DIR"
+        mkdir -p "$TARGET_PARENT_DIR"
+    fi
+
+    cp $SRC_PATH $DEST_PATH
+    log_info "Copied file: '$SRC_PATH' -> '$DEST_PATH'"
+}
+
 # Add a new path to `PATH`
 add_path() {
     echo "TODO:"
