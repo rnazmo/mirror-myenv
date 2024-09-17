@@ -1,0 +1,397 @@
+// TODO: これはだいぶ前に使ってたやつをそのまま持ってきたやつなので、全面的に見直したい
+[
+    //
+    // ------------------------------------------------
+    // [ActivityBar]
+    // To Toggle ActivityBar
+    // bind
+    {
+      "key": "ctrl+k a",
+      "command": "workbench.action.toggleActivityBarVisibility"
+    },
+    //
+    // ------------------------------------------------
+    // [Tab]
+    // To Change Tab switch behavior like Chrome
+    // reset
+    {
+      "key": "ctrl+k ctrl+pagedown",
+      "command": "-workbench.action.nextEditorInGroup"
+    },
+    {
+      "key": "ctrl+k ctrl+pageup",
+      "command": "-workbench.action.previousEditorInGroup"
+    },
+    {
+      "key": "ctrl+pagedown",
+      "command": "-workbench.action.nextEditor"
+    },
+    {
+      "key": "ctrl+pageup",
+      "command": "-workbench.action.previousEditor"
+    },
+    // bind
+    {
+      "key": "ctrl+tab",
+      "command": "workbench.action.nextEditor"
+    },
+    {
+      "key": "ctrl+shift+tab",
+      "command": "workbench.action.previousEditor"
+    },
+    //
+    // ------------------------------------------------
+    // [Editor Group]
+    // To Create New Editor Group into Left/Right/Up/Down
+    // bind
+    {
+      "key": "ctrl+k ctrl+shift+left",
+      "command": "workbench.action.newGroupLeft"
+    },
+    {
+      "key": "ctrl+k ctrl+shift+right",
+      "command": "workbench.action.newGroupRight"
+    },
+    {
+      "key": "ctrl+k ctrl+shift+up",
+      "command": "workbench.action.newGroupAbove"
+    },
+    {
+      "key": "ctrl+k ctrl+shift+down",
+      "command": "workbench.action.newGroupBelow"
+    },
+    // To Focus Left/Right/Up/Down Editor Group
+    // reset
+    {
+      "key": "ctrl+k ctrl+left",
+      "command": "-workbench.action.focusLeftGroup"
+    },
+    {
+      "key": "ctrl+k ctrl+right",
+      "command": "-workbench.action.focusRightGroup"
+    },
+    {
+      "key": "ctrl+k ctrl+up",
+      "command": "-workbench.action.focusAboveGroup"
+    },
+    {
+      "key": "ctrl+k ctrl+down",
+      "command": "-workbench.action.focusBelowGroup"
+    },
+    // bind
+    {
+      "key": "ctrl+k left",
+      "command": "workbench.action.focusLeftGroup"
+    },
+    {
+      "key": "ctrl+k right",
+      "command": "workbench.action.focusRightGroup"
+    },
+    {
+      "key": "ctrl+k up",
+      "command": "workbench.action.focusAboveGroup"
+    },
+    {
+      "key": "ctrl+k down",
+      "command": "workbench.action.focusBelowGroup"
+    },
+    // To Focus First/Last Editor Group
+    // bind
+    {
+      "key": "ctrl+1",
+      "command": "workbench.action.focusFirstEditorGroup"
+    },
+    {
+      "key": "ctrl+9",
+      "command": "workbench.action.focusLastEditorGroup"
+    },
+    // To Move Active Editor into Left/Right/Up/Down Editor Group
+    // reset
+    {
+      "key": "ctrl+k left",
+      "command": "-workbench.action.moveActiveEditorGroupLeft"
+    },
+    {
+      "key": "ctrl+k right",
+      "command": "-workbench.action.moveActiveEditorGroupRight"
+    },
+    {
+      "key": "ctrl+k up",
+      "command": "-workbench.action.moveActiveEditorGroupUp"
+    },
+    {
+      "key": "ctrl+k down",
+      "command": "-workbench.action.moveActiveEditorGroupDown"
+    },
+    // bind
+    {
+      "key": "ctrl+k ctrl+left",
+      "command": "workbench.action.moveEditorToLeftGroup"
+    },
+    {
+      "key": "ctrl+k ctrl+right",
+      "command": "workbench.action.moveEditorToRightGroup"
+    },
+    {
+      "key": "ctrl+k ctrl+up",
+      "command": "workbench.action.moveEditorToAboveGroup"
+    },
+    {
+      "key": "ctrl+k ctrl+down",
+      "command": "workbench.action.moveEditorToBelowGroup"
+    },
+    // To Reset CONFLICTED keybindings
+    // Note:
+    //   These keybindigs ("ctrl+alt+<left/right/up/down>") may CONFLICT
+    //   with other keybings (e.g. NVIDIA's display driver (Windows)).
+    //   So, these should be reseted.
+    // reset
+    {
+      "key": "ctrl+alt+left",
+      "command": "-workbench.action.moveEditorToPreviousGroup"
+    },
+    {
+      "key": "ctrl+alt+right",
+      "command": "-workbench.action.moveEditorToNextGroup"
+    },
+    // To Reset unused keybindings
+    // reset
+    {
+      "key": "ctrl+shift+pageup",
+      "command": "-workbench.action.moveEditorLeftInGroup"
+    },
+    {
+      "key": "ctrl+shift+pagedown",
+      "command": "-workbench.action.moveEditorRightInGroup"
+    },
+    {
+      "key": "shift+alt+1",
+      "command": "-workbench.action.moveEditorToFirstGroup"
+    },
+    {
+      "key": "shift+alt+9",
+      "command": "-workbench.action.moveEditorToLastGroup"
+    },
+    //
+    // ------------------------------------------------
+    // [Terminal]
+    // To don't use Ctrl+Shift+C as "Open New External TERminal"
+    // reset
+    {
+      "key": "ctrl+shift+c",
+      "command": "-workbench.action.terminal.openNativeConsole",
+      "when": "!terminalFocus"
+    },
+    // To Toggle Terminal
+    // reset
+    {
+      "key": "ctrl+`",
+      "command": "-workbench.action.terminal.toggleTerminal"
+    },
+    // bind
+    {
+      "key": "ctrl+'",
+      "command": "workbench.action.terminal.toggleTerminal"
+    },
+    // To Create New Terminal
+    // reset
+    {
+      "key": "ctrl+shift+`",
+      "command": "-workbench.action.terminal.new"
+    },
+    // bind
+    {
+      "key": "ctrl+shift+'",
+      "command": "workbench.action.terminal.new"
+    },
+    // To Split Terminal into Left/Right/Up/Down
+    // -> N/A (Use tmux instead)
+    // To Focus Left/Right/Up/Down Terminal
+    // -> N/A (Use tmux instead)
+    // To Open current file in terminal
+    // bind
+    {
+      "key": "ctrl+k t",
+      "command": "openInTerminal"
+    },
+    //
+    // ------------------------------------------------
+    // [Panel]
+    // To Toggle Maximize Panel
+    // bind
+    {
+      "key": "alt+m",
+      "command": "workbench.action.toggleMaximizedPanel",
+      // "terminalFocus" // Optional
+    },
+    //
+    // ------------------------------------------------
+    // [Search]
+    // To Search in new search-editor
+    // reset
+    {
+      "key": "ctrl+k f",
+      "command": "-workbench.action.closeFolder"
+    },
+    // bind
+    {
+      "key": "ctrl+k f",
+      "command": "-workbench.action.closeFolder"
+    },
+    //
+    // ------------------------------------------------
+    // [Comment]
+    // To Toggle Block comment
+    // bind
+    {
+      "key": "ctrl+shift+a",
+      "command": "-editor.action.blockComment",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+shift+/",
+      "command": "editor.action.blockComment",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    // To Reset unused keybindings
+    // reset
+    {
+      "key": "ctrl+k ctrl+c",
+      "command": "-editor.action.addCommentLine",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+k ctrl+u",
+      "command": "-editor.action.removeCommentLine",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    //
+    // ------------------------------------------------
+    // [Explorer]
+    // To Create New File/Directory
+    // bind
+    {
+      "key": "ctrl+k n",
+      "command": "explorer.newFile"
+    },
+    {
+      "key": "ctrl+k ctrl+n",
+      "command": "explorer.newFolder"
+    },
+    // To Focus the file on File Explorer
+    // reset
+    {
+      "key": "ctrl+k e",
+      "command": "-workbench.files.action.focusOpenEditorsView",
+      "when": "workbench.explorer.openEditorsView.active"
+    },
+    // bind
+    {
+      "key": "ctrl+k e",
+      "command": "workbench.files.action.focusFilesExplorer"
+    },
+    //
+    // ------------------------------------------------
+    // [Editor]
+    // To Delete All Left/Right
+    // bind
+    {
+      "key": "ctrl+shift+backspace",
+      "command": "deleteAllLeft",
+      "when": "textInputFocus"
+    },
+    {
+      "key": "ctrl+shift+delete",
+      "command": "deleteAllRight",
+      "when": "textInputFocus"
+    },
+    // To Add cursor Above/Below
+    // reset
+    {
+      "key": "ctrl+shift+up",
+      "command": "-editor.action.insertCursorAbove",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+down",
+      "command": "-editor.action.insertCursorBelow",
+      "when": "editorTextFocus"
+    },
+    // bind
+    {
+      "key": "shift+alt+up",
+      "command": "editor.action.insertCursorAbove",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "shift+alt+down",
+      "command": "editor.action.insertCursorBelow",
+      "when": "editorTextFocus"
+    },
+    // To Copy line Up/Down
+    // bind
+    {
+      "key": "ctrl+shift+alt+up",
+      "command": "editor.action.copyLinesUpAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+shift+alt+down",
+      "command": "editor.action.copyLinesDownAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    // To Scroll line Up/Down
+    // bind
+    {
+      "key": "ctrl+up",
+      "command": "scrollLineUp",
+      "when": "textInputFocus"
+    },
+    {
+      "key": "ctrl+down",
+      "command": "scrollLineDown",
+      "when": "textInputFocus"
+    },
+    // To Scroll Page Up/Down
+    {
+      "key": "ctrl+shift+up",
+      "command": "scrollPageUp",
+      "when": "textInputFocus"
+    },
+    {
+      "key": "ctrl+shift+down",
+      "command": "scrollPageDown",
+      "when": "textInputFocus"
+    },
+    // To move Vim liked keybind
+    {
+      "key": "alt+h",
+      "command": "cursorLeft",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+j",
+      "command": "cursorDown",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+k",
+      "command": "cursorUp",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+l",
+      "command": "cursorRight",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+shift+h",
+      "command": "cursorWordStartLeft",
+      "when": "textInputFocus"
+    },
+    {
+      "key": "alt+shift+l",
+      "command": "cursorWordEndRight",
+      "when": "textInputFocus"
+    },
+  ]

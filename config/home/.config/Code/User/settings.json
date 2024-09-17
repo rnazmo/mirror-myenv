@@ -1,0 +1,14 @@
+// TODO: VS Code の設定を全面的に見直す
+{
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "editor.autoIndent": "full",
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "all",
+    "files.insertFinalNewline": true,
+    "workbench.editor.closeEmptyGroups": false,
+    "markdownlint.config": {
+        "MD007": { "indent": 4 },
+    },
+}
