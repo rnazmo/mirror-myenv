@@ -6,8 +6,8 @@ main() {
     
     source "${MYENV_ROOT}/recipes/archlinux_x64/_base.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_fonts.bash"
-    # source "${MYENV_ROOT}/recipes/archlinux_x64/_devel.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_terminal.bash"
+    # source "${MYENV_ROOT}/recipes/archlinux_x64/_devel.bash"
 
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_editor.bash"
     # source "${MYENV_ROOT}/recipes/archlinux_x64/_browser.bash"

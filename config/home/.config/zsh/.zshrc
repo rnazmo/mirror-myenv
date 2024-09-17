@@ -113,4 +113,9 @@ autoload -Uz compinit && compinit
 export PATH=$HOME/bin:$PATH
 
 # mise
+# Ref: https://mise.jdx.dev/getting-started.html#_2a-activate-mise
 eval "$(~/.local/bin/mise activate zsh)"
+
+# aqua
+# Ref: https://aquaproj.github.io/docs/install#2-set-the-environment-variable-path
+export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
