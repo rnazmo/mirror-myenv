@@ -7,14 +7,14 @@ main() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu
-    
+
     # ======================================================
     # ======== many cli tools                              =
     # ======================================================
 
     sudo pacman -S --needed \
     ghq fzf tree xclip unzip neofetch lazygit \
-    ripgrep bat eza fd delta bottom
+    ripgrep bat eza fd git-delta bottom
 
     # ======== proper7y                          =
     if ! check_if_command_exists "proper7y"; then
