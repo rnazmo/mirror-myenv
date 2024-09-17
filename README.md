@@ -61,11 +61,7 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
 
 ## TODO
 
-- [ ] feat: "Code - OSS" -> "VS Code
-- [ ] ci: Migrate GitLab -> GitHub
-- [ ] feat: Support ErgoDox EZ config
-- [ ] ci: Add test for 
-- [ ] Add Makefile (`pull`, `push`, `update`, `lint`, `format`)
+- [ ] ci: Add test
 - [ ] feat: Support browser bookmarklet
 - [ ] feat: Support browser extension
 - [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
@@ -78,6 +74,9 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
 - [ ] feat: Update tmux plugins
 - [ ] feat: Support AstroNvim
 - [ ] feat: Update AstroNvim config
+- [ ] ci: Migrate GitLab -> GitHub
+- [ ] feat: Support ErgoDox EZ config
+- [ ] Add Makefile (`pull`, `push`, `update`, `lint`, `format`)
 - [ ] doc: できること・できないことをまとめる
     - `init.bash`：
     - `setup.bash`：
