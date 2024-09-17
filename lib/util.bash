@@ -44,35 +44,72 @@ remove_symlink() {
 
 # What is this:
 #     Create symbolic link to a file.
+#
 # Usage:
 #     link_file <source_file> <target_file>
+#
+# Arguments:
+#     source_file:
+#         must be a regular file. (symbolic link is not allowed)
+#         TODO: symbolic link は許してもよいかも？
+#     target_file:
+#         If it's already a symbolic link, remove and recreate it.
+# 
 # Example:
 #     link_file "${HOME}/.myenv/config/home/.zshrc" "${HOME}/.zshrc"
 link_file() {
     # 引数の受け取り
     local -r SOURCE_FILE=$1
     local -r TARGET_FILE=$2
-    local -r TARGET_PARENT_DIR="TARGET_FILE の親ディレクトリ"
+    local -r TARGET_PARENT_DIR="$(dirname "$TARGET_FILE")"
 
     # バリデーション
-    # パス SOURCE_FILE が存在することを確認する
-    # パス SOURCE_FILE がファイルであることを確認する
-    # パス SOURCE_FILE がシンボリックリンクでないことを確認する？
+    if [[ ! -e "$SOURCE_FILE" ]]; then
+        log_err "Source file '$SOURCE_FILE' does not exist."
+        return 1
+    fi
+    if [[ -L "$SOURCE_FILE" ]]; then
+        log_err "Source file '$SOURCE_FILE' is symbolic link. Must be a regular file."
+    fi
+    if [[ ! -f "$SOURCE_FILE" ]]; then
+        log_err "Source file '$SOURCE_FILE' must be a regular file."
+        return 1
+    fi
 
-    # パス TARGET_PARENT_DIR が存在し無いなら作る
-    # パス TARGET_FILE に、ファイル・ディレクトリが存在しないことを確認する
-    # パス TARGET_FILE に、シンボリックリンクが存在する場合、消す
-    # unlink $TARGET_FILE
+    if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
+        log_info "Created diractory $TARGET_PARENT_DIR"
+        mkdir -p "$TARGET_PARENT_DIR"
+    fi
+    if [[ -e "$TARGET_FILE" ]]; then
+        if [[ -L "$TARGET_FILE" ]]; then
+            log_warn "Removing existing symbolic link at '$TARGET_FILE'."
+            unlink "$TARGET_FILE"
+        else
+            log_err "A file or directory already exists at '$TARGET_FILE'."
+            return 1
+        fi
+    fi
 
     ln -s $SOURCE_FILE $TARGET_FILE
+    log_info "Symbolic link created: '$TARGET_FILE' -> '$SOURCE_FILE'"
 }
 
 # What is this:
 #     Create symbolic link to a directory.
+#
 # Usage:
 #     link_dir <source_dir> <target_dir>
+#
+# Arguments:
+#     source_dir:
+#         must be a directory. (symbolic link is not allowed)
+#         TODO: symbolic link は許してもよいかも？
+#     target_dir:
+#         If it's already a symbolic link, remove and recreate it.
+# 
 # Example:
 #     link_dir "${HOME}/.myenv/config/home/.config/zsh" "${HOME}/.config/zsh"
+# 
 # NOTE:
 #     循環参照を起こさないように注意する
 #         TARGET_DIR について入念なチェックをし、シンボリックリンクがあった場合に消しているのはそのため。
@@ -83,19 +120,37 @@ link_dir() {
     # 引数の受け取り
     local -r SOURCE_DIR=$1
     local -r TARGET_DIR=$2
-    local -r TARGET_PARENT_DIR="TARGET_DIR の親ディレクトリ"
+    local -r TARGET_PARENT_DIR="$(dirname "$TARGET_DIR")"
 
     # バリデーション
-    # パス SOURCE_DIR が存在することを確認する
-    # パス SOURCE_DIR がディレクトリであることを確認する
-    # パス SOURCE_DIR がシンボリックリンクでないことを確認する？
+    if [[ ! -e "$SOURCE_DIR" ]]; then
+        log_err "Source directory '$SOURCE_DIR' does not exist."
+        return 1
+    fi
+    if [[ -L "$SOURCE_DIR" ]]; then
+        log_err "Source directory '$SOURCE_DIR' is symbolic link. Must be a directory."
+    fi
+    if [[ ! -d "$SOURCE_DIR" ]]; then
+        log_err "Source directory '$SOURCE_DIR' must be a regular directory."
+        return 1
+    fi
 
-    # パス TARGET_PARENT_DIR が存在し無いなら作る
-    # パス TARGET_DIR に、ファイル・ディレクトリが存在しないことを確認する
-    # パス TARGET_DIR に、シンボリックリンクが存在する場合、消す
-    # unlink $TARGET_DIR
+    if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
+        log_info "Created diractory $TARGET_PARENT_DIR"
+        mkdir -p "$TARGET_PARENT_DIR"
+    fi
+    if [[ -e "$TARGET_DIR" ]]; then
+        if [[ -L "$TARGET_DIR" ]]; then
+            log_warn "Removing existing symbolic link at '$TARGET_DIR'."
+            unlink "$TARGET_DIR"
+        else
+            log_err "A file or directory already exists at '$TARGET_DIR'."
+            return 1
+        fi
+    fi
 
     ln -s $SOURCE_DIR $TARGET_DIR
+    log_info "Symbolic link created: '$TARGET_DIR' -> '$SOURCE_DIR'"
 }
 
 # Add a new path to `PATH`
