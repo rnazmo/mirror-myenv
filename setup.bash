@@ -45,6 +45,7 @@ main() {
     source "${MYENV_ROOT}/hosts/${HOST_NAME}/setup.bash"
 
     log_debug "END  : ${BASH_SOURCE}"
+    log_info "======== Completed all process successfully ========"
 }
 
 main "$@"
