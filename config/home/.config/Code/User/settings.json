@@ -11,4 +11,5 @@
     "markdownlint.config": {
         "MD007": { "indent": 4 },
     },
+    "workbench.colorTheme": "Default High Contrast",
 }
