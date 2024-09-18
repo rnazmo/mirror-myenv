@@ -51,9 +51,9 @@ main() {
     # ======================================================
 
     if check_if_command_exists "zsh" && [ "$SHELL" != "$(which zsh)" ]; then
-        # NOTE: Reboot machine to reflect changes made in `chsh`
         chsh -s "$(which zsh)"
         log_info "Changed your default login shell to Zsh"
+        # NOTE: Then, you must log-out and log-in (≒reboot your machine) to reflect this change.
     fi
 
     # ======================================================
