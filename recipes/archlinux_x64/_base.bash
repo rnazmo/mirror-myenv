@@ -78,6 +78,7 @@ main() {
     mkdir -p -v ~/workspace
     mkdir -p -v ~/workspace/sandboxes
     mkdir -p -v ~/workspace/temp
+    mkdir -p -v ~/.vscode-workspaces
 
     log_debug "END  : ${BASH_SOURCE}"
 }
