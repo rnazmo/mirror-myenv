@@ -62,7 +62,7 @@ main() {
 
     sudo pacman -S --needed alacritty
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
-    link_file "${MYENV_ROOT}/config/home/.config/alacritty/my-themetoml"   "${HOME}/.config/alacritty/my-theme.toml"
+    link_file "${MYENV_ROOT}/config/home/.config/alacritty/my-theme.toml"   "${HOME}/.config/alacritty/my-theme.toml"
 
     # ======================================================
     # ======== starship (& theme)                          =
