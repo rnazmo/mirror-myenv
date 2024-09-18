@@ -63,6 +63,8 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
 
 - [ ] feat: Log *to file* for debug
 - [ ] ci: Add test
+- [ ] ci: Lint Bash scripts (ref: proper7y)
+- [ ] ci: Format Bash scripts (ref: proper7y)
 - [ ] feat: Support browser bookmarklet
 - [ ] feat: Support browser extension
 - [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
