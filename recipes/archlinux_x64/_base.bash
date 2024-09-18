@@ -38,7 +38,7 @@ main() {
     # ======================================================
 
     if ! check_if_command_exists "yay"; then
-        cd /tmp
+        cd "$(mktemp -d)"
         git clone https://aur.archlinux.org/yay.git
         cd yay
         makepkg -si
@@ -49,12 +49,10 @@ main() {
     # ======================================================
 
     if ! check_if_command_exists "mise"; then
-        # curl https://mise.run | sh
         cd "$(mktemp -d)"
-        curl -sSfL -O https://mise.run
-        # TODO: Check sha256sum
-        chmod +x mise.run
-        ./mise.run
+        git clone https://aur.archlinux.org/mise.git
+        cd mise
+        makepkg -si
     fi
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 
