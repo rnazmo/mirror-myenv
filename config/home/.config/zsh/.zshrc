@@ -115,7 +115,7 @@ export PATH="$HOME/bin:$PATH"
 
 # mise
 # Ref: https://mise.jdx.dev/getting-started.html#_2a-activate-mise
-eval "$(~/.local/bin/mise activate zsh)"
+eval "$(/usr/bin/mise activate zsh)"
 
 # aqua
 # Ref: https://aquaproj.github.io/docs/install#2-set-the-environment-variable-path
