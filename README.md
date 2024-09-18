@@ -61,6 +61,7 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
 
 ## TODO
 
+- [ ] feat: Log *to file* for debug
 - [ ] ci: Add test
 - [ ] feat: Support browser bookmarklet
 - [ ] feat: Support browser extension
