@@ -11,5 +11,22 @@
     "markdownlint.config": {
         "MD007": { "indent": 4 },
     },
-    "workbench.colorTheme": "Default High Contrast",
+    // Ref:
+    //     [VS Codeのindent-rainbowは不要になりました！ ＃VSCode - Qiita](https://qiita.com/htcd/items/21266f6472ac2c39933e)
+    //     [VS Code: 拡張機能は必要ありません パート 2](https://www.roboleary.net/2021/11/06/vscode-you-dont-need-that-extension2.html)
+    "editor.guides.bracketPairs": true,
+    "workbench.colorCustomizations": {
+      "editorIndentGuide.background1": "#b22222",
+      "editorIndentGuide.background2": "#ff4500",
+      "editorIndentGuide.background3": "#ffd700",
+      "editorIndentGuide.background4": "#228b22",
+      "editorIndentGuide.background5": "#000080",
+      "editorIndentGuide.background6": "#8b008b",
+      "editorIndentGuide.activeBackground1": "#fff",
+      "editorIndentGuide.activeBackground2": "#fff",
+      "editorIndentGuide.activeBackground3": "#fff",
+      "editorIndentGuide.activeBackground4": "#fff",
+      "editorIndentGuide.activeBackground5": "#fff",
+      "editorIndentGuide.activeBackground6": "#fff"
+    },
 }
