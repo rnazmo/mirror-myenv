@@ -2,7 +2,63 @@
 
 my provisioning scripts.
 
-## 方針
+## Documentation for users
+
+### このリポジトリは何か
+
+- 個人用開発環境のプロビジョニングスクリプト
+- このリポジトリでやること：
+    - ツールのインストール
+    - ツールのバージョン管理
+    - ツールの設定
+    - OS の設定
+
+### このリポジトリの目的
+
+- 私自信が使うため
+
+### 対応環境リスト
+
+- List (2024-09-25 時点)
+    - `soba`
+        - OS: Manjaro
+        - Chassis: VM
+
+### 前提
+
+- Bash 4.0+
+- git, curl
+- GitLab, (GitHub) への SSH 公開鍵の登録
+
+### ワークフロー (例：`soba`)
+
+#### 新規マシンのセットアップ
+
+```bash
+/bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv-v3/-/raw/main/init.bash)"
+
+cd ~/.myenv-v3 && ./setup.bash "soba"
+```
+
+#### 日々の更新
+
+##### リモートの更新を適用
+
+```bash
+# Apply changes
+cd ~/.myenv-v3 && git pull && ./setup.bash "soba"
+```
+
+##### 更新をリモートへプッシュ
+
+```bash
+# Push changes
+cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
+```
+
+## Documentation for developers
+
+### 方針
 
 - 管理するツールをなるべく増やさない：
     - 何でもかんでもここで管理しようとしない。管理するツールは絞る
@@ -24,47 +80,13 @@ my provisioning scripts.
     - ちょこちょこタグを付ける
         - `v2024-XX-XX` みたいな日付形式が良さそう
 
-## ここでやること
-
-- ツールのインストール
-- ツールのバージョン管理
-- ツールの設定
-- OS の設定
-
-## Workflow (例：`soba`)
-
-### 前提
-
-- Bash 4.0+
-- git, curl
-- GitLab, (GitHub) への SSH 公開鍵の登録
-
-### 新規マシンのセットアップ
-
-```bash
-/bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv-v3/-/raw/main/init.bash)"
-
-cd ~/.myenv-v3 && ./setup.bash "soba"
-```
-
-### 日々の更新
-
-```bash
-# Apply changes
-cd ~/.myenv-v3 && git pull && ./setup.bash "soba"
-```
-
-```bash
-# Push changes
-cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
-```
-
-## TODO
+### TODO
 
 - [ ] feat: Log *to file* for debug
 - [ ] ci: Add test
 - [ ] ci: Lint Bash scripts (ref: proper7y)
 - [ ] ci: Format Bash scripts (ref: proper7y)
+- [ ] 前提 (Bash 4.0+ など) をチェックするようにする
 - [ ] feat: Support browser bookmarklet
 - [ ] feat: Support browser extension
 - [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
