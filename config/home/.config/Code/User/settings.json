@@ -29,4 +29,7 @@
       "editorIndentGuide.activeBackground5": "#fff",
       "editorIndentGuide.activeBackground6": "#fff"
     },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
 }
