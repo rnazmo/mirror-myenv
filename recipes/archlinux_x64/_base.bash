@@ -24,9 +24,9 @@ main() {
 
     sudo pacman -S --needed git
 
-    [ -f "${HOME}/.gitconfig" ]        && mv "${HOME}/.gitconfig"        "${HOME}/.gitconfig.old"
-    [ -f "${HOME}/.gitignore" ]        && mv "${HOME}/.gitignore"        "${HOME}/.gitignore.old"
-    [ -f "${HOME}/.gitignore_global" ] && mv "${HOME}/.gitignore_global" "${HOME}/.gitignore_global.old"
+    [ -f "${HOME}/.gitconfig" ]        && mv     "${HOME}/.gitconfig"        "${HOME}/.gitconfig.old"
+    [ -f "${HOME}/.gitignore" ]        && mv     "${HOME}/.gitignore"        "${HOME}/.gitignore.old"
+    [ -f "${HOME}/.gitignore_global" ] && mv     "${HOME}/.gitignore_global" "${HOME}/.gitignore_global.old"
     [ -L "${HOME}/.gitconfig" ]        && unlink "${HOME}/.gitconfig"
     [ -L "${HOME}/.gitignore" ]        && unlink "${HOME}/.gitignore"
     [ -L "${HOME}/.gitignore_global" ] && unlink "${HOME}/.gitignore_global"
@@ -73,12 +73,18 @@ main() {
     # ======== misc                                        =
     # ======================================================
 
-    mkdir -p -v ~/bin
-    mkdir -p -v ~/repos
-    mkdir -p -v ~/workspace
-    mkdir -p -v ~/workspace/sandboxes
-    mkdir -p -v ~/workspace/temp
-    mkdir -p -v ~/.vscode-workspaces
+
+    local -r DIRS=(
+        "${HOME}/repos"
+        "${HOME}/bin"
+        "${HOME}/workspace"
+        "${HOME}/workspace/sandboxes"
+        "${HOME}/workspace/temp"
+        "${HOME}/.vscode-workspaces"
+    )
+    for DIR in "${DIRS[@]}"; do
+        mkdir -p -v "$DIR"
+    done
 
     log_debug "END  : ${BASH_SOURCE}"
 }
