@@ -394,4 +394,9 @@
       "command": "cursorWordEndRight",
       "when": "textInputFocus"
     },
+    {
+        "key": "ctrl+shift+i",
+        "command": "-codeium.openCodeiumCommand",
+        "when": "codeium.commandEnabled && editorTextFocus && !inlineSuggestionsVisible"
+    },
   ]
