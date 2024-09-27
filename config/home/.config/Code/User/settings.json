@@ -6,8 +6,9 @@
     "editor.autoIndent": "full",
     "editor.minimap.enabled": false,
     "editor.renderWhitespace": "all",
-    "files.insertFinalNewline": true,
     "workbench.editor.closeEmptyGroups": false,
+    "files.insertFinalNewline": true,
+    "editor.formatOnSave": true,
     "markdownlint.config": {
         "MD007": { "indent": 4 },
     },
@@ -32,4 +33,5 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "workbench.colorTheme": "Monokai",
 }
