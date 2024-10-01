@@ -2,8 +2,35 @@
     name = rnazmo
     email = rnazmo@gmail.com
 
+[core]
+    # https://git-scm.com/docs/git-config#Documentation/git-config.txt-coreignoreCase
+    # ignorecase = true
+    ignorecase = false
+
+    # Global gitignore
+    # Ref:
+    #   https://github.com/github/gitignore/tree/master/Global
+    #   https://help.github.com/en/github/using-git/ignoring-files
+    excludefile = ~/.gitignore_global
+
+[pull]
+  	ff = only
+
+[merge]
+    # https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeff
+    # ff = fales
+
 [init]
     defaultBranch = "main"
+
+[grep]
+    # https://git-scm.com/docs/git-config#Documentation/git-config.txt-greplineNumber
+    lineNumber = true
+
+[color]
+    # https://git-scm.com/docs/git-config#Documentation/git-config.txt-colorui
+    ui = auto
+
 
 [alias]
     b  = branch -a
