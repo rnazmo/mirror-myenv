@@ -11,7 +11,7 @@ main() {
     # ======================================================
 
     sudo pacman -Syu
-    
+
     # ======================================================
     # ======== some dependencies                           =
     # ======================================================
@@ -49,10 +49,11 @@ main() {
     # ======================================================
 
     if ! check_if_command_exists "mise"; then
-        cd "$(mktemp -d)"
-        git clone https://aur.archlinux.org/mise.git
-        cd mise
-        makepkg -si
+        # Ref:
+        #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
+        #     https://github.com/jdx/mise/blob/4ac34dac72144f9084b49359dc0181e8f762f0bf/docs/getting-started.md#alternate-installation-methods
+        curl https://mise.jdx.dev/mise-latest-linux-x64 > ~/.local/bin/mise
+        chmod +x ~/.local/bin/mise
     fi
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 
