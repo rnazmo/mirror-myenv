@@ -1,5 +1,10 @@
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
 -- set leader key to space
 vim.g.mapleader = " "
+-- set localleader key to \
+vim.g.maplocalleader = "\\"
 
 local keymap = vim.keymap -- for conciseness
 
