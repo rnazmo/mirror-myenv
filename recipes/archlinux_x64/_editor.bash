@@ -51,7 +51,7 @@ main() {
     # ======== obsidian                                    =
     # ======================================================
 
-    sudo pacman -S --needed obsidian
+    # sudo pacman -S --needed obsidian
 
     # ======================================================
     # ======== misc                                        =
@@ -63,3 +63,4 @@ main() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
+main
