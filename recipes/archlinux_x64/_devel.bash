@@ -13,8 +13,8 @@ main() {
     # ======================================================
 
     sudo pacman -S --needed \
-    ghq fzf tree xclip unzip fastfetch lazygit \
-    ripgrep bat eza fd git-delta bottom
+        ghq fzf tree xclip unzip fastfetch lazygit \
+        ripgrep bat eza fd git-delta bottom
 
     # ======== proper7y                          =
     if ! check_if_command_exists "proper7y"; then
@@ -27,7 +27,7 @@ main() {
     # ======================================================
     # ======== some programming languages                  =
     # ======================================================
-    
+
     # ======== golang, nodejs
     mise install
     # mise install go

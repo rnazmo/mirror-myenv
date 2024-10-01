@@ -16,7 +16,7 @@ main() {
     # ======== neovim
     sudo pacman -S --needed neovim
 
-    # TODO: Setup astronvim !!!!!!!!!!!!!! 
+    # TODO: Setup astronvim !!!!!!!!!!!!!!
     # # ======== astronvim (= framework)
     # # NOTE: The framework ("astronvim") = plugin-manager ("lazy.nvim") + many plugins + configs
     # # TODO: Install requirements
@@ -49,9 +49,9 @@ main() {
     # ======================================================
 
     yay -S --needed visual-studio-code-bin
-    link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json"    "${HOME}/.config/Code/User/settings.json"
+    link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/keybindings.json" "${HOME}/.config/Code/User/keybindings.json"
-    link_dir  "${MYENV_ROOT}/config/home/.config/Code/User/snippets"         "${HOME}/.config/Code/User/snippets" # NOTE: dir
+    link_dir "${MYENV_ROOT}/config/home/.config/Code/User/snippets" "${HOME}/.config/Code/User/snippets" # NOTE: dir
 
     # Install extensions
     EXTENSIONS=(

@@ -32,18 +32,18 @@ main() {
 }
 
 log_info() {
-  local -r PREFIX="INFO :"
-  echo "$PREFIX $1"
+    local -r PREFIX="INFO :"
+    echo "$PREFIX $1"
 }
 
 log_warn() {
-  local -r PREFIX="WARN :" >&2
-  echo "$PREFIX $1"
+    local -r PREFIX="WARN :" >&2
+    echo "$PREFIX $1"
 }
 
 log_err() {
-  local -r PREFIX="ERROR:" >&2
-  echo "$PREFIX $1"
+    local -r PREFIX="ERROR:" >&2
+    echo "$PREFIX $1"
 }
 
 main

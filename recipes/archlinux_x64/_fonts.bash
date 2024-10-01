@@ -39,7 +39,7 @@ main() {
 
     # フォントキャッシュの更新（不要かも）
     fc-cache -v
-    
+
     log_debug "END  : ${BASH_SOURCE}"
 }
 

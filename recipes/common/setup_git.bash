@@ -1,4 +1,4 @@
-    # TODO: 以下は仮
+# TODO: 以下は仮
 
 main() {
 
@@ -25,7 +25,7 @@ main() {
         ssh -T git@github.com
         ssh -T git@gitlab.com
     fi
-  
+
     log_debug "END  : ${BASH_SOURCE}"
 }
 
