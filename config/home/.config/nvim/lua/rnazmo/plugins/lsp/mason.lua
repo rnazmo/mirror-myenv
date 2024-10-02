@@ -52,6 +52,7 @@ return {
         "shellcheck", -- bash linter
         "staticcheck", -- golang linter
         "goimports", -- golang formatter
+        "markdownlint-cli2", --markdown linter
       },
     })
   end,

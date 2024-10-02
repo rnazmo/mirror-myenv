@@ -13,6 +13,7 @@ return {
       python = { "pylint" },
       sh = { "shellcheck" },
       go = { "staticcheck" },
+      markdown = { "markdownlint-cli2" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
