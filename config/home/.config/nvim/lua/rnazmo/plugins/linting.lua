@@ -12,6 +12,7 @@ return {
       svelte = { "eslint_d" },
       python = { "pylint" },
       sh = { "shellcheck" },
+      go = { "staticcheck" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })

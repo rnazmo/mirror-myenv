@@ -50,6 +50,8 @@ return {
         "eslint_d", -- js linter
         "shfmt", --bash formatter
         "shellcheck", -- bash linter
+        "staticcheck", -- golang linter
+        "goimports", -- golang formatter
       },
     })
   end,
