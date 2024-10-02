@@ -54,6 +54,12 @@ main() {
         #     https://github.com/jdx/mise/blob/4ac34dac72144f9084b49359dc0181e8f762f0bf/docs/getting-started.md#alternate-installation-methods
         curl https://mise.jdx.dev/mise-latest-linux-x64 >~/.local/bin/mise
         chmod +x ~/.local/bin/mise
+
+        # Install mise under `~/.local/bin/mise` with the script
+        cd "$(mktemp -d)"
+        curl -fsSL https://mise.run -o mise.run
+        chmod +x ./mise.run
+        ./mise.run
     fi
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 
