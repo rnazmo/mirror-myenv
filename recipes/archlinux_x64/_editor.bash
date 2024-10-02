@@ -6,15 +6,15 @@ source ${MYENV_ROOT}/lib/util.bash
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
-    sudo pacman -Syu
-    yay -Syu
+    sudo pacman -Syu --noconfirm
+    yay -Syu --noconfirm
 
     # ======================================================
     # ======== neovim (& plugin-manager & plugins)         =
     # ======================================================
 
     # ======== neovim
-    sudo pacman -S --needed neovim
+    sudo pacman -S --needed --noconfirm neovim
     link_dir "${MYENV_ROOT}/config/home/.config/nvim" "${HOME}/.config/nvim" # NOTE: dir
 
     # TODO: setup neovim...
@@ -24,7 +24,7 @@ main() {
     # ======== vscode (& extensions)                       =
     # ======================================================
 
-    yay -S --needed visual-studio-code-bin
+    yay -S --needed --noconfirm visual-studio-code-bin
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
     link_file "${MYENV_ROOT}/config/home/.config/Code/User/keybindings.json" "${HOME}/.config/Code/User/keybindings.json"
     link_dir "${MYENV_ROOT}/config/home/.config/Code/User/snippets" "${HOME}/.config/Code/User/snippets" # NOTE: dir

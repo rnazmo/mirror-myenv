@@ -6,14 +6,14 @@ source ${MYENV_ROOT}/lib/util.bash
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
-    sudo pacman -Syu
-    yay -Syu
+    sudo pacman -Syu --noconfirm
+    yay -Syu --noconfirm
 
     # ======================================================
     # ======== Chromium                                    =
     # ======================================================
 
-    sudo pacman -S --needed chromium
+    sudo pacman -S --needed --noconfirm chromium
 
     # ======== extensions
     # TODO:
@@ -24,7 +24,7 @@ main() {
     # ======== Chrome                                      =
     # ======================================================
 
-    yay -S --needed google-chrome
+    yay -S --needed --noconfirm google-chrome
 
     # ======== extensions
     # TODO:
@@ -35,10 +35,10 @@ main() {
     # ======== FireFox                                     =
     # ======================================================
 
-    sudo pacman -S --needed firefox
+    sudo pacman -S --needed --noconfirm firefox
 
     # ======== extensions
-    sudo pacman -S --needed firefox-ublock-origin
+    sudo pacman -S --needed --noconfirm firefox-ublock-origin
     # TODO:
     # ======== bookmarklets
     # TODO: HTML file??

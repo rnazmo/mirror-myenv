@@ -6,15 +6,15 @@ source "${MYENV_ROOT}/lib/util.bash"
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
-    sudo pacman -Syu
-    yay -Syu
+    sudo pacman -Syu --noconfirm
+    yay -Syu --noconfirm
 
     # ======================================================
     # ======== zsh (& plugin-manager & plugins)            =
     # ======================================================
 
     # ======== zsh
-    sudo pacman -S --needed zsh
+    sudo pacman -S --needed --noconfirm zsh
 
     local -r ZDOTDIR="${HOME}/.config/zsh"
     local -r ZSH_COMPLETION_DIR="${ZDOTDIR}/completion"
@@ -31,7 +31,7 @@ main() {
     # TODO: sheldon config???????
 
     # ======== zsh-syntax-highlighting, zsh-autosuggestions, zsh-history-substring-search
-    sudo pacman -S --needed zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search
+    sudo pacman -S --needed --noconfirm zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search
 
     # ======== git-completion
     # Ref:
@@ -59,7 +59,7 @@ main() {
     # ======== alacritty (& theme)                         =
     # ======================================================
 
-    sudo pacman -S --needed alacritty
+    sudo pacman -S --needed --noconfirm alacritty
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/my-theme.toml" "${HOME}/.config/alacritty/my-theme.toml"
 
@@ -67,7 +67,7 @@ main() {
     # ======== starship (& theme)                          =
     # ======================================================
 
-    sudo pacman -S --needed starship
+    sudo pacman -S --needed --noconfirm starship
     link_file "${MYENV_ROOT}/config/home/.config/starship.toml" "${HOME}/.config/starship.toml"
 
     # ======================================================
@@ -75,7 +75,7 @@ main() {
     # ======================================================
 
     # ======== tmux
-    sudo pacman -S --needed tmux
+    sudo pacman -S --needed --noconfirm tmux
     link_file "${MYENV_ROOT}/config/home/.config/tmux/.tmux.conf" "${HOME}/.config/tmux/.tmux.conf"
 
     # ======== tpm

@@ -10,19 +10,19 @@ main() {
     # ======== system update                               =
     # ======================================================
 
-    sudo pacman -Syu
+    sudo pacman -Syu --noconfirm
 
     # ======================================================
     # ======== some dependencies                           =
     # ======================================================
 
-    sudo pacman -S --needed base-devel curl vim
+    sudo pacman -S --needed --noconfirm base-devel curl vim
 
     # ======================================================
     # ======== git                                         =
     # ======================================================
 
-    sudo pacman -S --needed git
+    sudo pacman -S --needed --noconfirm git
 
     [ -f "${HOME}/.gitconfig" ] && mv "${HOME}/.gitconfig" "${HOME}/.gitconfig.old"
     [ -f "${HOME}/.gitignore" ] && mv "${HOME}/.gitignore" "${HOME}/.gitignore.old"

@@ -6,13 +6,13 @@ source ${MYENV_ROOT}/lib/util.bash
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
-    sudo pacman -Syu
+    sudo pacman -Syu --noconfirm
 
     # ======================================================
     # ======== many cli tools                              =
     # ======================================================
 
-    sudo pacman -S --needed \
+    sudo pacman -S --needed --noconfirm \
         ghq fzf tree xclip unzip fastfetch lazygit \
         ripgrep bat eza fd git-delta bottom
 

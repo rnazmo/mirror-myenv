@@ -6,7 +6,7 @@ source "${MYENV_ROOT}/lib/util.bash"
 main() {
     log_debug "START: ${BASH_SOURCE}"
 
-    yay -Syu
+    yay -Syu --noconfirm
 
     # ======================================================
     # ======== normal font                                 =
@@ -14,19 +14,19 @@ main() {
 
     # TODO: Install normal font (何にするかまだ決めてない)
     # yay -S --needed --noconfirm noto-fonts-cjk
-    yay -S --needed noto-fonts-cjk
+    yay -S --needed --noconfirm noto-fonts-cjk
 
     # ======================================================
     # ======== mono font                                   =
     # ======================================================
 
-    yay -S --needed ttf-cica
+    yay -S --needed --noconfirm ttf-cica
 
     # ======================================================
     # ======== extra font                                  =
     # ======================================================
 
-    yay -S --needed noto-fonts-emoji
+    yay -S --needed --noconfirm noto-fonts-emoji
 
     # ======================================================
     # ======== ?                                           =
