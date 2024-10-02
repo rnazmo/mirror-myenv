@@ -19,8 +19,8 @@ main() {
     # ======== proper7y                          =
     if ! check_if_command_exists "proper7y"; then
         cd /tmp
-        curl -O https://raw.githubusercontent.com/rnazmo/proper7y/main/install.sh
-        chmod +x ./install.sh
+        curl -O https://raw.githubusercontent.com/rnazmo/proper7y/main/install.bash
+        chmod +x ./install.bash
         ./install.sh "${HOME}/bin"
     fi
 
