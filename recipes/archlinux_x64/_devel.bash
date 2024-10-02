@@ -18,10 +18,12 @@ main() {
 
     # ======== proper7y                          =
     if ! check_if_command_exists "proper7y"; then
-        cd /tmp
+        local -r dest_dir="${HOME}/bin"
+
+        cd "$(mktemp -d)"
         curl -O https://raw.githubusercontent.com/rnazmo/proper7y/main/install.bash
         chmod +x ./install.bash
-        ./install.sh "${HOME}/bin"
+        ./install.bash "$dest_dir"
     fi
 
     # ======================================================
