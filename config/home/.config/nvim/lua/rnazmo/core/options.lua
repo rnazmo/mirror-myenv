@@ -1,5 +1,8 @@
 vim.cmd("let g:netrw_liststyle = 3")
 
+-- Neovim >=0.9 has EditorConfig integration builtin.
+vim.g.editorconfig = true
+
 local opt = vim.opt -- for conciseness
 
 -- line numbers
@@ -42,4 +45,3 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
-
