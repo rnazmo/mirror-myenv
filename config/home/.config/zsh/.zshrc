@@ -92,13 +92,6 @@ eval "$(starship init zsh)"
 # ======== Extra keybinding&completion                 =
 # ======================================================
 
-# Ref: https://archlinux.org/packages/extra/any/zsh-syntax-highlighting/
-[ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-# Ref: https://archlinux.org/packages/extra/any/zsh-autosuggestions/
-[ -f "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && source "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-# Ref: https://archlinux.org/packages/extra/any/zsh-history-substring-search/
-[ -f "/usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" ] && source "/usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh"
-
 # Load fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
@@ -126,3 +119,11 @@ eval "$(~/.local/bin/mise activate zsh)"
 # aqua
 # Ref: https://aquaproj.github.io/docs/install#2-set-the-environment-variable-path
 export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
+
+# ======================================================
+# ======== Plugins                                     =
+# ======================================================
+
+# Loading plugins with sheldon
+eval "$(sheldon source)"
+

@@ -26,12 +26,9 @@ main() {
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
     link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
 
-    # ======== sheldon
-    # sudo pacman -S --needed sheldon
-    # TODO: sheldon config???????
-
-    # ======== zsh-syntax-highlighting, zsh-autosuggestions, zsh-history-substring-search
-    sudo pacman -S --needed --noconfirm zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search
+    # ======== sheldon (= plugin manager)
+    sudo pacman -S --needed --noconfirm sheldon
+    link_file "${MYENV_ROOT}/config/home/.config/sheldon/plugins.toml" "${HOME}/.config/sheldon/plugins.toml"
 
     # ======== git-completion
     # Ref:
