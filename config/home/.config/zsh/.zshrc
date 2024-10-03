@@ -45,7 +45,7 @@ setopt share_history          # share command history data ref: https://askubunt
 # ======== Keybinding                                  =
 # ======================================================
 
-bindkey -e                                        # emacs key bindings
+bindkey -e                                        # emacs key bindings (it's important:) )
 bindkey ' ' magic-space                           # do history expansion on space
 bindkey '^[[3;5~' kill-word                       # ctrl + Supr
 bindkey '^[[3~' delete-char                       # delete
