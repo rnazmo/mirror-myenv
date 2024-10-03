@@ -76,7 +76,7 @@ main() {
 
     # ======== tmux
     sudo pacman -S --needed --noconfirm tmux
-    link_file "${MYENV_ROOT}/config/home/.config/tmux/.tmux.conf" "${HOME}/.config/tmux/.tmux.conf"
+    link_file "${MYENV_ROOT}/config/home/.config/tmux/tmux.conf" "${HOME}/.config/tmux/tmux.conf"
 
     # ======== tpm
     # yay -S --needed tpm
