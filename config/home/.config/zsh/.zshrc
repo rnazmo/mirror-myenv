@@ -26,11 +26,17 @@ PROMPT_EOL_MARK=""
 # ======== History                                     =
 # ======================================================
 
+# Ref:
+#     https://www.labohyt.net/blog/environment/post-4754
+
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=20000
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_find_no_dups
+# setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_all_dups
+setopt hist_reduce_blanks
 setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 setopt share_history          # share command history data ref: https://askubuntu.com/a/23631
