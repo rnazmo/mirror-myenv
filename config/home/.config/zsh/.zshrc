@@ -2,10 +2,10 @@
 # ======== Env                                         =
 # ======================================================
 
-[ -f "${ZDOTDIR}/_env.zsh" ] && source "${ZDOTDIR}/_env.zsh"
+source "${ZDOTDIR}/_env.zsh"
 
 # ======================================================
-# ======== Set Zsh options                             =
+# ======== Option                                      =
 # ======================================================
 
 setopt autocd              # change directory just by typing its name
@@ -22,10 +22,7 @@ WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 # hide EOL sign ('%')
 PROMPT_EOL_MARK=""
 
-# ======================================================
-# ======== History                                     =
-# ======================================================
-
+# ======== History
 # Ref:
 #     https://www.labohyt.net/blog/environment/post-4754
 
@@ -45,7 +42,7 @@ setopt share_history          # share command history data ref: https://askubunt
 # ======== Function                                    =
 # ======================================================
 
-[ -f "${ZDOTDIR}/_functions.zsh" ] && source "${ZDOTDIR}/_functions.zsh"
+source "${ZDOTDIR}/_functions.zsh"
 
 # ======================================================
 # ======== Keybinding                                  =
