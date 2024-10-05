@@ -54,8 +54,7 @@ source "${ZDOTDIR}/_completions.zsh"
 # ======== Prompt                                      =
 # ======================================================
 
-# Using starship
-eval "$(starship init zsh)"
+source "${ZDOTDIR}/_prompt.zsh"
 
 # ======================================================
 # ======== Aliase                                      =
