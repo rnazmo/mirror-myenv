@@ -57,7 +57,7 @@ setopt share_history          # share command history data ref: https://askubunt
 # ======== Function                                    =
 # ======================================================
 
-source "${ZDOTDIR}/_functions.zsh"
+# source "${ZDOTDIR}/_functions.zsh"
 
 # ======================================================
 # ======== Keybinding                                  =
