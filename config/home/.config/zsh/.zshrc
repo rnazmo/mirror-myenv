@@ -67,7 +67,7 @@ eval "$(starship init zsh)"
 # ======== Aliase                                      =
 # ======================================================
 
-[ -f "${ZDOTDIR}/_aliases.zsh" ] && source "${ZDOTDIR}/_aliases.zsh"
+source "${ZDOTDIR}/_aliases.zsh"
 
 # ======================================================
 # ======== PATH                                        =
