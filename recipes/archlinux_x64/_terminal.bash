@@ -35,6 +35,8 @@ main() {
     # ======== zsh completions                             =
     # ======================================================
 
+    local -r ZSH_COMPLETIONS_LOCAL_DIR="${ZDOTDIR}/completions.local"
+
     # ======== git
     # Ref:
     #     https://github.com/git/git/blob/ed155187b429a2a6b6475efe1767053df37ccfe1/contrib/completion/git-completion.zsh
@@ -57,6 +59,8 @@ main() {
     # ======================================================
     # ======== zsh keybindings                             =
     # ======================================================
+
+    local -r ZSH_KEYBINDINGS_LOCAL_DIR="${ZDOTDIR}/keybindings.local"
 
     # ======== fzf
     if [[ ! -f "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" ]]; then
