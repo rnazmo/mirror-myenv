@@ -45,8 +45,5 @@ zle -N _fuzzy_choose_repo
 bindkey "^Xq" _fuzzy_choose_repo
 
 # ======== fzf
-if [[ ! -f "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" ]]; then
-  curl -o "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh
-fi
 source "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh"
 
