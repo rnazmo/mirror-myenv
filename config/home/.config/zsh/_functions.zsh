@@ -10,7 +10,7 @@
 # Ref:
 #     [ghq で管理しているリポジトリに Ctrl-g で cd する on zsh - sheepla/ghq-fzf.zsh]
 #         (https://gist.github.com/sheepla/d680f1480d8c36c4290d6aabebf1abc6)
-function _fzf_cd_ghq() {
+function _fuzzy_choose_repo() {
     FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --reverse --height=50%"
     local -r root="$(ghq root)"
     local -r repo="$(ghq list | fzf --preview="ls -AF --color=always ${root}/{1}")"

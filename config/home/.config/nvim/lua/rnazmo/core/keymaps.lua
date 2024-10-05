@@ -8,7 +8,6 @@ vim.g.maplocalleader = "\\"
 
 local keymap = vim.keymap -- for conciseness
 
----------------------
 -- General Keymaps -------------------
 
 -- use jk to exit insert mode
@@ -24,11 +23,14 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
 
+-- "p"ane management
+-- TODO:
+
 -- "w"indow management
 keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" }) -- split window "v"ertically
 keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split window horizontally" }) -- split window "h"orizontally
 -- keymap.set("n", "<leader>we", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
-keymap.set("n", "<leader>wx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+keymap.set("n", "<leader>wx", "<cmd>close<CR>", { desc = "Close current split" }) -- close (e"x"it) current split window
 keymap.set("n", "<leader>ww", "<C-w>w", { desc = "Switch windows" }) -- switch "w"indows
 keymap.set("n", "<leader>wj", "<C-w>j", { desc = "Go to down window" }) -- go to down window
 keymap.set("n", "<leader>wk", "<C-w>k", { desc = "Go to up window" }) -- go to up window

@@ -30,7 +30,10 @@ alias ll="eza --color=always --icons=always --long"
 alias la="eza --color=always --icons=always --long --all"
 alias lt="eza --color=always --icons=always --tree --level=3 --all --ignore-glob='node_modules|.git|.cache'"
 
+# Create new session
 alias t="tmux"
+# Create new session with specific name
+alias ts="tmux new-session -s"
 
 alias lg="lazygit"
 alias g="git"
