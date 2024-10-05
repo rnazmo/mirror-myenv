@@ -10,7 +10,7 @@ main() {
     yay -Syu --noconfirm
 
     # ======================================================
-    # ======== zsh (& plugin-manager & plugins)            =
+    # ======== zsh (& theme & plugin-manager & plugins)    =
     # ======================================================
 
     # ======== zsh
@@ -24,6 +24,12 @@ main() {
     [ -f "${HOME}/.zshenv" ] && mv "${HOME}/.zshenv" "${HOME}/.zshenv.old"
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
     link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
+
+    # ======== powerlevel10k (= theme)
+    # Ref:
+    #     https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#arch-linux
+    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
+    yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
 
     # ======== sheldon (= plugin manager)
     sudo pacman -S --needed --noconfirm sheldon
@@ -46,13 +52,6 @@ main() {
     sudo pacman -S --needed --noconfirm alacritty
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/my-theme.toml" "${HOME}/.config/alacritty/my-theme.toml"
-
-    # ======================================================
-    # ======== starship (& theme)                          =
-    # ======================================================
-
-    sudo pacman -S --needed --noconfirm starship
-    link_file "${MYENV_ROOT}/config/home/.config/starship.toml" "${HOME}/.config/starship.toml"
 
     # ======================================================
     # ======== tmux (& plugin-manager & plugins)           =
