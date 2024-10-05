@@ -73,9 +73,10 @@ typeset -U path PATH
 
 export PATH="$HOME/bin:$PATH"
 
-# mise
-# Ref: https://mise.jdx.dev/getting-started.html#_2a-activate-mise
-eval "$(~/.local/bin/mise activate zsh)"
+# Ref:
+#     https://mise.jdx.dev/getting-started.html#_2b-alternative-add-mise-shims-to-path
+#     https://mise.jdx.dev/getting-started.html#_2a-activate-mise
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # aqua
 # Ref: https://aquaproj.github.io/docs/install#2-set-the-environment-variable-path
