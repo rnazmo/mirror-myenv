@@ -27,7 +27,7 @@ zstyle ':completion:*:*:git:*' script "${ZSH_COMPLETION_DIR}/git-completion.bash
 # ======== mise
 # Ref: https://mise.jdx.dev/cli/completion.html
 if [[ ! -f "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise" ]]; then
-  mise completion zsh > "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise"
+  curl -o "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise" https://raw.githubusercontent.com/jdx/mise/refs/heads/main/completions/_mise
 fi
 
 # ======== ???
