@@ -1,3 +1,6 @@
 /config/home/.config/zsh/completions.local/*
 /config/home/.config/zsh/keybindings.local/*
 /config/home/.config/zsh/plugins.local/*
+
+# Zsh
+*.zwc
