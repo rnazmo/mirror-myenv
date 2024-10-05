@@ -54,9 +54,10 @@ main() {
         #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
         #     https://github.com/jdx/mise/blob/4ac34dac72144f9084b49359dc0181e8f762f0bf/docs/getting-started.md#alternate-installation-methods
         cd "$(mktemp -d)"
-        curl -fsSL https://mise.run -o mise.run
-        chmod +x ./mise.run
-        ./mise.run
+        export MISE_INSTALL_PATH="${HOME}/.local/bin/mise"
+        curl -fsSL https://mise.jdx.dev/install.sh -o install.sh
+        chmod +x ./install.sh
+        ./install.sh
     fi
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 
