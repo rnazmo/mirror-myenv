@@ -40,5 +40,7 @@ path=(
   # ======== aqua
   # Ref: https://aquaproj.github.io/docs/install#2-set-the-environment-variable-path
   ${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin(N-/)
+  # ========
+  $path
 )
 
