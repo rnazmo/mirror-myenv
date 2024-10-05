@@ -24,13 +24,18 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
 
--- window management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
-keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+-- "w"indow management
+keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" }) -- split window "v"ertically
+keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split window horizontally" }) -- split window "h"orizontally
+-- keymap.set("n", "<leader>we", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
+keymap.set("n", "<leader>wx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+keymap.set("n", "<leader>ww", "<C-w>w", { desc = "Switch windows" }) -- switch "w"indows
+keymap.set("n", "<leader>wj", "<C-w>j", { desc = "Go to down window" }) -- go to down window
+keymap.set("n", "<leader>wk", "<C-w>k", { desc = "Go to up window" }) -- go to up window
+keymap.set("n", "<leader>wh", "<C-w>h", { desc = "Go to left window" }) -- go to left window
+keymap.set("n", "<leader>wl", "<C-w>l", { desc = "Go to right window" }) -- go to right window
 
--- tab menagement
+-- "t"ab menagement
 keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
