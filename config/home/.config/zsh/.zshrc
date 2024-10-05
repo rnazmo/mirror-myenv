@@ -1,3 +1,5 @@
+readonly ZSH_PLUGINS_LOCAL_DIR="${ZDOTDIR}/plugins.local"
+
 # ======================================================
 # ======== p10k Instant Prompt                         =
 # ======================================================
@@ -8,6 +10,14 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+# ======================================================
+# ======== Plugin (pre)                                =
+# ======================================================
+
+# ======== zsh-defer
+# Ref: https://github.com/romkatv/zsh-defer/blob/master/README.md#installation
+source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-defer/zsh-defer.plugin.zsh"
 
 # ======================================================
 # ======== Option                                      =
@@ -78,9 +88,25 @@ source "${ZDOTDIR}/.p10k.zsh"
 source "${ZDOTDIR}/_aliases.zsh"
 
 # ======================================================
-# ======== Plugins                                     =
+# ======== Plugin (post)                               =
 # ======================================================
 
-# Loading plugins with sheldon
-eval "$(sheldon source)"
+# zsh-users/zsh-completions
+zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-completions/zsh-completions.plugin.zsh"
+
+# zsh-users/zsh-autosuggestions
+zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+# zsh-users/zsh-syntax-highlighting
+# NOTE: must be sourced at the end.
+#     Ref: https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/README.md#why-must-zsh-syntax-highlightingzsh-be-sourced-at-the-end-of-the-zshrc-file
+zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# # zdharma-continuum/fast-syntax-highlighting
+# # NOTE: https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/8
+# zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+
+# zsh-users/zsh-history-substring-search
+# NOTE: must come after syntax highlighting plugin
+zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search/zsh-history-substring-search.zsh"
 
