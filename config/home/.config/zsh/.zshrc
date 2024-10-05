@@ -79,13 +79,6 @@ zstyle ':completion:*:*:git:*' script "${ZSH_COMPLETION_DIR}/git-completion.bash
 eval "$(starship init zsh)"
 
 # ======================================================
-# ======== Extra keybinding&completion                 =
-# ======================================================
-
-# Load fzf key bindings and fuzzy completion
-source <(fzf --zsh)
-
-# ======================================================
 # ======== Aliase                                      =
 # ======================================================
 

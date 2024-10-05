@@ -1,3 +1,6 @@
+readonly ZSH_KEYBINDINGS_LOCAL_DIR="${ZDOTDIR}/keybindings.local"
+
+# ======== basic
 
 bindkey -e                                        # emacs key bindings (it's important:) )
 bindkey ' ' magic-space                           # do history expansion on space
@@ -11,6 +14,14 @@ bindkey '^[[H' beginning-of-line                  # home
 bindkey '^[[F' end-of-line                        # end
 bindkey '^[[Z' undo                               # shift + tab undo last action
 
+# ======== my functions
+
 zle -N _fuzzy_choose_repo
 bindkey "^q" _fuzzy_choose_repo
+
+# ======== fzf
+if [[ ! -f "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" ]]; then
+  curl -o "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh
+fi
+source "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings"
 
