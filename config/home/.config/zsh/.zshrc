@@ -63,26 +63,6 @@ source "${ZDOTDIR}/_prompt.zsh"
 source "${ZDOTDIR}/_aliases.zsh"
 
 # ======================================================
-# ======== PATH                                        =
-# ======================================================
-
-typeset -U path PATH
-
-# [ -f "${ZDOTDIR}/_path.zsh" ] && source "${ZDOTDIR}/_path.zsh"
-# TODO:
-
-export PATH="$HOME/bin:$PATH"
-
-# Ref:
-#     https://mise.jdx.dev/getting-started.html#_2b-alternative-add-mise-shims-to-path
-#     https://mise.jdx.dev/getting-started.html#_2a-activate-mise
-export PATH="$HOME/.local/share/mise/shims:$PATH"
-
-# aqua
-# Ref: https://aquaproj.github.io/docs/install#2-set-the-environment-variable-path
-export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
-
-# ======================================================
 # ======== Plugins                                     =
 # ======================================================
 
