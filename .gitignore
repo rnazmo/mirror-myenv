@@ -1,3 +1,2 @@
-/config/home/.config/zsh/completion/_git
-/config/home/.config/zsh/completion/git-completion.bash
 /config/home/.config/zsh/keybindings.local/*
+/config/home/.config/zsh/completions.local/*
