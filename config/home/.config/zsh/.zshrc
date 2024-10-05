@@ -63,13 +63,13 @@ setopt share_history          # share command history data ref: https://askubunt
 # ======== Keybinding                                  =
 # ======================================================
 
-source "${ZDOTDIR}/_keybindings.zsh"
+zsh-defer source "${ZDOTDIR}/_keybindings.zsh"
 
 # ======================================================
 # ======== Completion                                  =
 # ======================================================
 
-source "${ZDOTDIR}/_completions.zsh"
+zsh-defer source "${ZDOTDIR}/_completions.zsh"
 
 # ======================================================
 # ======== Prompt                                      =
@@ -85,7 +85,7 @@ source "${ZDOTDIR}/.p10k.zsh"
 # ======== Aliase                                      =
 # ======================================================
 
-source "${ZDOTDIR}/_aliases.zsh"
+zsh-defer source "${ZDOTDIR}/_aliases.zsh"
 
 # ======================================================
 # ======== Plugin (post)                               =
