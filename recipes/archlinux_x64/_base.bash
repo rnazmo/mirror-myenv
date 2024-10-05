@@ -62,6 +62,18 @@ main() {
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 
     # ======================================================
+    # ======== Programming Languages                       =
+    # ======================================================
+
+    # mise install
+
+    # ======== golang
+    mise use --global go@latest
+
+    # ======== nodejs
+    mise use --global node@latest
+
+    # ======================================================
     # ======== aqua                                        =
     # ======================================================
 

@@ -26,15 +26,6 @@ main() {
         ./install.bash "$dest_dir"
     fi
 
-    # ======================================================
-    # ======== some programming languages                  =
-    # ======================================================
-
-    # ======== golang, nodejs
-    mise install
-    # mise install go
-    # mise install node
-
     log_debug "END  : ${BASH_SOURCE}"
 }
 
