@@ -38,9 +38,14 @@ main() {
     # ======================================================
 
     if ! check_if_command_exists "yay"; then
-        cd "$(mktemp -d)"
-        git clone https://aur.archlinux.org/yay.git
-        cd yay
+        # Ensure that dependencies is installed
+        sudo pacman -S --needed git base-devel
+
+        # Install yay (binary)
+        # Ref:
+        #     https://github.com/Jguer/yay/blob/138c2dd6cdf1a3738ee18f6bf94c1e8c37e15dc4/README.md#binary
+        git clone https://aur.archlinux.org/yay-bin.git
+        cd yay-bin
         makepkg -si
     fi
 
