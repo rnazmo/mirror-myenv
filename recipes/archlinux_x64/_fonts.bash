@@ -20,7 +20,10 @@ main() {
     # ======== mono font                                   =
     # ======================================================
 
-    yay -S --needed --noconfirm ttf-cica
+    # Ref:
+    #     https://github.com/yuru7/udev-gothic
+    #     https://aur.archlinux.org/packages/ttf-udev-gothic
+    yay -S --needed --noconfirm ttf-udev-gothic
 
     # ======================================================
     # ======== extra font                                  =

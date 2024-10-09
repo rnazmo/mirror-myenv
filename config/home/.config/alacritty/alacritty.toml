@@ -13,12 +13,13 @@ style.shape = "Block"
 style.blinking = "On"
 
 [font]
-size = 13.0
-normal.family = "Cica"
+# 日本語表記のテスト
+size = 11.0
+normal.family = "UDEV Gothic 35NF"
 normal.style = "Regular"
-bold.family = "Cica"
+bold.family = "UDEV Gothic 35NF"
 bold.style = "Bold"
-italic.family = "Cica"
+italic.family = "UDEV Gothic 35NF"
 italic.style = "Italic"
-bold_italic.family = "Cica"
+bold_italic.family = "UDEV Gothic 35NF"
 bold_italic.style = "Bold Italic"
