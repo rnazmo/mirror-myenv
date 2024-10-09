@@ -53,17 +53,25 @@ main() {
     # ======== mise                                        =
     # ======================================================
 
-    if ! check_if_command_exists "mise"; then
-        # Install mise under `~/.local/bin/mise` with the script
-        # Ref:
-        #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
-        #     https://github.com/jdx/mise/blob/4ac34dac72144f9084b49359dc0181e8f762f0bf/docs/getting-started.md#alternate-installation-methods
-        cd "$(mktemp -d)"
-        export MISE_INSTALL_PATH="${HOME}/.local/bin/mise"
-        curl -fsSL https://mise.jdx.dev/install.sh -o install.sh
-        chmod +x ./install.sh
-        ./install.sh
-    fi
+    # if ! check_if_command_exists "mise"; then
+    #     # Install mise under `~/.local/bin/mise` with the script
+    #     # Ref:
+    #     #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
+    #     #     https://github.com/jdx/mise/blob/4ac34dac72144f9084b49359dc0181e8f762f0bf/docs/getting-started.md#alternate-installation-methods
+    #     cd "$(mktemp -d)"
+    #     export MISE_INSTALL_PATH="${HOME}/.local/bin/mise"
+    #     curl -fsSL https://mise.jdx.dev/install.sh -o install.sh
+    #     chmod +x ./install.sh
+    #     ./install.sh
+    # fi
+
+    # Insatll mise (binary)
+    # Ref:
+    #     https://aur.archlinux.org/packages/mise-bin
+    #     https://aur.archlinux.org/packages/mise
+    #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
+    yay -S --needed --noconfirm mise-bin
+
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
 
     # ======================================================
