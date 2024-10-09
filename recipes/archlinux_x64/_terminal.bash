@@ -26,6 +26,25 @@ main() {
     link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
 
     # ======== powerlevel10k (= theme)
+    # (for Manjaro): Ensure that uninstall aur package "zsh-theme-powerlevel10k" to avoid conflict
+    # Description:
+    #     In Manjaro, package "manjaro-zsh-config" is installed by default. However,
+    #     it depends on package "zsh-theme-powerlevel10k", which conflicts with package
+    #     "zsh-theme-powerlevel10k-git". So, to install package "zsh-theme-powerlevel10k-git",
+    #     package "manjaro-zsh-config" must be uninstalled.
+    # Why use package "zsh-theme-powerlevel10k-git" instead of package "zsh-theme-powerlevel10k"?
+    #     The maintainer of "zsh-theme-powerlevel10k-git" is the author of powerlevel10k.
+    # Ref:
+    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
+    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k
+    #     https://github.com/Chrysostomus/manjaro-zsh-config
+    local -r MANJARO_ZSH_CONFIG_PKG="manjaro-zsh-config"
+    # Uninstll the package if it is installed
+    if yay -Qi "$MANJARO_ZSH_CONFIG_PKG" &>/dev/null; then
+        yay -Rns "$MANJARO_ZSH_CONFIG_PKG"
+    fi
+
+    # Install powerlevel10k
     # Ref:
     #     https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#arch-linux
     #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
