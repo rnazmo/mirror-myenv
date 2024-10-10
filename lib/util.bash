@@ -153,7 +153,7 @@ link_dir() {
 #     Copy a file from <src_path> to <dest_path>.
 #
 # Usage:
-#     copy_file <src_path> <dest_path>.
+#     copy_file <src_path> <dest_path>
 #
 # Arguments:
 #     src_path:
