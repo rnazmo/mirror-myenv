@@ -67,9 +67,9 @@ TODO:
 
 #### create/close
 
-- `<prefix> ;` (`|'`): new virtically/horizontally ☆
+- `<prefix> ;` (`|'`): create new virtically/horizontally ☆
 - `<prefix> q`: close (∵ "q"uit)
-- `<prefix> f`: popup new floating (∵ "f"loating)
+- `<prefix> f`: create new floating (popup) (∵ "f"loating)
 
 #### edit
 
@@ -95,7 +95,7 @@ TODO:
 
 #### create/close
 
-- `<prefix> Shift-c`: new (∵ "c"reate) ☆
+- `<prefix> Shift-c`: create new (∵ "c"reate) ☆
 - `<prefix> Shift-q`: close (∵ "q"uit)
 - `<prefix> Shift-o`: close other tabpages (∵ "o"ther)
 
@@ -177,9 +177,11 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 
 ("tab" is "window" officiay.)
 
-- `Ctrl-h` (`|j|k|l`): change focus ☆
 - `Ctrl-w h` (`|j|k|l`): change focus ☆
-- TODO: `Ctrl ←` (`|↓|↑|→`): Resize
+    - or `Ctrl-h` (`|j|k|l`) ☆
+    - or `<leader> w h` (`|j|k|l`)
+- TODO:??: resize
+    - or `Ctrl ←` (`|↓|↑|→`)?? ☆
 - TODO:
 
 TODO: Setup my keybindings to manage panes
@@ -194,7 +196,14 @@ TODO: Setup my keybindings to manage buffers?
 
 ("tabpage" is officialy term. It's offten called just "tab".)
 
-TODO:
+- `g t` (`g Shift-t`): change focus ☆
+    - (or `<leader> Tab [` (`]`)
+- TODO:??: create new
+    - (or `<leader> Tab Tab`
+- TODO:??: close
+    - (or `<leader> Tab d`
+- TODO:??: close other tabpages
+    - (or `<leader> Tab o`
 
 TODO: Setup my keybindings to manage tabpages
 
