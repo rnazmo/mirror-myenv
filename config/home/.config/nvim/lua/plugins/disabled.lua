@@ -2,16 +2,16 @@
 -- Ref:
 --     https://www.lazyvim.org/configuration/plugins
 return {
-    -- -- Example:
-    -- { "folke/trouble.nvim", enabled = false },
-    
-    -- UI
+  -- -- Example:
+  -- { "folke/trouble.nvim", enabled = false },
 
-    -- Disable notify
-    -- Ref: https://www.lazyvim.org/plugins/ui#nvim-notify
-    { "rcarriga/nvim-notify", enabled = false },
+  -- UI
 
-    -- Disable noice
-    -- Ref: https://www.lazyvim.org/plugins/ui#noicenvim
-    { "folke/noice.nvim", enabled = false },
+  -- Disable notify
+  -- Ref: https://www.lazyvim.org/plugins/ui#nvim-notify
+  { "rcarriga/nvim-notify", enabled = false },
+
+  -- Disable noice
+  -- Ref: https://www.lazyvim.org/plugins/ui#noicenvim
+  { "folke/noice.nvim", enabled = false },
 }
