@@ -177,8 +177,9 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 
 ("tab" is "window" officiay.)
 
-- `Ctrl-h` (`|j|k|l`): change focus(∵ like neovim) ☆
-- `Ctrl-w h` (`|j|k|l`): change focus(∵ like neovim) ☆
+- `Ctrl-h` (`|j|k|l`): change focus ☆
+- `Ctrl-w h` (`|j|k|l`): change focus ☆
+- TODO: `Ctrl ←` (`|↓|↑|→`): Resize
 - TODO:
 
 TODO: Setup my keybindings to manage panes
@@ -223,7 +224,16 @@ TODO: ?
 - TODO: change focus to file explorer
 - TODO:
 - in file explorer:
+    - `Enter`, `l`: open file
+    - `s`: open file in new virtical pane (∵ "s"plit)
+    - `S`: open file in new horizontal pane (∵ "s"plit)
+    - `t`: open file in new tabpage (∵ "t"abpage)
+    - `Shift-p`: toggle preview
+    - `a`: add new file with name (∵ "a"dd)
+    - `r`: rename file (∵ "r"ename)
+    - `d`: delete file (∵ "d"elete)
     - `Shift-h`: toggle display of hidden files
+    - `?`: show help
 
 ### git (lazygit)
 
