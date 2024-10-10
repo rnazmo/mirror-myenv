@@ -192,6 +192,48 @@ copy_file() {
 }
 
 # What is this:
+#     Download a file from <remote_path> to <dest_path>.
+#     If the <dest_path> already exists and is a regular file,
+#     do nothing. If the <dest_path> already exists and is not
+#     regular file (directory, symbolic link, ...), return error.
+#
+# Prerequisites:
+#     curl
+#
+# Usage:
+#     download_file <remote_path> <dest_path>
+#
+# Arguments:
+#     remote_path:
+#         Must be regular file path. (maybe)
+#     dest_path:
+#         The path must be nothing or a regular file.
+#
+# Example:
+#     download_file \
+#         "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh" \
+#         "${ZSH_COMPLETIONS_LOCAL_DIR}/_git" \
+download_file() {
+    local -r REMOTE_PATH="$1"
+    local -r DEST_PATH="$2"
+    if [[ ! -e "$DEST_PATH" ]]; then
+        log_info "The file not found. Download a file from remote."
+        log_info "REMOTE_PATH: $REMOTE_PATH"
+        log_info "DEST_PATH  : $DEST_PATH"
+        # `--create-dirs` option will create the necessary directories if needed.
+        curl -v --create-dirs -o "$DEST_PATH" "$REMOTE_PATH"
+        return 0
+    elif [[ -f "DEST_PATH" ]]; then
+        log_info "The file already exist. Do nothong."
+        log_info "DEST_PATH  : $DEST_PATH"
+        return 0
+    else
+        log_err "The path $DEST_PATH must be nothing or a regular file."
+        return 1
+    fi
+}
+
+# What is this:
 #     Ensure that unnecessary configuration files are removed.
 #
 # Description:

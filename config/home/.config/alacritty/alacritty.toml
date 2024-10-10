@@ -1,5 +1,7 @@
 import = [
-    # "~/.config/alacritty/my-theme.toml"
+  # NOTE: You can't use `$HOME` here. Use `~` instead.
+  #     Ref: https://alacritty.org/config-alacritty.html#s0
+  "~/.config/alacritty/theme.local/tokyonight_night.toml"
 ]
 
 [shell]
@@ -13,7 +15,6 @@ style.shape = "Block"
 style.blinking = "On"
 
 [font]
-# 日本語表記のテスト
 size = 11.0
 normal.family = "UDEV Gothic 35NF"
 normal.style = "Regular"
@@ -23,3 +24,4 @@ italic.family = "UDEV Gothic 35NF"
 italic.style = "Italic"
 bold_italic.family = "UDEV Gothic 35NF"
 bold_italic.style = "Bold Italic"
+

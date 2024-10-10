@@ -151,9 +151,14 @@ main() {
     # ======== alacritty (& theme)                         =
     # ======================================================
 
+    # ======== alacritty
     sudo pacman -S --needed --noconfirm alacritty
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
-    link_file "${MYENV_ROOT}/config/home/.config/alacritty/my-theme.toml" "${HOME}/.config/alacritty/my-theme.toml"
+
+    # ======== theme
+    download_file \
+        "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/alacritty/tokyonight_night.toml" \
+        "${HOME}/.config/alacritty/theme.local/tokyonight_night.toml"
 
     # ======================================================
     # ======== tmux (& plugin-manager & plugins)           =
