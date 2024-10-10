@@ -63,6 +63,7 @@ TODO:
 
 - `<prefix> h` (`|j|k|l`): change focus(∵ like neovim) ☆
 - `<prefix> w`: change focus to next (∵ like neovim)
+- TODO: change focus to previous
 - `<prefix> a 0` (`|...|9`): change focus by number
 
 #### create/close
@@ -80,6 +81,7 @@ TODO:
 #### movement
 
 - `<prefix> [` (`|]`): swap current with previous/next
+- TODO: swap current with ←↓↑→
 
 #### special
 
