@@ -220,6 +220,7 @@ TODO: ?
 ### file explorer (neo-tree)
 
 - `<leader> f e`: toggle file explorer in project-root-dir (∵ "f"ile -> "e"xplorer)
+- TODO: change focus to file explorer
 - TODO:
 - in file explorer:
     - `Shift-h`: toggle display of hidden files
