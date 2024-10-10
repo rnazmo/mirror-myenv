@@ -1,7 +1,6 @@
 #!/bin/bash
 set -eu
 
-
 # Prerequisites:
 #     Bash 4.0+
 
@@ -20,7 +19,7 @@ set -eu
 #         -> return 1
 check_if_command_exists() {
     local -r COMMAND="$1"
-    if command -v "$COMMAND" &> /dev/null; then
+    if command -v "$COMMAND" &>/dev/null; then
         log_info "Command '$1' exists"
         return 0
     else
@@ -51,7 +50,7 @@ remove_symlink() {
 #         TODO: symbolic link は許してもよいかも？
 #     target_file:
 #         If it's already a symbolic link, remove and recreate it.
-# 
+#
 # Example:
 #     link_file "${HOME}/.myenv/config/home/.zshrc" "${HOME}/.zshrc"
 link_file() {
@@ -103,10 +102,10 @@ link_file() {
 #         TODO: symbolic link は許してもよいかも？
 #     target_dir:
 #         If it's already a symbolic link, remove and recreate it.
-# 
+#
 # Example:
 #     link_dir "${HOME}/.myenv/config/home/.config/zsh" "${HOME}/.config/zsh"
-# 
+#
 # NOTE:
 #     循環参照を起こさないように注意する
 #         TARGET_DIR について入念なチェックをし、シンボリックリンクがあった場合に消しているのはそのため。
@@ -161,7 +160,7 @@ link_dir() {
 #         must be a regular file. (symbolic link is not allowed)
 #     dest_path:
 #         There must not be anything (regular file, symbolic, directory, ...) in its path.
-# 
+#
 # Example:
 #     copy_file "~/.myenv-v3/config/home/.config/alacritty/my-theme.toml" "~/.config/alacritty/my-theme.toml"
 copy_file() {
@@ -198,9 +197,9 @@ copy_file() {
 #     そうでなければ1
 is_virtualbox_guest() {
     if systemd-detect-virt --vm | grep -q "oracle"; then
-        return 0  # Running in a VirtualBox guest
+        return 0 # Running in a VirtualBox guest
     else
-        return 1  # Not running in a VirtualBox guest
+        return 1 # Not running in a VirtualBox guest
     fi
 }
 
@@ -213,29 +212,29 @@ is_virtualbox_guest() {
 is_not_virtualized_environment() {
     if systemd-detect-virt -q; then
         echo "この環境は仮想化環境またはコンテナです。"
-        return 1  # Running in a vm guest
+        return 1 # Running in a vm guest
     else
         echo "この環境は仮想化環境ではありません。"
-        return 0  # Not running in a vm guest (= host machine)
+        return 0 # Not running in a vm guest (= host machine)
     fi
 }
 
 log_debug() {
-  local -r PREFIX="DEBUG:"
-  echo "$PREFIX $1"
+    local -r PREFIX="DEBUG:"
+    echo "$PREFIX $1"
 }
 
 log_info() {
-  local -r PREFIX="INFO :"
-  echo "$PREFIX $1"
+    local -r PREFIX="INFO :"
+    echo "$PREFIX $1"
 }
 
 log_warn() {
-  local -r PREFIX="WARN :" >&2
-  echo "$PREFIX $1"
+    local -r PREFIX="WARN :" >&2
+    echo "$PREFIX $1"
 }
 
 log_err() {
-  local -r PREFIX="ERROR:" >&2
-  echo "$PREFIX $1"
+    local -r PREFIX="ERROR:" >&2
+    echo "$PREFIX $1"
 }
