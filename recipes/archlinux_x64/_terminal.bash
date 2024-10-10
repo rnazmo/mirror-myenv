@@ -18,10 +18,8 @@ main() {
 
     local -r ZDOTDIR="${HOME}/.config/zsh"
 
-    [ -L "${HOME}/.zshrc" ] && unlink "${HOME}/.zshrc"
-    [ -L "${HOME}/.zshenv" ] && unlink "${HOME}/.zshenv"
-    [ -f "${HOME}/.zshrc" ] && mv "${HOME}/.zshrc" "${HOME}/.zshrc.old"
-    [ -f "${HOME}/.zshenv" ] && mv "${HOME}/.zshenv" "${HOME}/.zshenv.old"
+    remove_unused_config "${HOME}/.zshrc"
+    remove_unused_config "${HOME}/.zshenv"
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
     link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
 

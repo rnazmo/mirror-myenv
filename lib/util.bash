@@ -191,6 +191,43 @@ copy_file() {
     log_info "Copied file: '$SRC_PATH' -> '$DEST_PATH'"
 }
 
+# What is this:
+#     Ensure that unnecessary configuration files are removed.
+#
+# Description:
+#     If the <target_path> is a symbolic link, remove it.
+#     If the <target_path> is a regular file or directory,
+#     move it to "<target_path>.old". (Note that "<target_path>.old"
+#     will be overwritten if it already exists.)
+#
+# Usage:
+#     remove_unused_config <target_path>
+#
+# Arguments:
+#     target_path:
+#         path of regular file, directory, or symbolic link.
+#
+# Example:
+#     remove_unused_config
+#
+remove_unused_config() {
+    local -r TARGET_PATH="$1"
+    if [[ -L "$TARGET_PATH" ]]; then
+        # the path is symbolic link
+        unlink_symlink "$TARGET_PATH"
+    elif [[ -f "$TARGET_PATH" ]]; then
+        # the path is regular file
+        mv "$TARGET_PATH" "${TARGET_PATH}.old"
+    elif [[ -d "$TARGET_PATH" ]]; then
+        # the path is regular directory
+        mv "$TARGET_PATH" "${TARGET_PATH}.old"
+    else
+        log_err "$TARGET_PATH is not symbolic link, regular file, or dir"
+        return 1
+    fi
+    return 0
+}
+
 # VirtualBoxのゲストマシンかどうかを判別する関数
 # 戻り値：
 #     VirtualBoxのゲストマシンであれば0,
