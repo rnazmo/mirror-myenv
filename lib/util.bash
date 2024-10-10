@@ -32,8 +32,8 @@ check_if_command_exists() {
 #     Remove symbolic link if the path is symbolic link.
 #     If the path is not symbolic link, do nothing.
 # Usage:
-#     remove_symlink <PATH>
-remove_symlink() {
+#     unlink_symlink <PATH>
+unlink_symlink() {
     local -r TARGET_PATH=$1
     unlink $TARGET_PATH
 }
@@ -79,7 +79,7 @@ link_file() {
     if [[ -e "$TARGET_FILE" ]]; then
         if [[ -L "$TARGET_FILE" ]]; then
             log_warn "Removing existing symbolic link at '$TARGET_FILE'."
-            unlink "$TARGET_FILE"
+            unlink_symlink "$TARGET_FILE"
         else
             log_err "A file or directory already exists at '$TARGET_FILE'."
             return 1
@@ -138,7 +138,7 @@ link_dir() {
     if [[ -e "$TARGET_DIR" ]]; then
         if [[ -L "$TARGET_DIR" ]]; then
             log_warn "Removing existing symbolic link at '$TARGET_DIR'."
-            unlink "$TARGET_DIR"
+            unlink_symlink "$TARGET_DIR"
         else
             log_err "A file or directory already exists at '$TARGET_DIR'."
             return 1
