@@ -212,7 +212,9 @@ copy_file() {
 #
 remove_unused_config() {
     local -r TARGET_PATH="$1"
-    if [[ -L "$TARGET_PATH" ]]; then
+    if [[ ! -e "$TARGET_PATH" ]]; then
+        : # do nothing
+    elif [[ -L "$TARGET_PATH" ]]; then
         # the path is symbolic link
         unlink_symlink "$TARGET_PATH"
     elif [[ -f "$TARGET_PATH" ]]; then
