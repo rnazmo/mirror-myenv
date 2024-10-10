@@ -85,9 +85,9 @@ TODO:
 
 - `<prefix> s`: sync panes (∵ "s"ync)
 
-### tab
+### tabpage
 
-("tab" is "window" officiay.)
+("tabpage" is called "window" officially.)
 
 #### movement
 
@@ -97,7 +97,7 @@ TODO:
 
 - `<prefix> Shift-c`: new (∵ "c"reate) ☆
 - `<prefix> Shift-q`: close (∵ "q"uit)
-- `<prefix> Shift-o`: close other tabs (∵ "o"ther)
+- `<prefix> Shift-o`: close other tabpages (∵ "o"ther)
 
 #### edit
 
@@ -106,8 +106,8 @@ TODO:
 #### movement
 
 - `<prefix> {` (`|}`): swap current with previous/next
-- `<prefix> Shift-b`: break current pane to new tab (∵ "b"reak)
-- `<prefix> (` (`|)`): break current pane to previous/next tab
+- `<prefix> Shift-b`: break current pane to new tabpage (∵ "b"reak)
+- `<prefix> (` (`|)`): break current pane to previous/next tabpage
 
 ### session
 
@@ -171,15 +171,73 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 
 ## Editor - Neovim (LazyVim)
 
+- `<leader>`: `Space`
+
 ### pane
-
-TODO:
-
-### tab
 
 ("tab" is "window" officiay.)
 
+- `Ctrl-h` (`|j|k|l`): change focus(∵ like neovim) ☆
+- `Ctrl-w h` (`|j|k|l`): change focus(∵ like neovim) ☆
+- TODO:
+
+TODO: Setup my keybindings to manage panes
+
+### buffer
+
 TODO:
+
+TODO: Setup my keybindings to manage buffers?
+
+### tabpage
+
+("tabpage" is officialy term. It's offten called just "tab".)
+
+TODO:
+
+TODO: Setup my keybindings to manage tabpages
+
+### session
+
+TODO: Setup my keybindings to manage sessions
+
+### serevr?
+
+TODO: ?
+
+### search
+
+- `<leader> s`: open "Search" menu (∵ "s"earch)
+- `<leader> s g`: search for string in project-root-dir(<-?) (∵ "g"rep)
+- `<leader> s r`: open "Search&Repalce" menu (∵ "r"eplace)
+
+### file
+
+- `<leader> f`: open "File/Find" menu (∵ "f"ile/"f"ind)
+- `<leader> f f`: search for file in project-root-dir (∵ "f"ind -> "f"ile)
+- `<leader> f r`: search for file in recent (∵ "f"ind -> "r"ecent)
+
+### file explorer (neo-tree)
+
+- `<leader> f e`: toggle file explorer in project-root-dir (∵ "f"ile -> "e"xplorer)
+- TODO:
+- in file explorer:
+    - `Shift-h`: toggle display of hidden files
+
+### git (lazygit)
+
+- `<leader> g`: open "Git" menu (∵ "g"it)
+- `<leader> g g`: open floating lazygit (∵ "g"it?)
+
+### terminal (toggleterm???)
+
+- `<leader> f t`: open floating termina with project-root-dir (∵ ? -> "t"erminal)
+- TODO:
+
+### config
+
+- `<leader> f c`: search for file in your Neovim config file (∵ "f"ile -> "c"onfig)
+- TODO:
 
 ### edit
 
