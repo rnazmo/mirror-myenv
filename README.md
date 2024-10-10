@@ -115,6 +115,7 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
     - [ ] feat: Add ErgoDox EZ config
 - os:
     - [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
+    - [ ] feat: Support Xfce config?
 - browser:
     - [ ] feat: Support browser bookmarklet
     - [ ] feat: Support browser extension
