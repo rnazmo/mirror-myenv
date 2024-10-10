@@ -254,6 +254,12 @@ TODO: ?
 
 TODO:
 
+#### comment
+
+- `g c c`: toggle comment on line
+- `g c o`: add new comment line below current line (∵ like vim `o`)
+- `g c Shift-o`: add new comment line above current line (∵ like vim `Shift-o`)
+
 #### indentation
 
 While Normal Mode:
