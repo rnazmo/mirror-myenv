@@ -127,4 +127,8 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
     - [ ] feat: Update Zsh config
 - lazygit:
     - [ ] feat: Support config file of lazygit
+- bat:
+    - [ ] feat: Support config file of bat
+- ?:
+    - [ ] feat: Add cspell for typo check
 
