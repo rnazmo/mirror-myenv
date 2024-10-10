@@ -41,7 +41,7 @@ main() {
     local -r MANJARO_ZSH_CONFIG_PKG="manjaro-zsh-config"
     # Uninstll the package if it is installed
     if yay -Qi "$MANJARO_ZSH_CONFIG_PKG" &>/dev/null; then
-        yay -Rns "$MANJARO_ZSH_CONFIG_PKG"
+        yay -Rns --noconfirm "$MANJARO_ZSH_CONFIG_PKG"
     fi
 
     # Install powerlevel10k
