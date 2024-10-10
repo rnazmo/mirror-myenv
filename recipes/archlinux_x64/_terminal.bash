@@ -163,6 +163,7 @@ main() {
 
     # ======== tmux
     sudo pacman -S --needed --noconfirm tmux
+    remove_unused_config "${HOME}/.tmux.conf"
     link_file "${MYENV_ROOT}/config/home/.config/tmux/tmux.conf" "${HOME}/.config/tmux/tmux.conf"
 
     # ======== tpm (plugin manager)
