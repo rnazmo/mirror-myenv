@@ -285,6 +285,10 @@ misc
 
 ---
 
+## Input Method Editor (IME) - Fcitx5
+
+- `LANG2` (= `Hanglhanja`): toggle input method
+
 ## CLI - lazygit
 
 TODO:
