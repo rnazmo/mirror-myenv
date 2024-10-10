@@ -85,32 +85,45 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
 
 ### TODO
 
-- [ ] feat: Log *to file* for debug
-- [ ] ci: Add test
-- [ ] ci: Lint Bash scripts (ref: proper7y)
-- [ ] ci: Format Bash scripts (ref: proper7y)
-- [ ] 前提 (Bash 4.0+ など) をチェックするようにする
-- [ ] feat: Support browser bookmarklet
-- [ ] feat: Support browser extension
-- [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
-- [ ] feat: Update VS Code config
-- [ ] feat: Update VS Code keybindigs
-- [ ] feat: Update VS Code extensions
-- [ ] feat: Support Zsh plugin-manager
-- [ ] feat: Update Zsh plugins
-- [ ] feat: Support tmux plugin-manager
-- [ ] feat: Update tmux plugins
-- [ ] feat: Support AstroNvim
-- [ ] feat: Update AstroNvim config
-- [ ] ci: Migrate GitLab -> GitHub
-- [ ] feat: Support ErgoDox EZ config
-- [ ] Add Makefile (`pull`, `push`, `update`, `lint`, `format`)
-- [ ] doc: できること・できないことをまとめる
-    - `init.bash`：
-    - `setup.bash`：
-        - `soba`：
-            - できること：
-            - できないこと：
-                - 日本語入力の設定（GUI でやって）
-                - 時刻同期 (Manjaro は GUI が楽)
-                - Git の初期設定。GitHub, GitLab への SSH 公開鍵の登録
+- myenv:
+    - all:
+        - [ ] Restructure `/recipes/*`, `/hosts/*`
+        - [ ] Rename project to `myenv`
+        - [ ] Publish `v4`
+        - [ ] Use semantic versioning
+    - feat:
+        - [ ] feat(myenv): Log *to file* for debug
+        - [ ] feat: 前提 (Bash 4.0+ など) をチェックするようにする
+        - [ ] feat: Add command (`sync`, `apply`, `dry-run`, `test`)
+    - ci:
+        - [ ] ci: Add unit-test
+        - [ ] ci: Add integ-test
+        - [ ] ci: Add static-check (lint, format, ...)
+            - ref: proper7y
+    - docs:
+        - [ ] docs: できること・できないことをまとめる
+            - `init.bash`：
+            - `setup.bash`：
+                - `soba`：
+                    - できること：
+                    - できないこと：
+                        - 日本語入力の設定（GUI でやって）
+                        - 時刻同期 (Manjaro は GUI が楽)
+                        - Git の初期設定。GitHub, GitLab への SSH 公開鍵の登録
+        - [ ] docs: Add dicision-redords
+- keyboard:
+    - [ ] feat: Add ErgoDox EZ config
+- os:
+    - [ ] feat: Support wallpaper (`gitlab/mywallpaper`)
+- browser:
+    - [ ] feat: Support browser bookmarklet
+    - [ ] feat: Support browser extension
+- ime:
+    - [ ] feat: Migrate { fcitx-mozc => fcitx5-mozc }
+        - [Arch Linux - fcitx5-mozc 2.26.4632.102.g4d2e3bd-2 (x86_64)](https://archlinux.org/packages/extra/x86_64/fcitx5-mozc/)
+    - [ ] feat: Support config file of fcitx5-mozc
+- shell:
+    - [ ] feat: Update Zsh config
+- lazygit:
+    - [ ] feat: Support config file of lazygit
+
