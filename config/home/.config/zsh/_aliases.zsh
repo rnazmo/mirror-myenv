@@ -37,4 +37,3 @@ alias ts="tmux new-session -s"
 
 alias lg="lazygit"
 alias g="git"
-

@@ -46,4 +46,3 @@ bindkey "^Xq" _fuzzy_choose_repo
 
 # ======== fzf
 source "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh"
-

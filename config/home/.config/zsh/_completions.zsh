@@ -21,4 +21,3 @@ zstyle ':completion:*:*:git:*' script "${ZSH_COMPLETION_DIR}/git-completion.bash
 # ======== compile
 # TODO: Cache zcompdump
 compinit -d ~/.cache/zcompdump
-

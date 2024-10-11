@@ -109,4 +109,3 @@ zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-syntax-highlighting/zsh-syntax-hi
 # zsh-users/zsh-history-substring-search
 # NOTE: must come after syntax highlighting plugin
 zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search/zsh-history-substring-search.zsh"
-

@@ -1,6 +1,8 @@
+# Ref: https://alacritty.org/config-alacritty.html
+
+# NOTE: You can't use `$HOME` here. Use `~` instead.
+#     Ref: https://alacritty.org/config-alacritty.html#s0
 import = [
-  # NOTE: You can't use `$HOME` here. Use `~` instead.
-  #     Ref: https://alacritty.org/config-alacritty.html#s0
   "~/.config/alacritty/theme.local/tokyonight_night.toml"
 ]
 
@@ -24,4 +26,3 @@ italic.family = "UDEV Gothic 35NF"
 italic.style = "Italic"
 bold_italic.family = "UDEV Gothic 35NF"
 bold_italic.style = "Bold Italic"
-
