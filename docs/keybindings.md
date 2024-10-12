@@ -59,41 +59,43 @@ TODO:
 
 ### pane
 
-#### movement
+#### navigation
 
-- `<prefix> h` (`|j|k|l`): change focus(∵ like neovim) ☆
-- `<prefix> w`: change focus to next (∵ like neovim)
-- TODO: change focus to previous
-- `<prefix> a 0` (`|...|9`): change focus by number
+- `<prefix> h` (`|j|k|l`): change focus to left/down/up/right (∵ like neovim) ☆
+- `<prefix> w` (`|r`): change focus to next/previous (∵ like neovim)
+- ``<prefix> ` 0`` (`|...|9`): change focus by number
 
 #### create/close
 
 - `<prefix> ;` (`|'`): create new virtically/horizontally ☆
 - `<prefix> q`: close (∵ "q"uit)
-- `<prefix> f`: create new floating (popup) (∵ "f"loating)
+- `<prefix> /`: create new floating (popup) (∵ "f"loating)
 
 #### edit
 
-- `<prefix> e`: rename (∵ r"e"name)
-- `<prefix> ←` (`|↓|↑|→`): Resize (∵ like neovim)
+- `<prefix> .`: rename (∵ r"e"name)
+- `<prefix> ←` (`|↓|↑|→`): resize (∵ like neovim)
+    - TODO: Resize like vim???
 - `<prefix> m`: toggle maximize (full screen) (∵ "m"aximize)
 
 #### movement
 
-- `<prefix> [` (`|]`): swap current with previous/next
-- TODO: swap current with ←↓↑→
+- `<prefix> s` (`|d|e|f`): swap current with previous/next
+- `<prefix> b`: break current pane to new tabpage (∵ "b"reak)
+- `<prefix> [` (`|]`): break current pane to previous/next tabpage
 
 #### special
 
-- `<prefix> s`: sync panes (∵ "s"ync)
+- `<prefix> _`: sync panes (∵ "s"ync)
 
 ### tabpage
 
 ("tabpage" is called "window" officially.)
 
-#### movement
+#### navigation
 
-- `<prefix> Shift-h` (`|l`): change focus ☆ (or `<prefix> Ctrl-h` (`|l`))
+- `<prefix> Shift-h` (`|l`): change focus ☆
+    - or `<prefix> Ctrl-h` (`|l`)
 
 #### create/close
 
@@ -103,13 +105,11 @@ TODO:
 
 #### edit
 
-- `<prefix> Shift-e`: rename (∵ r"e"name)
+- `<prefix> Shift-.`: rename (∵ r"e"name)
 
 #### movement
 
-- `<prefix> {` (`|}`): swap current with previous/next
-- `<prefix> Shift-b`: break current pane to new tabpage (∵ "b"reak)
-- `<prefix> (` (`|)`): break current pane to previous/next tabpage
+- `<prefix> Shift-s` (`|Shift-f`): swap current with previous/next
 
 ### session
 
@@ -135,6 +135,8 @@ TODO:
 
 - `<prefix> Space`: enter copy-mode ☆
 - `<prefix> p`: paste buffer ☆
+- TODO: Add more
+    - Ref: https://github.com/tmux/tmux/wiki/Getting-Started#copy-mode-key-bindings
 
 <!--
 in copy-mode:
