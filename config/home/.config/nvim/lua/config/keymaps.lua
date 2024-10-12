@@ -23,14 +23,79 @@ map("n", "<C-l>", "<C-w>l", { desc = "Go to right pane", remap = true })
 map("n", "<C-w>;", "<cmd>vsplit<CR>", { desc = "New virtical pane", silent = true })
 map("n", "<C-w>'", "<cmd>split<CR>", { desc = "New horizontal pane", silent = true })
 
--- map("n", "<C-w><C-Up>", "<cmd>resize +2<cr>", { desc = "Increase pane height", silent = true })
--- map("n", "<C-w><C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease pane height", silent = true })
--- map("n", "<C-w><C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease pane width", silent = true })
--- map("n", "<C-w><C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase pane width", silent = true })
-map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase pane height", silent = true })
-map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease pane height", silent = true })
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease pane width", silent = true })
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase pane width", silent = true })
+-- map("n", "<C-Left>", "<cmd>vertical resize -5<cr>", { desc = "Decrease pane width", silent = true })
+-- map("n", "<C-Right>", "<cmd>vertical resize +5<cr>", { desc = "Increase pane width", silent = true })
+-- map("n", "<C-Up>", "<cmd>resize +5<cr>", { desc = "Increase pane height", silent = true })
+-- map("n", "<C-Down>", "<cmd>resize -5<cr>", { desc = "Decrease pane height", silent = true })
+
+-- Resize pane like tmux!!
+local function is_at_edge(direction) -- "dierction" = h, j, k, l
+  local cur_win = vim.fn.winnr() -- Get the current window number
+  vim.cmd("wincmd " .. direction) -- Move to the specified direction
+  local new_win = vim.fn.winnr() -- Get the new window number after moving
+  local result = cur_win == new_win -- Check if we are still in the same window
+  if not result then
+    vim.cmd("wincmd p") -- Move back to the original window
+  end
+  return result
+end
+
+local function is_at_left_edge()
+  return is_at_edge("h")
+end
+local function is_at_right_edge()
+  return is_at_edge("l")
+end
+local function is_at_top_edge()
+  return is_at_edge("k")
+end
+local function is_at_bottom_edge()
+  return is_at_edge("j")
+end
+local function resize_window_to_left()
+  if is_at_right_edge() then
+    if is_at_left_edge() then
+      return -- do nothing
+    end
+    vim.cmd("vertical resize +5")
+  else
+    vim.cmd("vertical resize -5")
+  end
+end
+local function resize_window_to_right()
+  if is_at_right_edge() then
+    if is_at_left_edge() then
+      return -- do nothing
+    end
+    vim.cmd("vertical resize -5")
+  else
+    vim.cmd("vertical resize +5")
+  end
+end
+local function resize_window_to_down()
+  if is_at_bottom_edge() then
+    if is_at_top_edge() then
+      return -- do nothing
+    end
+    vim.cmd("horizontal resize -5")
+  else
+    vim.cmd("horizontal resize +5")
+  end
+end
+local function resize_window_to_up()
+  if is_at_bottom_edge() then
+    if is_at_top_edge() then
+      return -- do nothing
+    end
+    vim.cmd("horizontal resize +5")
+  else
+    vim.cmd("horizontal resize -5")
+  end
+end
+map("n", "<C-Left>", resize_window_to_left, { desc = "Resize pane to left", silent = true })
+map("n", "<C-Right>", resize_window_to_right, { desc = "Resize pane to right", silent = true })
+map("n", "<C-Up>", resize_window_to_up, { desc = "Resize pane to up", silent = true })
+map("n", "<C-Down>", resize_window_to_down, { desc = "Resize pane to down", silent = true })
 
 -- ========= tabpage
 
