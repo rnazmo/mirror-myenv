@@ -5,6 +5,11 @@ return {
   -- -- Example:
   -- { "folke/trouble.nvim", enabled = false },
 
+  -- Colorscheme
+
+  -- Ref: https://www.lazyvim.org/plugins/colorscheme
+  { "catppuccin/nvim", enabled = false },
+
   -- UI
 
   -- Disable notify
