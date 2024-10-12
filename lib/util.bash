@@ -192,7 +192,7 @@ copy_file() {
 }
 
 # What is this:
-#     Download a file from <remote_path> to <dest_path>.
+#     Download a file from <remote_path> to <dest_path> with curl.
 #     If the <dest_path> already exists and is a regular file,
 #     do nothing. If the <dest_path> already exists and is not
 #     regular file (directory, symbolic link, ...), return error.
@@ -229,6 +229,55 @@ download_file() {
         return 0
     else
         log_err "The path $DEST_PATH must be nothing or a regular file."
+        return 1
+    fi
+}
+
+# What is this:
+#     Download a Git repository from <remote_path> to <dest_path> with git clone.
+#     If the <dest_path> already exists and is a regular directory,
+#     do nothing. If the <dest_path> already exists and is not
+#     regular directory (file, symbolic link, ...), return error.
+#
+# Prerequisites:
+#     git
+#
+# Usage:
+#     clone_repo_shallow <remote_path> <dest_path>
+#
+# Arguments:
+#     remote_path:
+#         Must be valid HTTPS URL of git repository.
+#     dest_path:
+#         The path must be nothing or a regular directory.
+#
+# NOTE:
+#     Not full-clone, blobless-clone, or treeless-clone, but shallow-clone.
+#     The branch is the remote default branch.
+#
+# Example:
+#     clone_repo_shallow \
+#         "https://github.com/tmux-plugins/tpm" \
+#         "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
+#
+# Ref:
+#     https://github.blog/jp/2021-01-13-get-up-to-speed-with-partial-clone-and-shallow-clone/
+#
+clone_repo_shallow() {
+    local -r REMOTE_PATH="$1"
+    local -r DEST_PATH="$2"
+    if [[ ! -e "$DEST_PATH" ]]; then
+        log_info "The file not found. Download a repo from remote."
+        log_info "REMOTE_PATH: $REMOTE_PATH"
+        log_info "DEST_PATH  : $DEST_PATH"
+        git clone --depth=1 "$REMOTE_PATH" "$DEST_PATH"
+        return 0
+    elif [[ -d "DEST_PATH" ]]; then
+        log_info "The file already exist. Do nothong."
+        log_info "DEST_PATH  : $DEST_PATH"
+        return 0
+    else
+        log_err "The path $DEST_PATH must be nothing or a regular directory."
         return 1
     fi
 }

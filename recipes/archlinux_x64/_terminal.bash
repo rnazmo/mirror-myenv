@@ -97,35 +97,40 @@ main() {
     # Ref: https://github.com/romkatv/zsh-defer/blob/master/README.md#installation
     local -r ZSH_DEFER="${ZSH_PLUGINS_LOCAL_DIR}/zsh-defer"
     if [[ ! -d "$ZSH_DEFER" ]]; then
-        git clone https://github.com/romkatv/zsh-defer.git \
+        clone_repo_shallow \
+            https://github.com/romkatv/zsh-defer.git \
             "$ZSH_DEFER"
     fi
 
     # zsh-users/zsh-completions
     local -r ZSH_COMPLETIONS="${ZSH_PLUGINS_LOCAL_DIR}/zsh-completions"
     if [[ ! -d "$ZSH_COMPLETIONS" ]]; then
-        git clone https://github.com/zsh-users/zsh-completions.git \
+        clone_repo_shallow \
+            https://github.com/zsh-users/zsh-completions.git \
             "$ZSH_COMPLETIONS"
     fi
 
     # zsh-users/zsh-autosuggestions
     local -r ZSH_AUTOSUGGESTIONS="${ZSH_PLUGINS_LOCAL_DIR}/zsh-autosuggestions"
     if [[ ! -d "$ZSH_AUTOSUGGESTIONS" ]]; then
-        git clone https://github.com/zsh-users/zsh-autosuggestions.git \
+        clone_repo_shallow \
+            https://github.com/zsh-users/zsh-autosuggestions.git \
             "$ZSH_AUTOSUGGESTIONS"
     fi
 
     # zsh-users/zsh-syntax-highlighting
     local -r ZSH_SYNTAX_HIGHLIGHTING="${ZSH_PLUGINS_LOCAL_DIR}/zsh-syntax-highlighting"
     if [[ ! -d "$ZSH_SYNTAX_HIGHLIGHTING" ]]; then
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+        clone_repo_shallow \
+            https://github.com/zsh-users/zsh-syntax-highlighting.git \
             "$ZSH_SYNTAX_HIGHLIGHTING"
     fi
 
     # zsh-users/zsh-history-substring-search
     local -r ZSH_HISTORY_SUBSTRING_SEARCH="${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search"
     if [[ ! -d "$ZSH_HISTORY_SUBSTRING_SEARCH" ]]; then
-        git clone https://github.com/zsh-users/zsh-history-substring-search.git \
+        clone_repo_shallow \
+            https://github.com/zsh-users/zsh-history-substring-search.git \
             "$ZSH_HISTORY_SUBSTRING_SEARCH"
     fi
 
@@ -182,7 +187,7 @@ main() {
     #         "tpm/docs/changing_plugins_install_dir.md"
     #
     if [[ ! -d "${TMUX_PLUGIN_INSTALL_PATH}/tpm" ]]; then
-        git clone --depth=1 "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
+        clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
     fi
 
     # ======== plugins
