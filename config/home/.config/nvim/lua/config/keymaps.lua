@@ -110,3 +110,18 @@ map("n", "<C-w>Q", "<cmd>tabclose<CR>", { desc = "Close tab", silent = true })
 -- map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
 -- map("n", "<ESC><ESC>", ":noh<CR>", { desc = "Clear search highlights", silent = true })
+
+-- ========= cursor
+
+-- better cursor navigation
+-- line navigation
+map("n", "<leader>h", "^", { desc = "Jump to first non-black char of line", noremap = true })
+map("n", "<leader>l", "$", { desc = "Jump to end of line", noremap = true })
+-- paragraph navigation
+map("n", "<leader>k", "{", { desc = "Jump to previous paragraph", noremap = true })
+map("n", "<leader>j", "}", { desc = "Jump to next paragraph", noremap = true })
+
+-- ========= etc
+
+-- lazy
+map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
