@@ -9,7 +9,12 @@ return {
   {
     "folke/tokyonight.nvim",
     lazy = true,
-    opts = { style = "night" },
+    opts = {
+      style = "night",
+      on_colors = function(colors)
+        colors.border = "#565f89"
+      end,
+    },
   },
 
   -- Configure LazyVim to load the colorscheme
