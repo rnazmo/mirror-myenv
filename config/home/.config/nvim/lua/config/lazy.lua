@@ -20,16 +20,6 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- import extra plugins
     -- Ref: https://www.lazyvim.org/extras
-    -- { import = "lazyvim.plugins.extras.coding.codeium" },
-    -- { import = "lazyvim.plugins.extras.coding.copilot" },
-    -- { import = "lazyvim.plugins.extras.coding.copilot-chat" },
-    -- { import = "lazyvim.plugins.extras.coding.mini-comment" },
-    -- { import = "lazyvim.plugins.extras.coding.mini-surround" },
-    -- { import = "lazyvim.plugins.extras.editor.aerial" },
-    -- { import = "lazyvim.plugins.extras.editor.dial" },
-    -- { import = "lazyvim.plugins.extras.editor.harpoon2" },
-    { import = "lazyvim.plugins.extras.ui.edgy" },
-    { import = "lazyvim.plugins.extras.lang.typescript" },
     -- import/override with your plugins
     { import = "plugins" },
   },
