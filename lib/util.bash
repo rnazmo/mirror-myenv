@@ -35,7 +35,7 @@ check_if_command_exists() {
 #     unlink_symlink <PATH>
 unlink_symlink() {
     local -r TARGET_PATH=$1
-    unlink $TARGET_PATH
+    unlink "$TARGET_PATH"
 }
 
 # What is this:
@@ -86,7 +86,7 @@ link_file() {
         fi
     fi
 
-    ln -s $SOURCE_FILE $TARGET_FILE
+    ln -s "$SOURCE_FILE" "$TARGET_FILE"
     log_info "Symbolic link created: '$TARGET_FILE' -> '$SOURCE_FILE'"
 }
 
@@ -145,7 +145,7 @@ link_dir() {
         fi
     fi
 
-    ln -s $SOURCE_DIR $TARGET_DIR
+    ln -s "$SOURCE_DIR" "$TARGET_DIR"
     log_info "Symbolic link created: '$TARGET_DIR' -> '$SOURCE_DIR'"
 }
 
@@ -187,7 +187,7 @@ copy_file() {
         mkdir -p "$TARGET_PARENT_DIR"
     fi
 
-    cp $SRC_PATH $DEST_PATH
+    cp "$SRC_PATH" "$DEST_PATH"
     log_info "Copied file: '$SRC_PATH' -> '$DEST_PATH'"
 }
 
