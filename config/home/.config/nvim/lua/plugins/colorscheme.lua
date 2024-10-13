@@ -10,15 +10,17 @@ return {
     "folke/tokyonight.nvim",
     lazy = true,
     opts = {
-      style = "night",
+      -- style = "night",
+      style = "storm",
+      -- style = "moon",
       transparent = true,
-      on_colors = function(colors)
-        colors.border = "#565f89"
-      end,
       styles = {
         sidebars = "transparent",
         floats = "transparent",
       },
+      -- on_colors = function(colors)
+      --   colors.border = "#565f89"
+      -- end,
     },
   },
 
