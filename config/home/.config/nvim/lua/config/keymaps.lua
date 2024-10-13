@@ -28,7 +28,12 @@ map("n", "<C-w>'", "<cmd>split<CR>", { desc = "New horizontal pane", silent = tr
 -- map("n", "<C-Up>", "<cmd>resize +5<cr>", { desc = "Increase pane height", silent = true })
 -- map("n", "<C-Down>", "<cmd>resize -5<cr>", { desc = "Decrease pane height", silent = true })
 
--- Resize pane like tmux!!
+-- Resize pane like tmux!!--     tmux の挙動の再現。
+--     tmux の挙動について：
+--         左右：そのウィンドウが右端なら、そのウィンドウの左側の枠が動き、
+--             そのウィンドウが右端以外なら、そのウィンドウの右側の枠が動く。
+--         上下：そのウィンドウが下端なら、そのウィンドウの上側の枠が動き、
+--             そのウィンドウが下端以外なら、そのウィンドウの上側の枠が動く。
 local function is_at_edge(direction) -- "dierction" = h, j, k, l
   local cur_win = vim.fn.winnr() -- Get the current window number
   vim.cmd("wincmd " .. direction) -- Move to the specified direction
@@ -39,7 +44,6 @@ local function is_at_edge(direction) -- "dierction" = h, j, k, l
   end
   return result
 end
-
 local function is_at_left_edge()
   return is_at_edge("h")
 end
