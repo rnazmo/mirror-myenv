@@ -22,6 +22,10 @@ aliases:
 
 ## Desktop Environment / Window Manager - Xfce
 
+### Workspace
+
+- `Ctrl-`
+
 TODO: i3wm?
 
 ## Terminal - Alacritty
@@ -57,36 +61,38 @@ TODO:
 
 - `prefix` = `Ctrl-\`
 
+今の空きキー→ `gwxvyu@#$<>()-+=`
+
 ### pane
 
 #### navigation
 
 - `<prefix> h` (`|j|k|l`): change focus to left/down/up/right (∵ like neovim) ☆
-- `<prefix> w` (`|r`): change focus to next/previous (∵ like neovim)
-- ``<prefix> ` 0`` (`|...|9`): change focus by number
+- `<prefix> n` (`|r`): change focus to next/previous (∵ "n"ext, p"r"evious/"r"everse)
+<!-- - ``<prefix> ` 1`` (`|...|9`): change focus by number -->
 
 #### create/close
 
-- `<prefix> ;` (`|'`): create new virtically/horizontally ☆
+- `<prefix> ;` (`|'`): create new virtical/horizontal ☆
 - `<prefix> q`: close (∵ "q"uit)
-- `<prefix> /`: create new floating (popup) (∵ "f"loating)
+- `<prefix> o`: close other panes (∵ "o"ther)
+- `<prefix> /`: create new floating
 
 #### edit
 
-- `<prefix> .`: rename (∵ r"e"name)
-- `<prefix> ←` (`|↓|↑|→`): resize (∵ like neovim)
-    - TODO: Resize like vim???
-- `<prefix> m`: toggle maximize (full screen) (∵ "m"aximize)
+- `<prefix> ←` (`|↓|↑|→`): resize
+- `<prefix> i`: rename (∵ r"i"ne-mu)
+<!-- - `<prefix> m`: toggle maximize (∵ "m"aximize) -->
 
 #### movement
 
-- `<prefix> s` (`|d|e|f`): swap current with previous/next
+- `<prefix> s` (`|d|e|f`): swap current with left/down/up/right
 - `<prefix> b`: break current pane to new tabpage (∵ "b"reak)
 - `<prefix> [` (`|]`): break current pane to previous/next tabpage
 
 #### special
 
-- `<prefix> _`: sync panes (∵ "s"ync)
+<!-- - `<prefix> _`: sync panes (∵ "s"ync) -->
 
 ### tabpage
 
@@ -94,49 +100,57 @@ TODO:
 
 #### navigation
 
-- `<prefix> Shift-h` (`|l`): change focus ☆
-    - or `<prefix> Ctrl-h` (`|l`)
+- `<prefix> Ctrl-h` (`|l`): change focus ☆
+<!-- - `<prefix> Ctrl-j` (`|k`): change focus to first/last -->
 
 #### create/close
 
-- `<prefix> Shift-c`: create new (∵ "c"reate) ☆
-- `<prefix> Shift-q`: close (∵ "q"uit)
-- `<prefix> Shift-o`: close other tabpages (∵ "o"ther)
+- `<prefix> Ctrl-c`: create new (∵ "c"reate) ☆
+- `<prefix> Ctrl-q`: close (∵ "q"uit)
+- `<prefix> Ctrl-o`: close other tabpages (∵ "o"ther)
 
 #### edit
 
-- `<prefix> Shift-.`: rename (∵ r"e"name)
+- `<prefix> Ctrl-i`: rename (∵ r"i"ne-mu)
 
 #### movement
 
-- `<prefix> Shift-s` (`|Shift-f`): swap current with previous/next
+- `<prefix> Ctrl-s` (`|f`): swap current with left/right
+<!-- - `<prefix> Ctrl-d` (`|e`): swap current with first/last -->
 
 ### session
 
-#### movement
+#### navigation
 
-- `<prefix> Alt-t`: choose from tree ("t"ree) (or `:choose-tree -w`)
-- `$ tmux attach-session -t <session_name>`: attach to session (or `$ tmux a -t <session_name>`)
+<!-- - `<prefix> Alt-n` (`|r`): change focus to next/previous (∵ "n"ext, p"r"evious/"r"everse) -->
+- `<prefix> Alt-t`: choose from tree ("t"ree)
+<!--    - or `:choose-tree -w` -->
+<!-- - `$ t a -t <session_name>`: attach to session -->
+<!--    - or `$ tmux attach-session -t <session_name>` -->
 
 #### create/close
 
-- `$ t`: create new (or `$ tmux`, `$ tmux new`)
-- `$ ts <session_name>`: create new with name (or `$ tmux new -s <sesion_name>`)
-- `<prefix> Alt-q`: close (∵ "q"uit) (or `:kill-session`)
+- `$ t`: create new
+<!--     - or `$ tmux`, `$ tmux new` -->
+- `$ t -s <session_name>`: create new with name
+    - or `$ ts <sesion_name>`, `$ tmux new -s <sesion_name>`
+- `<prefix> Alt-q`: close (∵ "q"uit)
+    - or `:kill-session`
 
 ### server
 
 #### create/close
 
-- `<prefix> Alt-Ctrl-q`: close (∵ "q"uit) (or `:kill-server`)
-    - (= kill all sessions)
+- `<prefix> Alt-Ctrl-q`: close (∵ "q"uit)
+    - or `:kill-server`
+    - (close server = kill all sessions)
 
 ### copy-mode
 
 - `<prefix> Space`: enter copy-mode ☆
 - `<prefix> p`: paste buffer ☆
 - TODO: Add more
-    - Ref: https://github.com/tmux/tmux/wiki/Getting-Started#copy-mode-key-bindings
+    - Ref: <https://github.com/tmux/tmux/wiki/Getting-Started#copy-mode-key-bindings>
 
 <!--
 in copy-mode:
@@ -179,7 +193,7 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 
 ### pane
 
-("tab" is "window" officiay.)
+("pane" is "window" officiay.)
 
 - `Ctrl-w h` (`|j|k|l`): change focus ☆
     - or `Ctrl-h` (`|j|k|l`) ☆
@@ -187,6 +201,8 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 - TODO:??: resize
     - or `Ctrl ←` (`|↓|↑|→`)?? ☆
 - TODO:
+
+- `<prefix> /`: create new floating terminal
 
 TODO: Setup my keybindings to manage panes
 
@@ -306,3 +322,6 @@ misc
 
 TODO:
 
+## CLI - bat
+
+TODO:
