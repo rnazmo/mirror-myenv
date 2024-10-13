@@ -175,29 +175,29 @@ main() {
         "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/tmux/tokyonight_storm.tmux" \
         "${TMUX_THEME_LOCAL_PATH}/tokyonight_storm.tmux"
 
-    # ======== tpm (plugin manager)
-    # Install tpm
-    # Ref:
-    #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/automatic_tpm_installation.md
-    #         "tpm／docs／automatic_tpm_installation.md"
-    #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
-    #         "tpm／docs／managing_plugins_via_cmd_line.md"
-    #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/changing_plugins_install_dir.md
-    #         "tpm/docs/changing_plugins_install_dir.md"
+    # # ======== tpm (plugin manager)
+    # # Install tpm
+    # # Ref:
+    # #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/automatic_tpm_installation.md
+    # #         "tpm／docs／automatic_tpm_installation.md"
+    # #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
+    # #         "tpm／docs／managing_plugins_via_cmd_line.md"
+    # #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/changing_plugins_install_dir.md
+    # #         "tpm/docs/changing_plugins_install_dir.md"
+    # #
+    # local -r TMUX_PLUGIN_INSTALL_PATH="${HOME}/.config/tmux/plugins"
+    # clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
     #
-    local -r TMUX_PLUGIN_INSTALL_PATH="${HOME}/.config/tmux/plugins"
-    clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
-
-    # ======== plugins
-    # Install plugins with tpm via CLI
-    # Ref:
-    #       https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
-    #           "tpm/docs/managing_plugins_via_cmd_line.md"
+    # # ======== plugins
+    # # Install plugins with tpm via CLI
+    # # Ref:
+    # #       https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
+    # #           "tpm/docs/managing_plugins_via_cmd_line.md"
+    # #
+    # "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/install_plugins"
     #
-    "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/install_plugins"
-
-    # update plugins with tpm via CLI
-    "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/update_plugins" all
+    # # update plugins with tpm via CLI
+    # "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/update_plugins" all
 
     log_debug "END  : ${BASH_SOURCE}"
 }
