@@ -15,6 +15,10 @@ return {
       on_colors = function(colors)
         colors.border = "#565f89"
       end,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
     },
   },
 
