@@ -34,6 +34,7 @@ map("n", "<C-w>'", "<cmd>split<CR>", { desc = "New horizontal pane", silent = tr
 --             そのウィンドウが右端以外なら、そのウィンドウの右側の枠が動く。
 --         上下：そのウィンドウが下端なら、そのウィンドウの上側の枠が動き、
 --             そのウィンドウが下端以外なら、そのウィンドウの上側の枠が動く。
+--     NOTE: edgy.nvim と一緒に使うと端検知周りでバグるので、edgy.nvim は使わないことを推奨
 local function is_at_edge(direction) -- "dierction" = h, j, k, l
   local cur_win = vim.fn.winnr() -- Get the current window number
   vim.cmd("wincmd " .. direction) -- Move to the specified direction
