@@ -11,6 +11,7 @@ return {
     lazy = true,
     opts = {
       style = "night",
+      transparent = true,
       on_colors = function(colors)
         colors.border = "#565f89"
       end,
