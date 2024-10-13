@@ -28,7 +28,8 @@ map("n", "<C-w>'", "<cmd>split<CR>", { desc = "New horizontal pane", silent = tr
 -- map("n", "<C-Up>", "<cmd>resize +5<cr>", { desc = "Increase pane height", silent = true })
 -- map("n", "<C-Down>", "<cmd>resize -5<cr>", { desc = "Decrease pane height", silent = true })
 
--- Resize pane like tmux!!--     tmux の挙動の再現。
+-- Resize pane like tmux!!
+--     tmux の挙動の再現。
 --     tmux の挙動について：
 --         左右：そのウィンドウが右端なら、そのウィンドウの左側の枠が動き、
 --             そのウィンドウが右端以外なら、そのウィンドウの右側の枠が動く。
@@ -104,12 +105,11 @@ map("n", "<C-Down>", resize_window_to_down, { desc = "Resize pane to down", sile
 
 -- ========= tabpage
 
-map("n", "<C-w>H", "<cmd>tabp<CR>", { desc = "Go to previous tab", silent = true })
-map("n", "<C-w>L", "<cmd>tabn<CR>", { desc = "Go to next tab", silent = true })
 map("n", "<C-w><C-h>", "<cmd>tabp<CR>", { desc = "Go to previous tab", silent = true })
 map("n", "<C-w><C-l>", "<cmd>tabn<CR>", { desc = "Go to next tab", silent = true })
-map("n", "<C-w>C", "<cmd>tabnew<CR>", { desc = "New tab", silent = true })
-map("n", "<C-w>Q", "<cmd>tabclose<CR>", { desc = "Close tab", silent = true })
+map("n", "<C-w><C-c>", "<cmd>tabnew<CR>", { desc = "New tab", silent = true })
+map("n", "<C-w><C-q>", "<cmd>tabclose<CR>", { desc = "Close tab", silent = true })
+map("n", "<C-w><C-o>", "<cmd>tabonly<CR>", { desc = "Close other tabs", silent = true })
 
 -- use jk to exit insert mode
 -- map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
