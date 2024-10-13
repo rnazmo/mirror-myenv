@@ -13,7 +13,7 @@ main() {
     # ======================================================
 
     sudo pacman -S --needed --noconfirm \
-        ghq fzf tree xclip unzip fastfetch \
+        ghq fzf tree xclip unzip \
         ripgrep bat eza fd git-delta bottom
 
     # ======== proper7y
@@ -28,7 +28,13 @@ main() {
 
     # ======== lazygit
     sudo pacman -S --needed --noconfirm lazygit
+    remove_unused_config "${HOME}/.config/lazygit/config.yml"
     link_file "${MYENV_ROOT}/config/home/.config/lazygit/config.yml" "${HOME}/.config/lazygit/config.yml"
+
+    # ======== fastfetch
+    sudo pacman -S --needed --noconfirm fastfetch
+    remove_unused_config "${HOME}/.config/fastfetch/config.jsonc"
+    link_file "${MYENV_ROOT}/config/home/.config/fastfetch/config.jsonc" "${HOME}/.config/fastfetch/config.jsonc"
 
     log_debug "END  : ${BASH_SOURCE}"
 }
