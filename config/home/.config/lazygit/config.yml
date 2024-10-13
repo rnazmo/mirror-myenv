@@ -1,0 +1,14 @@
+# Ref: https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+
+gui:
+  scrollHeight: 3
+  nerdFontsVersion: "3"
+
+os:
+  editPreset: "nvim"
+
+git:
+  paging:
+    pager: "delta --dark --paging=never"
+  # branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium --oneline {{branchName}} --"
+  branchLogCmd: "git log --graph --color=always --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %C(green)- %an, %cr%Creset'"

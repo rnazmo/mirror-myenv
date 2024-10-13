@@ -13,7 +13,7 @@ main() {
     # ======================================================
 
     sudo pacman -S --needed --noconfirm \
-        ghq fzf tree xclip unzip fastfetch lazygit \
+        ghq fzf tree xclip unzip fastfetch \
         ripgrep bat eza fd git-delta bottom
 
     # ======== proper7y
@@ -25,6 +25,10 @@ main() {
         chmod +x ./install.bash
         ./install.bash "$dest_dir"
     fi
+
+    # ======== lazygit
+    sudo pacman -S --needed --noconfirm lazygit
+    link_file "${MYENV_ROOT}/config/home/.config/lazygit/config.yml" "${HOME}/.config/lazygit/config.yml"
 
     log_debug "END  : ${BASH_SOURCE}"
 }
