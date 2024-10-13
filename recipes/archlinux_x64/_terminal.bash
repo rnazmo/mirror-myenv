@@ -88,51 +88,33 @@ main() {
     # ======== zsh plugins                                 =
     # ======================================================
 
-    # TODO: Refactor (DRY)
-    # TODO: Shallow clone for performance ?
-
     local -r ZSH_PLUGINS_LOCAL_DIR="${ZDOTDIR}/plugins.local"
 
     # ======== zsh-defer
     # Ref: https://github.com/romkatv/zsh-defer/blob/master/README.md#installation
-    local -r ZSH_DEFER="${ZSH_PLUGINS_LOCAL_DIR}/zsh-defer"
-    if [[ ! -d "$ZSH_DEFER" ]]; then
-        clone_repo_shallow \
-            https://github.com/romkatv/zsh-defer.git \
-            "$ZSH_DEFER"
-    fi
+    clone_repo_shallow \
+        https://github.com/romkatv/zsh-defer.git \
+        "${ZSH_PLUGINS_LOCAL_DIR}/zsh-defer"
 
     # zsh-users/zsh-completions
-    local -r ZSH_COMPLETIONS="${ZSH_PLUGINS_LOCAL_DIR}/zsh-completions"
-    if [[ ! -d "$ZSH_COMPLETIONS" ]]; then
-        clone_repo_shallow \
-            https://github.com/zsh-users/zsh-completions.git \
-            "$ZSH_COMPLETIONS"
-    fi
+    clone_repo_shallow \
+        https://github.com/zsh-users/zsh-completions.git \
+        "${ZSH_PLUGINS_LOCAL_DIR}/zsh-completions"
 
     # zsh-users/zsh-autosuggestions
-    local -r ZSH_AUTOSUGGESTIONS="${ZSH_PLUGINS_LOCAL_DIR}/zsh-autosuggestions"
-    if [[ ! -d "$ZSH_AUTOSUGGESTIONS" ]]; then
-        clone_repo_shallow \
-            https://github.com/zsh-users/zsh-autosuggestions.git \
-            "$ZSH_AUTOSUGGESTIONS"
-    fi
+    clone_repo_shallow \
+        https://github.com/zsh-users/zsh-autosuggestions.git \
+        "${ZSH_PLUGINS_LOCAL_DIR}/zsh-autosuggestions"
 
     # zsh-users/zsh-syntax-highlighting
-    local -r ZSH_SYNTAX_HIGHLIGHTING="${ZSH_PLUGINS_LOCAL_DIR}/zsh-syntax-highlighting"
-    if [[ ! -d "$ZSH_SYNTAX_HIGHLIGHTING" ]]; then
-        clone_repo_shallow \
-            https://github.com/zsh-users/zsh-syntax-highlighting.git \
-            "$ZSH_SYNTAX_HIGHLIGHTING"
-    fi
+    clone_repo_shallow \
+        https://github.com/zsh-users/zsh-syntax-highlighting.git \
+        "${ZSH_PLUGINS_LOCAL_DIR}/zsh-syntax-highlighting"
 
     # zsh-users/zsh-history-substring-search
-    local -r ZSH_HISTORY_SUBSTRING_SEARCH="${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search"
-    if [[ ! -d "$ZSH_HISTORY_SUBSTRING_SEARCH" ]]; then
-        clone_repo_shallow \
-            https://github.com/zsh-users/zsh-history-substring-search.git \
-            "$ZSH_HISTORY_SUBSTRING_SEARCH"
-    fi
+    clone_repo_shallow \
+        https://github.com/zsh-users/zsh-history-substring-search.git \
+        "${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search"
 
     # ======================================================
     # ======== zsh misc                                    =
@@ -186,9 +168,7 @@ main() {
     #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/changing_plugins_install_dir.md
     #         "tpm/docs/changing_plugins_install_dir.md"
     #
-    if [[ ! -d "${TMUX_PLUGIN_INSTALL_PATH}/tpm" ]]; then
-        clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
-    fi
+    clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
 
     # ======== plugins
     # Install plugins with tpm via CLI
