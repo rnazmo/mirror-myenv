@@ -2,9 +2,7 @@
 
 # NOTE: You can't use `$HOME` here. Use `~` instead.
 #     Ref: https://alacritty.org/config-alacritty.html#s0
-import = [
-  "~/.config/alacritty/theme.local/tokyonight_night.toml"
-]
+import = ["~/.config/alacritty/theme.local/tokyonight_night.toml"]
 
 [shell]
 program = "/bin/zsh"
