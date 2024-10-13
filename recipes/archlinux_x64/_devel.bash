@@ -14,7 +14,8 @@ main() {
 
     sudo pacman -S --needed --noconfirm \
         ghq fzf tree xclip unzip \
-        ripgrep bat eza fd git-delta bottom
+        ripgrep bat eza fd git-delta bottom \
+        shellcheck shfmt
 
     # ======== proper7y
     if ! check_if_command_exists "proper7y"; then
