@@ -216,8 +216,8 @@ copy_file() {
 download_file() {
     local -r REMOTE_PATH="$1"
     local -r DEST_PATH="$2"
-        log_info "The file not found. Download a file from remote."
     if [[ ! -e "$DEST_PATH" ]]; then
+        log_info "The file not found. Downloading from remote..."
         log_info "REMOTE_PATH: $REMOTE_PATH"
         log_info "DEST_PATH  : $DEST_PATH"
         # `--create-dirs` option will create the necessary directories if needed.
@@ -266,8 +266,8 @@ download_file() {
 clone_repo_shallow() {
     local -r REMOTE_PATH="$1"
     local -r DEST_PATH="$2"
-        log_info "The file not found. Download a repo from remote."
     if [[ ! -e "$DEST_PATH" ]]; then
+        log_info "The repo not found. Downloading from remote..."
         log_info "REMOTE_PATH: $REMOTE_PATH"
         log_info "DEST_PATH  : $DEST_PATH"
         git clone --depth=1 "$REMOTE_PATH" "$DEST_PATH"
