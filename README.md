@@ -125,10 +125,11 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
     - [ ] feat: Support config file of fcitx5-mozc
 - shell:
     - [ ] feat: Update Zsh config
-- lazygit:
-    - [ ] feat: Support config file of lazygit
 - bat:
     - [ ] feat: Support config file of bat
+- baobab:
+    - [ ] feat: Add baobab
+        - GUI disk usage analyzer
+        - [Arch Linux - baobab 47.0-1 (x86_64)](https://archlinux.org/packages/extra/x86_64/baobab/)
 - ?:
     - [ ] feat: Add cspell for typo check
-
