@@ -216,14 +216,14 @@ copy_file() {
 download_file() {
     local -r REMOTE_PATH="$1"
     local -r DEST_PATH="$2"
-    if [[ -e "$DEST_PATH" ]]; then
         log_info "The file not found. Download a file from remote."
+    if [[ ! -e "$DEST_PATH" ]]; then
         log_info "REMOTE_PATH: $REMOTE_PATH"
         log_info "DEST_PATH  : $DEST_PATH"
         # `--create-dirs` option will create the necessary directories if needed.
         curl -v --create-dirs -o "$DEST_PATH" "$REMOTE_PATH"
         return 0
-    elif [[ -f "DEST_PATH" ]]; then
+    elif [[ -f "$DEST_PATH" ]]; then
         log_info "The file already exist. Do nothong."
         log_info "DEST_PATH  : $DEST_PATH"
         return 0
@@ -266,13 +266,13 @@ download_file() {
 clone_repo_shallow() {
     local -r REMOTE_PATH="$1"
     local -r DEST_PATH="$2"
-    if [[ -e "$DEST_PATH" ]]; then
         log_info "The file not found. Download a repo from remote."
+    if [[ ! -e "$DEST_PATH" ]]; then
         log_info "REMOTE_PATH: $REMOTE_PATH"
         log_info "DEST_PATH  : $DEST_PATH"
         git clone --depth=1 "$REMOTE_PATH" "$DEST_PATH"
         return 0
-    elif [[ -d "DEST_PATH" ]]; then
+    elif [[ -d "$DEST_PATH" ]]; then
         log_info "The file already exist. Do nothong."
         log_info "DEST_PATH  : $DEST_PATH"
         return 0
