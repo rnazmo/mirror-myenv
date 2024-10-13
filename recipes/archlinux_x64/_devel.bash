@@ -16,7 +16,7 @@ main() {
         ghq fzf tree xclip unzip fastfetch lazygit \
         ripgrep bat eza fd git-delta bottom
 
-    # ======== proper7y                          =
+    # ======== proper7y
     if ! check_if_command_exists "proper7y"; then
         local -r dest_dir="${HOME}/bin"
 
