@@ -151,12 +151,29 @@ main() {
     # ======== tmux (& plugin-manager & plugins)           =
     # ======================================================
 
-    local -r TMUX_PLUGIN_INSTALL_PATH="${HOME}/.config/tmux/plugins"
-
     # ======== tmux
     sudo pacman -S --needed --noconfirm tmux
     remove_unused_config "${HOME}/.tmux.conf"
     link_file "${MYENV_ROOT}/config/home/.config/tmux/tmux.conf" "${HOME}/.config/tmux/tmux.conf"
+
+    # ======== themes
+    local -r TMUX_THEME_LOCAL_PATH="${HOME}/.config/tmux/themes.local"
+
+    download_file \
+        "https://raw.githubusercontent.com/nordtheme/tmux/refs/heads/develop/nord.tmux" \
+        "${TMUX_THEME_LOCAL_PATH}/nord.tmux"
+
+    download_file \
+        "https://raw.githubusercontent.com/EdenEast/nightfox.nvim/refs/heads/main/extra/nordfox/nordfox.tmux" \
+        "${TMUX_THEME_LOCAL_PATH}/nordfox.tmux"
+
+    download_file \
+        "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/tmux/tokyonight_night.tmux" \
+        "${TMUX_THEME_LOCAL_PATH}/tokyonight_night.tmux"
+
+    download_file \
+        "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/tmux/tokyonight_storm.tmux" \
+        "${TMUX_THEME_LOCAL_PATH}/tokyonight_storm.tmux"
 
     # ======== tpm (plugin manager)
     # Install tpm
@@ -168,6 +185,7 @@ main() {
     #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/changing_plugins_install_dir.md
     #         "tpm/docs/changing_plugins_install_dir.md"
     #
+    local -r TMUX_PLUGIN_INSTALL_PATH="${HOME}/.config/tmux/plugins"
     clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
 
     # ======== plugins
