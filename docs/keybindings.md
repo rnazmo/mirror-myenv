@@ -24,7 +24,8 @@ aliases:
 
 ### Workspace
 
-- `Ctrl-`
+- `Ctrl-Alt ←` (`|→`): Change focus previous/next
+- `Ctrl-Alt-Shift ←` (`|→`): Move current window to previous/next workspace
 
 TODO: i3wm?
 
