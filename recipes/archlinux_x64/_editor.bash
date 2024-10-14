@@ -17,8 +17,8 @@ main() {
     sudo pacman -S --needed --noconfirm neovim
     link_dir "${MYENV_ROOT}/config/home/.config/nvim" "${HOME}/.config/nvim" # NOTE: dir
 
-    # TODO: setup neovim...
-
+    # Sync (= install & cleanup & update) plugins
+    nvim --headless "+Lazy! sync" +qa
 
     # ======================================================
     # ======== vscode (& extensions)                       =
