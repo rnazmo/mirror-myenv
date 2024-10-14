@@ -93,6 +93,7 @@ TODO:
 
 #### create/close
 
+- `<prefix> g`: create new (∵ 余ってるキーの中で押しやすそうなやつを割り当てた) ☆
 - `<prefix> ;` (`|'`): create new virtical/horizontal ☆
 - `<prefix> q`: close (∵ "q"uit)
 - `<prefix> o`: close other panes (∵ "o"ther)
@@ -127,7 +128,7 @@ TODO:
 
 #### create/close
 
-- `<prefix> Ctrl-t`: create new (∵ kuriei"t"o; like Chrome browser) ☆
+- `<prefix> Ctrl-g`: create new (∵ 余ってるキーの中で押しやすそうなやつを割り当てた) ☆
 - `<prefix> Ctrl-q`: close (∵ "q"uit)
 - `<prefix> Ctrl-o`: close other tabpages (∵ "o"ther)
 
@@ -145,19 +146,24 @@ TODO:
 #### navigation
 
 <!-- - `<prefix> Alt-n` (`|r`): change focus to next/previous (∵ "n"ext, p"r"evious/"r"everse) -->
-- `<prefix> Alt-g`: choose from tree
+- `<prefix> Alt-u`: choose from tree (∵ 余ってるキーの中で押しやすそうなやつを割り当てた)
+
 <!--    - or `:choose-tree -w` -->
 <!-- - `$ t a -t <session_name>`: attach to session -->
 <!--    - or `$ tmux attach-session -t <session_name>` -->
 
 #### create/close
 
-- `$ t`: create new
-<!--     - or `$ tmux`, `$ tmux new` -->
+- `<prefix> Alt-g`: create new and attach to it (∵ 余ってるキーの中で押しやすそうなやつを割り当てた) ☆
+    - or `$ t`, `$ tmux`, `$ tmux new`, `:new`
 - `$ t -s <session_name>`: create new with name
-    - or `$ ts <sesion_name>`, `$ tmux new -s <sesion_name>`
+    - or `$ ts <sesion_name>`, `$ tmux new -s <sesion_name>`, `:new -s <session_name>`
 - `<prefix> Alt-q`: close (∵ "q"uit)
     - or `:kill-session`
+
+#### edit
+
+- `<prefix> Alt-i`: rename (∵ r"i"ne-mu)
 
 ### server
 
