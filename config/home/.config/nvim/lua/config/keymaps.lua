@@ -46,6 +46,8 @@ map("n", "<C-j>", "<C-w>j", { desc = "Go to lower pane", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper pane", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right pane", remap = true })
 
+map("n", "<C-w>g", "<cmd>vnew<CR>", { desc = "New black pane", silent = true })
+
 map("n", "<C-w>;", "<cmd>vsplit<CR>", { desc = "New virtical pane", silent = true })
 map("n", "<C-w>'", "<cmd>split<CR>", { desc = "New horizontal pane", silent = true })
 
@@ -148,16 +150,11 @@ map("n", "<C-w>b", "<C-w>T", { desc = "Break pane to new tab", noremap = true })
 map("n", "<C-w><C-h>", "<cmd>tabp<CR>", { desc = "Go to previous tab", silent = true })
 map("n", "<C-w><C-l>", "<cmd>tabn<CR>", { desc = "Go to next tab", silent = true })
 -- TODO: Go to first/last tab
-map("n", "<C-w><C-t>", "<cmd>tabnew<CR>", { desc = "New tab", silent = true })
+map("n", "<C-w><C-g>", "<cmd>tabnew<CR>", { desc = "New tab", silent = true })
 map("n", "<C-w><C-q>", "<cmd>tabclose<CR>", { desc = "Close tab", silent = true })
 map("n", "<C-w><C-o>", "<cmd>tabonly<CR>", { desc = "Close other tabs", silent = true })
 
 -- TODO: swap tab with previous/next?
-
--- use jk to exit insert mode
--- map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
-
--- map("n", "<ESC><ESC>", ":noh<CR>", { desc = "Clear search highlights", silent = true })
 
 -- ========= session
 
