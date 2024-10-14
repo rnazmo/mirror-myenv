@@ -131,5 +131,10 @@ cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
     - [ ] feat: Add baobab
         - GUI disk usage analyzer
         - [Arch Linux - baobab 47.0-1 (x86_64)](https://archlinux.org/packages/extra/x86_64/baobab/)
+- Xfce:
+    - [ ] feat: Support panel config file
+    - [ ] feat: Support desktop config file
+- thunar:
+    - [ ] feat: Support config file of thunar
 - ?:
     - [ ] feat: Add cspell for typo check
