@@ -5,6 +5,10 @@
 --- Info:
 ---     About `vim.map()`
 ---         TODO:
+---     Defference between `map` and `noremap`
+---         TODO:
+---         Ref: https://cocopon.me/blog/2013/10/vim-map-noremap/
+---
 --- Ref:
 ---     https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 ---     https://www.josean.com/posts/how-to-setup-neovim-2024
@@ -136,7 +140,7 @@ map("n", "<C-Down>", resize_window_to_down, { desc = "Resize pane to down", sile
 -- This is not the behaviour I expected.
 -- map("n", "<C-w>f", "<cmd>wincmd x<CR>", { desc = "Swap pane with next??" })
 
-map("n", "<C-w>b", "<cmd>wincmd t<CR>", { desc = "Break pane to new tab" })
+map("n", "<C-w>b", "<C-w>T", { desc = "Break pane to new tab", noremap = true })
 -- TODO: break pane to previous/next tab
 
 -- ========= tabpage
@@ -166,11 +170,11 @@ map("n", "<C-w><A-q>", "<cmd>qa<CR>", { desc = "Close session" })
 
 -- better cursor navigation
 -- line navigation
-map("n", "<leader>h", "^", { desc = "Jump to first non-black char of line", noremap = true })
-map("n", "<leader>l", "$", { desc = "Jump to end of line", noremap = true })
+map("n", "<leader>h", "^", { desc = "Jump to first non-black char of line" })
+map("n", "<leader>l", "$", { desc = "Jump to end of line" })
 -- paragraph navigation
-map("n", "<leader>k", "{", { desc = "Jump to previous paragraph", noremap = true })
-map("n", "<leader>j", "}", { desc = "Jump to next paragraph", noremap = true })
+map("n", "<leader>k", "{", { desc = "Jump to previous paragraph" })
+map("n", "<leader>j", "}", { desc = "Jump to next paragraph" })
 
 -- ========= etc
 
