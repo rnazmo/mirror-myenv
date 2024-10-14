@@ -60,17 +60,36 @@ TODO:
 
 ## Multiplexer - tmux
 
-- `prefix` = `Ctrl-\`
+- Notes:
+    - 今の空きキー→ `wxvyu@#$<>()-+=`
+    - 使えない・使うべきでないキー：
+        - Warn (SHOULD NOT):
+            - `Ctrl-i`: = `Tab`
+            - `Ctrl-m`: = `Enter`
+            - `Ctrl--`: = `Ctrl-_`
+            - `Ctrl-/`: = `Ctrl-^`
+        - Don't use (MUST NOT):
+            - `Tab` = `Ctrl-i`
+            - `Ctrl-@`: = `Ctrl-Space`
+            - `Ctrl-[`: = `Escape`
+            - `Ctrl-_`: = `Ctrl--`
+            - `Ctrl-^`: = `Ctrl-/`
+            - `Ctrl-c`: 各種アプリで「キャンセル」として使われていて衝突しやすい
+        - Ref:
+            - [Modifier Keys · tmux／tmux Wiki](https://github.com/tmux/tmux/wiki/Modifier-Keys)
+            - [How to use Ctrl-semicolon for prefix in tmux? - Stack Overflow](https://stackoverflow.com/questions/30680362/how-to-use-ctrl-semicolon-for-prefix-in-tmux)
 
-今の空きキー→ `gwxvyu@#$<>()-+=`
+### prefix
+
+- `prefix` = `Ctrl-\`
 
 ### pane
 
 #### navigation
 
 - `<prefix> h` (`|j|k|l`): change focus to left/down/up/right (∵ like neovim) ☆
-- `<prefix> n` (`|r`): change focus to next/previous (∵ "n"ext, p"r"evious/"r"everse)
-<!-- - ``<prefix> ` 1`` (`|...|9`): change focus by number -->
+- `<prefix> n` (`|r`): change focus to next/previous (∵ "n"ext, p"r"evious; "r"everse)
+- ``<prefix> ` 1`` (`|...|9`): change focus by number
 
 #### create/close
 
@@ -83,17 +102,18 @@ TODO:
 
 - `<prefix> ←` (`|↓|↑|→`): resize
 - `<prefix> i`: rename (∵ r"i"ne-mu)
-<!-- - `<prefix> m`: toggle maximize (∵ "m"aximize) -->
+- `<prefix> z`: toggle maximize (∵ "z"en mode)
 
 #### movement
 
-- `<prefix> s` (`|d|e|f`): swap current with left/down/up/right
+- `<prefix> s` (`|f`): swap current position with previous/next position
+<!-- - `<prefix> d` (`|e`): swap current with first/last -->
 - `<prefix> b`: break current pane to new tabpage (∵ "b"reak)
 - `<prefix> [` (`|]`): break current pane to previous/next tabpage
 
 #### special
 
-<!-- - `<prefix> _`: sync panes (∵ "s"ync) -->
+- `<prefix> $`: sync panes (∵ "$"(s)ync)
 
 ### tabpage
 
@@ -102,11 +122,12 @@ TODO:
 #### navigation
 
 - `<prefix> Ctrl-h` (`|l`): change focus ☆
-<!-- - `<prefix> Ctrl-j` (`|k`): change focus to first/last -->
+- `<prefix> Ctrl-j` (`|k`): change focus to first/last
+<!--TODO: Change focus to previous/next with Ctrl-r/n ?-->
 
 #### create/close
 
-- `<prefix> Ctrl-c`: create new (∵ "c"reate) ☆
+- `<prefix> Ctrl-t`: create new (∵ kuriei"t"o; like Chrome browser) ☆
 - `<prefix> Ctrl-q`: close (∵ "q"uit)
 - `<prefix> Ctrl-o`: close other tabpages (∵ "o"ther)
 
@@ -117,14 +138,14 @@ TODO:
 #### movement
 
 - `<prefix> Ctrl-s` (`|f`): swap current with left/right
-<!-- - `<prefix> Ctrl-d` (`|e`): swap current with first/last -->
+- `<prefix> Ctrl-d` (`|e`): swap current with first/last
 
 ### session
 
 #### navigation
 
 <!-- - `<prefix> Alt-n` (`|r`): change focus to next/previous (∵ "n"ext, p"r"evious/"r"everse) -->
-- `<prefix> Alt-t`: choose from tree ("t"ree)
+- `<prefix> Alt-g`: choose from tree
 <!--    - or `:choose-tree -w` -->
 <!-- - `$ t a -t <session_name>`: attach to session -->
 <!--    - or `$ tmux attach-session -t <session_name>` -->
@@ -190,7 +211,15 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 
 ## Editor - Neovim (LazyVim)
 
+- Notes:
+    - 今の空きキー→ `wxvyu@#$<>()-+=`
+    - `Ctrl-c` の使用は避けること！
+        - 「キャンセル」コマンドとして使われていることが多く、非常に衝突しやすい
+
+### prefix
+
 - `<leader>`: `Space`
+- `<my_prefix>`: `<Ctrl-w>`
 
 ### pane
 
