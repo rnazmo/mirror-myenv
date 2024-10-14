@@ -3,6 +3,11 @@
 --     https://stackoverflow.com/a/77159562
 --     https://github.com/LazyVim/LazyVim/discussions/3012
 return {
+
+  -- Disable the colorscheme
+  -- Ref: https://www.lazyvim.org/plugins/colorscheme
+  { "catppuccin/nvim", enabled = false },
+
   -- Add a colorscheme
   -- { "ellisonleaoz/gruvbox.nvim" },
   -- { "gbprod/nord.nvim" },
