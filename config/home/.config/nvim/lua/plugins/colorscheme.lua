@@ -18,11 +18,11 @@ return {
       style = "night",
       -- style = "storm",
       -- style = "moon",
-      transparent = true,
-      styles = {
-        sidebars = "transparent",
-        floats = "transparent",
-      },
+      -- transparent = true,
+      -- styles = {
+      --   sidebars = "transparent",
+      --   floats = "transparent",
+      -- },
       on_colors = function(colors)
         colors.border = "#565f89"
       end,
