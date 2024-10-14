@@ -11,10 +11,32 @@
 ---     https://neovim.io/doc/user/map.html#_1.10-mapping-alt-keys
 ---
 
-local map = vim.keymap.set -- for conciseness
+-- for conciseness
+local del = vim.keymap.del
+local map = vim.keymap.set
+
+-- ======================================================
+-- ======== Reset                                       =
+-- ======================================================
+
+-- Disable some LazyVim keybindings
+-- Ref:
+--     https://www.lazyvim.org/configuration/keymaps
+--     https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+del("n", "<leader>-")
+del("n", "<leader>|")
+del("n", "<leader>wd")
+
+-- ======================================================
+-- ======== Add                                         =
+-- ======================================================
 
 -- ========= pane
 
+-- `<C-w>h`: default
+-- `<C-w>j`: default
+-- `<C-w>k`: default
+-- `<C-w>l`: default
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left pane", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower pane", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper pane", remap = true })
@@ -23,19 +45,26 @@ map("n", "<C-l>", "<C-w>l", { desc = "Go to right pane", remap = true })
 map("n", "<C-w>;", "<cmd>vsplit<CR>", { desc = "New virtical pane", silent = true })
 map("n", "<C-w>'", "<cmd>split<CR>", { desc = "New horizontal pane", silent = true })
 
--- map("n", "<C-Left>", "<cmd>vertical resize -5<cr>", { desc = "Decrease pane width", silent = true })
--- map("n", "<C-Right>", "<cmd>vertical resize +5<cr>", { desc = "Increase pane width", silent = true })
--- map("n", "<C-Up>", "<cmd>resize +5<cr>", { desc = "Increase pane height", silent = true })
--- map("n", "<C-Down>", "<cmd>resize -5<cr>", { desc = "Decrease pane height", silent = true })
+-- `<C-w>q`: default
 
--- Resize pane like tmux!!
+-- `<C-w>o`: default
+
+-- `<C-w>/`: default
+
+-- Resize pane like tmux
+--
 --     tmux の挙動の再現。
 --     tmux の挙動について：
 --         左右：そのウィンドウが右端なら、そのウィンドウの左側の枠が動き、
 --             そのウィンドウが右端以外なら、そのウィンドウの右側の枠が動く。
 --         上下：そのウィンドウが下端なら、そのウィンドウの上側の枠が動き、
 --             そのウィンドウが下端以外なら、そのウィンドウの上側の枠が動く。
---     NOTE: edgy.nvim と一緒に使うと端検知周りでバグるので、edgy.nvim は使わないことを推奨
+--     NOTE:
+--        edgy.nvim と一緒に使うと、端検知周りでかなりバグる
+--            => edgy.nvim は使わない
+--        aerial.nvim と一緒に使うと、軽くバグる
+--            => どうしよう。バグが軽微で、あまり問題無いのでとりあえこのままで
+--
 local function is_at_edge(direction) -- "dierction" = h, j, k, l
   local cur_win = vim.fn.winnr() -- Get the current window number
   vim.cmd("wincmd " .. direction) -- Move to the specified direction
@@ -103,18 +132,35 @@ map("n", "<C-Right>", resize_window_to_right, { desc = "Resize pane to right", s
 map("n", "<C-Up>", resize_window_to_up, { desc = "Resize pane to up", silent = true })
 map("n", "<C-Down>", resize_window_to_down, { desc = "Resize pane to down", silent = true })
 
+-- TODO: swap pane with previous/next?
+-- This is not the behaviour I expected.
+-- map("n", "<C-w>f", "<cmd>wincmd x<CR>", { desc = "Swap pane with next??" })
+
+map("n", "<C-w>b", "<cmd>wincmd t<CR>", { desc = "Break pane to new tab" })
+-- TODO: break pane to previous/next tab
+
 -- ========= tabpage
 
 map("n", "<C-w><C-h>", "<cmd>tabp<CR>", { desc = "Go to previous tab", silent = true })
 map("n", "<C-w><C-l>", "<cmd>tabn<CR>", { desc = "Go to next tab", silent = true })
-map("n", "<C-w><C-c>", "<cmd>tabnew<CR>", { desc = "New tab", silent = true })
+-- TODO: Go to first/last tab
+map("n", "<C-w><C-t>", "<cmd>tabnew<CR>", { desc = "New tab", silent = true })
 map("n", "<C-w><C-q>", "<cmd>tabclose<CR>", { desc = "Close tab", silent = true })
 map("n", "<C-w><C-o>", "<cmd>tabonly<CR>", { desc = "Close other tabs", silent = true })
+
+-- TODO: swap tab with previous/next?
 
 -- use jk to exit insert mode
 -- map("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
 -- map("n", "<ESC><ESC>", ":noh<CR>", { desc = "Clear search highlights", silent = true })
+
+-- ========= session
+
+map("n", "<C-w><A-q>", "<cmd>qa<CR>", { desc = "Close session" })
+
+-- ========= server
+-- ?
 
 -- ========= cursor
 
