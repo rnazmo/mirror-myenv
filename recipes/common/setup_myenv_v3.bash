@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 export MYENV_ROOT="${HOME}/.myenv"

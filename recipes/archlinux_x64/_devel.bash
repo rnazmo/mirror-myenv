@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 source ${MYENV_ROOT}/lib/util.bash
