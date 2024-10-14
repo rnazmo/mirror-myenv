@@ -12,7 +12,11 @@ return {
       },
       filesystem = {
         filtered_items = {
-          hide_dotfiles = false,
+          -- Show hidden files by default, but allow toggling visibility
+          -- Ref: https://github.com/nvim-neo-tree/neo-tree.nvim/discussions/353#discussioncomment-2717085
+          visible = true,
+          hide_gitignored = true,
+          never_show = { ".git", "node_modules" },
         },
       },
     },
