@@ -23,9 +23,9 @@ return {
         sidebars = "transparent",
         floats = "transparent",
       },
-      -- on_colors = function(colors)
-      --   colors.border = "#565f89"
-      -- end,
+      on_colors = function(colors)
+        colors.border = "#565f89"
+      end,
     },
   },
 
