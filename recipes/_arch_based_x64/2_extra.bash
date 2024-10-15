@@ -34,7 +34,7 @@ readonly -f setup_docker
 
 setup_virtualbox() {
     sudo pacman -S --needed virtualbox virtualbox-host-modules-arch virtualbox-guest-iso
-    sudo gpasswd -a $USER vboxusers
+    sudo gpasswd -a "$USER" vboxusers
     sudo modprobe vboxdrv
 }
 readonly -f setup_virtualbox
