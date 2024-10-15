@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-source ${MYENV_DIR}/lib/util.bash
+source "${MYENV_DIR}/lib/util.bash"
 
 main() {
     # TODO:

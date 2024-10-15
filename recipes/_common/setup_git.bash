@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+set -eu
+
+export MYENV_ROOT="${HOME}/.myenv"
+
+source "${MYENV_ROOT}/lib/util.bash"
+
 # TODO: 以下は仮
 
 main() {
