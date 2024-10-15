@@ -3,6 +3,57 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
+setup_fonts() {
+    log_debug "START: ${BASH_SOURCE}"
+
+    yay -Syu --noconfirm
+
+    # ======================================================
+    # ======== normal font                                 =
+    # ======================================================
+
+    # TODO: Install normal font (何にするかまだ決めてない)
+    # yay -S --needed --noconfirm noto-fonts-cjk
+    yay -S --needed --noconfirm noto-fonts-cjk
+
+    # ======================================================
+    # ======== mono font                                   =
+    # ======================================================
+
+    # Ref:
+    #     https://github.com/yuru7/udev-gothic
+    #     https://aur.archlinux.org/packages/ttf-udev-gothic
+    yay -S --needed --noconfirm ttf-udev-gothic
+
+    # ======================================================
+    # ======== extra font                                  =
+    # ======================================================
+
+    yay -S --needed --noconfirm noto-fonts-emoji
+
+    # ======================================================
+    # ======== ?                                           =
+    # ======================================================
+
+    # システムフォントの設定？
+    # TODO: Link config files?
+    # $XDG_CONFIG_HOME/fontconfig/fonts.conf
+    # Ref: [Arch Linux インストール (7) - 各設定](https://aznote.jakou.com/archlinux/install7.html)
+
+    # フォントキャッシュの更新（不要かも）
+    fc-cache -v
+
+    log_debug "END  : ${BASH_SOURCE}"
+}
+
+setup_input_method() {
+    # Fcitx + Mozc
+    # 日本語入力環境を整える
+    # sudo pacman -S --needed --noconfirm fcitx-mozc
+    # TODO:
+    :
+}
+
 setup_terminal() {
     log_debug "START: ${BASH_SOURCE}"
 
@@ -198,6 +249,147 @@ setup_terminal() {
     #
     # # update plugins with tpm via CLI
     # "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/update_plugins" all
+
+    log_debug "END  : ${BASH_SOURCE}"
+}
+
+setup_devel() {
+    log_debug "START: ${BASH_SOURCE}"
+
+    sudo pacman -Syu --noconfirm
+
+    # ======================================================
+    # ======== many cli tools                              =
+    # ======================================================
+
+    sudo pacman -S --needed --noconfirm \
+        ghq fzf tree xclip unzip \
+        ripgrep bat eza fd git-delta bottom \
+        shellcheck shfmt
+
+    # ======== proper7y
+    if ! check_if_command_exists "proper7y"; then
+        local -r dest_dir="${HOME}/bin"
+
+        cd "$(mktemp -d)"
+        curl -O https://raw.githubusercontent.com/rnazmo/proper7y/main/install.bash
+        chmod +x ./install.bash
+        ./install.bash "$dest_dir"
+    fi
+
+    # ======== lazygit
+    sudo pacman -S --needed --noconfirm lazygit
+    remove_unused_config "${HOME}/.config/lazygit/config.yml"
+    link_file "${MYENV_ROOT}/config/home/.config/lazygit/config.yml" "${HOME}/.config/lazygit/config.yml"
+
+    # ======== fastfetch
+    sudo pacman -S --needed --noconfirm fastfetch
+    remove_unused_config "${HOME}/.config/fastfetch/config.jsonc"
+    link_file "${MYENV_ROOT}/config/home/.config/fastfetch/config.jsonc" "${HOME}/.config/fastfetch/config.jsonc"
+
+    log_debug "END  : ${BASH_SOURCE}"
+}
+
+setup_editor() {
+    log_debug "START: ${BASH_SOURCE}"
+
+    sudo pacman -Syu --noconfirm
+    yay -Syu --noconfirm
+
+    # ======================================================
+    # ======== neovim (& plugin-manager & plugins)         =
+    # ======================================================
+
+    # ======== neovim
+    sudo pacman -S --needed --noconfirm neovim
+    link_dir "${MYENV_ROOT}/config/home/.config/nvim" "${HOME}/.config/nvim" # NOTE: dir
+
+    # Sync (= install & cleanup & update) plugins
+    nvim --headless "+Lazy! sync" +qa
+
+    # # ======================================================
+    # # ======== vscode (& extensions)                       =
+    # # ======================================================
+    #
+    # yay -S --needed --noconfirm visual-studio-code-bin
+    # link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
+    # link_file "${MYENV_ROOT}/config/home/.config/Code/User/keybindings.json" "${HOME}/.config/Code/User/keybindings.json"
+    # link_dir "${MYENV_ROOT}/config/home/.config/Code/User/snippets" "${HOME}/.config/Code/User/snippets" # NOTE: dir
+    #
+    # # Install extensions
+    # EXTENSIONS=(
+    #     # TODO: Use "VSCode Neovim"
+    #     "golang.Go"
+    #     # "ms-azuretools.vscode-docker"
+    #     # "ms-vscode-remote.remote-containers"
+    #     # "GitHub.copilot"
+    #     # "Codeium.codeium"
+    #     "editorconfig.editorconfig"
+    #     # "esbenp.prettier-vscode"
+    #     # "dbaeumer.vscode-eslint"
+    #     # "streetsidesoftware.code-spell-checker"
+    #     # "eamodio.gitlens"
+    #     # "donjayamanne.githistory"
+    # )
+    # for EXT in "${EXTENSIONS[@]}"; do
+    #     code --install-extension "$EXT"
+    # done
+
+    # ======================================================
+    # ======== obsidian                                    =
+    # ======================================================
+
+    # sudo pacman -S --needed obsidian
+
+    # ======================================================
+    # ======== misc                                        =
+    # ======================================================
+
+    # Editorconfig
+    link_file "${MYENV_ROOT}/config/home/.editorconfig" "${HOME}/.editorconfig"
+
+    log_debug "END  : ${BASH_SOURCE}"
+}
+
+setup_browser() {
+    log_debug "START: ${BASH_SOURCE}"
+
+    sudo pacman -Syu --noconfirm
+    yay -Syu --noconfirm
+
+    # ======================================================
+    # ======== Chromium                                    =
+    # ======================================================
+
+    sudo pacman -S --needed --noconfirm chromium
+
+    # ======== extensions
+    # TODO:
+    # ======== bookmarklets
+    # TODO: HTML file??
+
+    # ======================================================
+    # ======== Chrome                                      =
+    # ======================================================
+
+    yay -S --needed --noconfirm google-chrome
+
+    # ======== extensions
+    # TODO:
+    # ======== bookmarklets
+    # TODO: HTML file??
+
+    # ======================================================
+    # ======== FireFox                                     =
+    # ======================================================
+
+    sudo pacman -S --needed --noconfirm firefox
+
+    # ======== extensions
+    sudo pacman -S --needed --noconfirm firefox-ublock-origin
+    # TODO:
+    # ======== bookmarklets
+    # TODO: HTML file??
 
     log_debug "END  : ${BASH_SOURCE}"
 }
