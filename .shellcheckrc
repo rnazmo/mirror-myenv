@@ -1,0 +1,5 @@
+# Allow external source files
+# Ref:
+#     https://www.shellcheck.net/wiki/SC1091
+#     https://github.com/koalaman/shellcheck/wiki/Directive
+external-sources=true
