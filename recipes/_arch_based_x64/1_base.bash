@@ -5,7 +5,7 @@ source "${MYENV_ROOT}/lib/util.bash"
 
 setup_base() {
     _setup_font
-    _setup_input_method
+    _setup_ime
     _setup_shell
     _setup_terminal
     _setup_multiplexer
@@ -57,7 +57,7 @@ _setup_font() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-_setup_input_method() {
+_setup_ime() {
     # Fcitx + Mozc
     # 日本語入力環境を整える
     # sudo pacman -S --needed --noconfirm fcitx-mozc
