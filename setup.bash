@@ -40,6 +40,7 @@ main() {
 
     check_prerequisites
 
+    # shellcheck source=/dev/null
     source "${MYENV_ROOT}/hosts/${HOST_NAME}/setup.bash"
 
     log_info "======== Completed all process successfully ========"
