@@ -52,7 +52,7 @@ return {
       plugins = {
         gitsigns = true,
         tmux = true,
-        alacritty = { enabled = false, font = "+18" },
+        alacritty = { enabled = false },
       },
     },
     keys = {
