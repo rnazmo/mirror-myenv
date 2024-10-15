@@ -8,8 +8,6 @@ source "${MYENV_ROOT}/recipes/manjaro_x64/1_base.bash"
 source "${MYENV_ROOT}/recipes/manjaro_x64/2_extra.bash"
 
 main() {
-    log_debug "START: ${BASH_SOURCE##*/}"
-
     call_func_in_0_core() {
         pre_setup_core
         setup_git
@@ -41,8 +39,6 @@ main() {
     call_func_in_0_core
     call_func_in_1_base
     call_func_in_2_extra
-
-    log_debug "END  : ${BASH_SOURCE##*/}"
 }
 
 main

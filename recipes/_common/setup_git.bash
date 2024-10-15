@@ -1,8 +1,6 @@
 # TODO: 以下は仮
 
 main() {
-
-    log_debug "START: ${BASH_SOURCE}"
     # ======================================================
     # ======== git                                         =
     # ======================================================
@@ -25,8 +23,6 @@ main() {
         ssh -T git@github.com
         ssh -T git@gitlab.com
     fi
-
-    log_debug "END  : ${BASH_SOURCE}"
 }
 
 main
