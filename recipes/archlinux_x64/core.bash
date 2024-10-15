@@ -3,7 +3,7 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-setup_base() {
+setup_core() {
     log_debug "START: ${BASH_SOURCE}"
 
     # ======================================================
