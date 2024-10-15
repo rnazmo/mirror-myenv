@@ -388,9 +388,29 @@ setup_devel() {
 readonly -f setup_devel
 
 _install_many_devel_tools() {
-    sudo pacman -S --needed --noconfirm \
-        git-delta \
-        shellcheck shfmt
+    local -r PKGS=(
+        "git-delta"         # better git diff
+        "shellcheck"        # bash linter
+        "shfmt"             # bash formatter
+        "selene"            # lua linter
+        "stylua"            # lua formatter
+        "staticcheck"       # golang linter
+        "eslint_d"          # js/ts/jsx/tsx/json/yaml linter
+        "prettier"          # js/ts/jsx/css/scss/html/markdown/json/yaml linter
+        "stylelint"         # css linter
+        "markdownlint-cli2" # markdown linter
+        "actionlint"        # github actions linter
+        "typos"             # spell checker
+        # "cspell"            # spell checker
+        # "editorconfig-checker"
+        # "editorconfig-checker"
+    )
+    for PKG in "${PKGS[@]}"; do
+        sudo pacman -S --needed --noconfirm "$PKG"
+    done
+
+    # TODO: Instll goimports (go formatter) via go install
+    # TODO: Install hadolint-bin (dockerfile linter) via aur
 }
 readonly -f _install_many_devel_tools
 
