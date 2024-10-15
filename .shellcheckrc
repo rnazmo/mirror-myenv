@@ -1,5 +1,10 @@
+# Ref:
+#     https://github.com/koalaman/shellcheck/wiki/Directives
+
 # Allow external source files
 # Ref:
 #     https://www.shellcheck.net/wiki/SC1091
-#     https://github.com/koalaman/shellcheck/wiki/Directive
 external-sources=true
+
+# # Suggest ${VAR} in place of $VAR
+# enable=require-variable-braces
