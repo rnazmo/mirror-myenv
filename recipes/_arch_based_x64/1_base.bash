@@ -3,10 +3,14 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
+pre_setup_baset() {
+    # Refresh packages
+    sudo pacman -Syu --noconfirm
+    yay -Syu --noconfirm
+}
+
 setup_font() {
     log_debug "START: ${BASH_SOURCE}"
-
-    yay -Syu --noconfirm
 
     # ======================================================
     # ======== normal font                                 =
@@ -85,9 +89,6 @@ _setup_util() {
 
 setup_shell() {
     log_debug "START: ${BASH_SOURCE}"
-
-    sudo pacman -Syu --noconfirm
-    yay -Syu --noconfirm
 
     # ======================================================
     # ======== zsh (& theme)                               =
@@ -308,9 +309,6 @@ _setup_devel() {
 setup_editor() {
     log_debug "START: ${BASH_SOURCE}"
 
-    sudo pacman -Syu --noconfirm
-    yay -Syu --noconfirm
-
     # ======================================================
     # ======== neovim (& plugin-manager & plugins)         =
     # ======================================================
@@ -368,9 +366,6 @@ setup_editor() {
 
 setup_browser() {
     log_debug "START: ${BASH_SOURCE}"
-
-    sudo pacman -Syu --noconfirm
-    yay -Syu --noconfirm
 
     # ======================================================
     # ======== Chromium                                    =
