@@ -3,52 +3,73 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
+# ======================================================
+# ======================================================
+# ======== Pre                                         =
+# ======================================================
+# ======================================================
+
 pre_setup_base() {
-    # Refresh packages
+    _refresh_packages
+}
+
+_refresh_packages() {
     sudo pacman -Syu --noconfirm
     yay -Syu --noconfirm
 }
 
+# ======================================================
+# ======================================================
+# ======== Font                                        =
+# ======================================================
+# ======================================================
+
 setup_font() {
-    log_debug "START: ${BASH_SOURCE}"
+    # ======== normal font
+    _install_noto_cjk
 
-    # ======================================================
-    # ======== normal font                                 =
-    # ======================================================
+    # ======== mono font
+    _install_udev_gothic
 
-    # TODO: Install normal font (何にするかまだ決めてない)
-    # yay -S --needed --noconfirm noto-fonts-cjk
-    yay -S --needed --noconfirm noto-fonts-cjk
+    # ======== extra font
+    _install_emoji
 
-    # ======================================================
-    # ======== mono font                                   =
-    # ======================================================
-
-    # Ref:
-    #     https://github.com/yuru7/udev-gothic
-    #     https://aur.archlinux.org/packages/ttf-udev-gothic
-    yay -S --needed --noconfirm ttf-udev-gothic
-
-    # ======================================================
-    # ======== extra font                                  =
-    # ======================================================
-
-    yay -S --needed --noconfirm noto-fonts-emoji
-
-    # ======================================================
-    # ======== ?                                           =
-    # ======================================================
-
+    # ======== ?
     # システムフォントの設定？
     # TODO: Link config files?
     # $XDG_CONFIG_HOME/fontconfig/fonts.conf
     # Ref: [Arch Linux インストール (7) - 各設定](https://aznote.jakou.com/archlinux/install7.html)
 
+    _post_setup_font
+}
+
+_install_noto_cjk() {
+    # TODO: Install normal font (何にするかまだ決めてない)
+    # yay -S --needed --noconfirm noto-fonts-cjk
+    yay -S --needed --noconfirm noto-fonts-cjk
+}
+
+_install_udev_gothic() {
+    # Ref:
+    #     https://github.com/yuru7/udev-gothic
+    #     https://aur.archlinux.org/packages/ttf-udev-gothic
+    yay -S --needed --noconfirm ttf-udev-gothic
+}
+
+_install_emoji() {
+    yay -S --needed --noconfirm noto-fonts-emoji
+}
+
+_post_setup_font() {
     # フォントキャッシュの更新（不要かも）
     fc-cache -v
-
-    log_debug "END  : ${BASH_SOURCE}"
 }
+
+# ======================================================
+# ======================================================
+# ======== IME (Input Method Engine)                   =
+# ======================================================
+# ======================================================
 
 setup_ime() {
     # Fcitx + Mozc
@@ -58,23 +79,31 @@ setup_ime() {
     :
 }
 
+# ======================================================
+# ======================================================
+# ======== Util                                        =
+# ======================================================
+# ======================================================
+
 setup_util() {
-    log_debug "START: ${BASH_SOURCE}"
+    _install_many_util_clis
+    _setup_fastfetch
+    _setup_proper7y
+}
 
-    # ======================================================
-    # ======== many cli tools                              =
-    # ======================================================
-
+_install_many_util_clis() {
     sudo pacman -S --needed --noconfirm \
         ghq fzf tree xclip unzip \
         ripgrep bat eza fd bottom
+}
 
-    # ======== fastfetch
+_setup_fastfetch() {
     sudo pacman -S --needed --noconfirm fastfetch
     remove_unused_config "${HOME}/.config/fastfetch/config.jsonc"
     link_file "${MYENV_ROOT}/config/home/.config/fastfetch/config.jsonc" "${HOME}/.config/fastfetch/config.jsonc"
+}
 
-    # ======== proper7y
+_setup_proper7y() {
     if ! check_if_command_exists "proper7y"; then
         local -r dest_dir="${HOME}/bin"
 
@@ -83,8 +112,6 @@ setup_util() {
         chmod +x ./install.bash
         ./install.bash "$dest_dir"
     fi
-
-    log_debug "END  : ${BASH_SOURCE}"
 }
 
 # ======================================================
@@ -208,33 +235,65 @@ ___install_powerlevel10k() {
     yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
 }
 
+# ======================================================
+# ======================================================
+# ======== Shell                                       =
+# ======================================================
+# ======================================================
+
 setup_terminal() {
-    # ======================================================
-    # ======== alacritty (& theme)                         =
-    # ======================================================
+    _setup_alacritty
+}
 
-    # ======== alacritty
+_setup_alacritty() {
+    __install_alacritty
+    __setup_alacritty_config
+    __setup_alacritty_theme
+}
+
+__install_alacritty() {
     sudo pacman -S --needed --noconfirm alacritty
-    link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
+}
 
-    # ======== theme
-    download_file \
-        "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/alacritty/tokyonight_night.toml" \
-        "${HOME}/.config/alacritty/theme.local/tokyonight_night.toml"
+__setup_alacritty_config() {
+    link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
 
 }
 
-setup_multiplexer() {
-    # ======================================================
-    # ======== tmux (& plugin-manager & plugins)           =
-    # ======================================================
+__setup_alacritty_theme() {
+    download_file \
+        "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/alacritty/tokyonight_night.toml" \
+        "${HOME}/.config/alacritty/theme.local/tokyonight_night.toml"
+}
 
-    # ======== tmux
+# ======================================================
+# ======================================================
+# ======== Multiplexer                                 =
+# ======================================================
+# ======================================================
+
+setup_multiplexer() {
+    _setup_tmux
+}
+
+_setup_tmux() {
+    __install_tmux
+    __setup_tmux_config
+    __setup_tmux_theme
+    # __install_tpm
+    # __refresh_tmux_plugins
+}
+
+__install_tmux() {
     sudo pacman -S --needed --noconfirm tmux
+}
+
+__setup_tmux_config() {
     remove_unused_config "${HOME}/.tmux.conf"
     link_file "${MYENV_ROOT}/config/home/.config/tmux/tmux.conf" "${HOME}/.config/tmux/tmux.conf"
+}
 
-    # ======== themes
+__setup_tmux_theme() {
     local -r TMUX_THEME_LOCAL_PATH="${HOME}/.config/tmux/themes.local"
 
     download_file \
@@ -252,146 +311,181 @@ setup_multiplexer() {
     download_file \
         "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/tmux/tokyonight_storm.tmux" \
         "${TMUX_THEME_LOCAL_PATH}/tokyonight_storm.tmux"
-
-    # # ======== tpm (plugin manager)
-    # # Install tpm
-    # # Ref:
-    # #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/automatic_tpm_installation.md
-    # #         "tpm／docs／automatic_tpm_installation.md"
-    # #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
-    # #         "tpm／docs／managing_plugins_via_cmd_line.md"
-    # #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/changing_plugins_install_dir.md
-    # #         "tpm/docs/changing_plugins_install_dir.md"
-    # #
-    # local -r TMUX_PLUGIN_INSTALL_PATH="${HOME}/.config/tmux/plugins"
-    # clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
-    #
-    # # ======== plugins
-    # # Install plugins with tpm via CLI
-    # # Ref:
-    # #       https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
-    # #           "tpm/docs/managing_plugins_via_cmd_line.md"
-    # #
-    # "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/install_plugins"
-    #
-    # # update plugins with tpm via CLI
-    # "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/update_plugins" all
-
-    log_debug "END  : ${BASH_SOURCE}"
 }
+
+__install_tpm() {
+    # Install tpm (plugin manager)
+    # Ref:
+    #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/automatic_tpm_installation.md
+    #         "tpm／docs／automatic_tpm_installation.md"
+    #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
+    #         "tpm／docs／managing_plugins_via_cmd_line.md"
+    #     https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/changing_plugins_install_dir.md
+    #         "tpm/docs/changing_plugins_install_dir.md"
+    #
+    local -r TMUX_PLUGIN_INSTALL_PATH="${HOME}/.config/tmux/plugins"
+    clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
+}
+
+__refresh_tmux_plugins() {
+    # Install plugins with tpm via CLI
+    # Ref:
+    #       https://github.com/tmux-plugins/tpm/blob/99469c4a9b1ccf77fade25842dc7bafbc8ce9946/docs/managing_plugins_via_cmd_line.md
+    #           "tpm/docs/managing_plugins_via_cmd_line.md"
+    #
+    "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/install_plugins"
+
+    # update plugins with tpm via CLI
+    "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/update_plugins" all
+}
+
+# ======================================================
+# ======================================================
+# ======== Devel                                       =
+# ======================================================
+# ======================================================
 
 setup_devel() {
-    log_debug "START: ${BASH_SOURCE}"
+    _install_many_devel_tools
+    _setup_lazygit
+}
 
-    # ======================================================
-    # ======== many cli tools                              =
-    # ======================================================
-
+_install_many_devel_tools() {
     sudo pacman -S --needed --noconfirm \
-        lazygit git-delta \
+        git-delta \
         shellcheck shfmt
+}
 
-    # ======== lazygit
+_setup_lazygit() {
+    __install_lazygit
+    __setup_lazygit_config
+}
+
+__install_lazygit() {
+    sudo pacman -S --needed --noconfirm lazygit
+}
+
+__setup_lazygit_config() {
     remove_unused_config "${HOME}/.config/lazygit/config.yml"
     link_file "${MYENV_ROOT}/config/home/.config/lazygit/config.yml" "${HOME}/.config/lazygit/config.yml"
-
-    log_debug "END  : ${BASH_SOURCE}"
 }
+
+# ======================================================
+# ======================================================
+# ======== Editor                                      =
+# ======================================================
+# ======================================================
 
 setup_editor() {
-    log_debug "START: ${BASH_SOURCE}"
-
-    # ======================================================
-    # ======== neovim (& plugin-manager & plugins)         =
-    # ======================================================
-
-    # ======== neovim
-    sudo pacman -S --needed --noconfirm neovim
-    link_dir "${MYENV_ROOT}/config/home/.config/nvim" "${HOME}/.config/nvim" # NOTE: dir
-
-    # Sync (= install & cleanup & update) plugins
-    nvim --headless "+Lazy! sync" +qa
-
-    # # ======================================================
-    # # ======== vscode (& extensions)                       =
-    # # ======================================================
-    #
-    # yay -S --needed --noconfirm visual-studio-code-bin
-    # link_file "${MYENV_ROOT}/config/home/.config/Code/User/settings.json" "${HOME}/.config/Code/User/settings.json"
-    # link_file "${MYENV_ROOT}/config/home/.config/Code/User/keybindings.json" "${HOME}/.config/Code/User/keybindings.json"
-    # link_dir "${MYENV_ROOT}/config/home/.config/Code/User/snippets" "${HOME}/.config/Code/User/snippets" # NOTE: dir
-    #
-    # # Install extensions
-    # EXTENSIONS=(
-    #     # TODO: Use "VSCode Neovim"
-    #     "golang.Go"
-    #     # "ms-azuretools.vscode-docker"
-    #     # "ms-vscode-remote.remote-containers"
-    #     # "GitHub.copilot"
-    #     # "Codeium.codeium"
-    #     "editorconfig.editorconfig"
-    #     # "esbenp.prettier-vscode"
-    #     # "dbaeumer.vscode-eslint"
-    #     # "streetsidesoftware.code-spell-checker"
-    #     # "eamodio.gitlens"
-    #     # "donjayamanne.githistory"
-    # )
-    # for EXT in "${EXTENSIONS[@]}"; do
-    #     code --install-extension "$EXT"
-    # done
-
-    # ======================================================
-    # ======== obsidian                                    =
-    # ======================================================
-
-    # sudo pacman -S --needed obsidian
-
-    # ======================================================
-    # ======== misc                                        =
-    # ======================================================
-
-    # Editorconfig
-    link_file "${MYENV_ROOT}/config/home/.editorconfig" "${HOME}/.editorconfig"
-
-    log_debug "END  : ${BASH_SOURCE}"
+    _setup_neovim
+    _setup_editorconfig
 }
 
+_setup_neovim() {
+    __install_neovim
+    __setup_neovim_config
+    __refresh_neovim_plugins
+}
+
+_setup_editorconfig() {
+    link_file "${MYENV_ROOT}/config/home/.editorconfig" "${HOME}/.editorconfig"
+}
+
+__install_neovim() {
+    sudo pacman -S --needed --noconfirm neovim
+}
+
+__setup_neovim_config() {
+    link_dir "${MYENV_ROOT}/config/home/.config/nvim" "${HOME}/.config/nvim" # NOTE: dir
+}
+
+__refresh_neovim_plugins() {
+    # Sync (= install & cleanup & update) plugins
+    nvim --headless "+Lazy! sync" +qa
+}
+
+# ======================================================
+# ======================================================
+# ======== Browser                                     =
+# ======================================================
+# ======================================================
+
 setup_browser() {
-    log_debug "START: ${BASH_SOURCE}"
+    _setup_chromium
+    _setup_chrome
+    _setup_firefox
+}
 
-    # ======================================================
-    # ======== Chromium                                    =
-    # ======================================================
+_setup_chromium() {
+    __install_chromium
+    __setup_chromium_extensions
+    __setup_chromium_bookmarklet
+}
 
+_setup_chrome() {
+    __install_chrome
+    __setup_chrome_extensions
+    __setup_chrome_bookmarklet
+}
+
+_setup_firefox() {
+    __install_firefox
+    __setup_firefox_extensions
+    __setup_firefox_bookmarklet
+}
+
+__install_chromium() {
     sudo pacman -S --needed --noconfirm chromium
+}
 
-    # ======== extensions
+__setup_chromium_extensions() {
     # TODO:
-    # ======== bookmarklets
+    :
+}
+
+__setup_chromium_bookmarklet() {
+    # TODO:
     # TODO: HTML file??
+    :
+}
 
-    # ======================================================
-    # ======== Chrome                                      =
-    # ======================================================
-
+__install_chrome() {
     yay -S --needed --noconfirm google-chrome
+}
 
-    # ======== extensions
+__setup_chrome_extensions() {
     # TODO:
-    # ======== bookmarklets
+    :
+}
+
+__setup_chrome_bookmarklet() {
+    # TODO:
     # TODO: HTML file??
+    :
+}
 
-    # ======================================================
-    # ======== FireFox                                     =
-    # ======================================================
-
+__install_firefox() {
     sudo pacman -S --needed --noconfirm firefox
+}
 
-    # ======== extensions
-    sudo pacman -S --needed --noconfirm firefox-ublock-origin
+__setup_firefox_extensions() {
     # TODO:
-    # ======== bookmarklets
-    # TODO: HTML file??
+    :
+    sudo pacman -S --needed --noconfirm firefox-ublock-origin
+}
 
-    log_debug "END  : ${BASH_SOURCE}"
+__setup_firefox_bookmarklet() {
+    # TODO:
+    # TODO: HTML file??
+    :
+}
+
+# ======================================================
+# ======================================================
+# ======== Post                                        =
+# ======================================================
+# ======================================================
+
+post_setup_base() {
+    :
 }
