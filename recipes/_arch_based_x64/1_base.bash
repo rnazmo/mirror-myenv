@@ -3,7 +3,7 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-pre_setup_baset() {
+pre_setup_base() {
     # Refresh packages
     sudo pacman -Syu --noconfirm
     yay -Syu --noconfirm
@@ -58,7 +58,7 @@ setup_ime() {
     :
 }
 
-_setup_util() {
+setup_util() {
     log_debug "START: ${BASH_SOURCE}"
 
     # ======================================================
@@ -87,52 +87,48 @@ _setup_util() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
+# ======================================================
+# ======================================================
+# ======== Shell                                       =
+# ======================================================
+# ======================================================
+
 setup_shell() {
-    log_debug "START: ${BASH_SOURCE}"
+    _setup_zsh
+    _setup_default_shell
+}
 
-    # ======================================================
-    # ======== zsh (& theme)                               =
-    # ======================================================
+_setup_zsh() {
+    __install_zsh
+    __setup_zsh_config
+    __setup_zsh_completions
+    __setup_zsh_keybindings
+    __setup_zsh_theme
+    __setup_zsh_plugins
+    __post_setup_zsh
+}
 
-    # ======== zsh
+_setup_default_shell() {
+    if check_if_command_exists "zsh" && [ "$SHELL" != "$(which zsh)" ]; then
+        chsh -s "$(which zsh)"
+        log_info "Changed your default login shell to Zsh"
+        # NOTE: Then, you must re-login (or reboot the machine) to reflect this change.
+    fi
+}
+
+__install_zsh() {
     sudo pacman -S --needed --noconfirm zsh
+}
 
+__setup_zsh_config() {
     local -r ZDOTDIR="${HOME}/.config/zsh"
-
     remove_unused_config "${HOME}/.zshrc"
     remove_unused_config "${HOME}/.zshenv"
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
     link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
+}
 
-    # ======== powerlevel10k (= theme)
-    # (for Manjaro): Ensure that uninstall aur package "zsh-theme-powerlevel10k" to avoid conflict
-    # Description:
-    #     In Manjaro, package "manjaro-zsh-config" is installed by default. However,
-    #     it depends on package "zsh-theme-powerlevel10k", which conflicts with package
-    #     "zsh-theme-powerlevel10k-git". So, to install package "zsh-theme-powerlevel10k-git",
-    #     package "manjaro-zsh-config" must be uninstalled.
-    # Why use package "zsh-theme-powerlevel10k-git" instead of package "zsh-theme-powerlevel10k"?
-    #     The maintainer of "zsh-theme-powerlevel10k-git" is the author of powerlevel10k.
-    # Ref:
-    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
-    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k
-    #     https://github.com/Chrysostomus/manjaro-zsh-config
-    local -r MANJARO_ZSH_CONFIG_PKG="manjaro-zsh-config"
-    # Uninstll the package if it is installed
-    if yay -Qi "$MANJARO_ZSH_CONFIG_PKG" &>/dev/null; then
-        yay -Rns --noconfirm "$MANJARO_ZSH_CONFIG_PKG"
-    fi
-
-    # Install powerlevel10k
-    # Ref:
-    #     https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#arch-linux
-    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
-    yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
-
-    # ======================================================
-    # ======== zsh completions                             =
-    # ======================================================
-
+__setup_zsh_completions() {
     local -r ZSH_COMPLETIONS_LOCAL_DIR="${ZDOTDIR}/completions.local"
 
     # ======== git
@@ -153,22 +149,22 @@ setup_shell() {
     if [[ ! -f "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise" ]]; then
         curl -o "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise" https://raw.githubusercontent.com/jdx/mise/refs/heads/main/completions/_mise
     fi
+}
 
-    # ======================================================
-    # ======== zsh keybindings                             =
-    # ======================================================
-
+__setup_zsh_keybindings() {
     local -r ZSH_KEYBINDINGS_LOCAL_DIR="${ZDOTDIR}/keybindings.local"
 
     # ======== fzf
     if [[ ! -f "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" ]]; then
         curl -o "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh
     fi
+}
 
-    # ======================================================
-    # ======== zsh plugins                                 =
-    # ======================================================
+__setup_zsh_theme() {
+    ___install_powerlevel10k
+}
 
+__setup_zsh_plugins() {
     local -r ZSH_PLUGINS_LOCAL_DIR="${ZDOTDIR}/plugins.local"
 
     # ======== zsh-defer
@@ -196,24 +192,20 @@ setup_shell() {
     clone_repo_shallow \
         https://github.com/zsh-users/zsh-history-substring-search.git \
         "${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search"
+}
 
-    # ======================================================
-    # ======== zsh misc                                    =
-    # ======================================================
-
+__post_setup_zsh() {
     # ======== compile
     # compile all *.zsh files under the path for performance
     find "$ZDOTDIR/" -name '*.zsh' -exec zsh -c 'zcompile "$0"' {} \;
+}
 
-    # ======================================================
-    # ======== default shell                               =
-    # ======================================================
-
-    if check_if_command_exists "zsh" && [ "$SHELL" != "$(which zsh)" ]; then
-        chsh -s "$(which zsh)"
-        log_info "Changed your default login shell to Zsh"
-        # NOTE: Then, you must re-login (or reboot the machine) to reflect this change.
-    fi
+___install_powerlevel10k() {
+    # Install powerlevel10k
+    # Ref:
+    #     https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#arch-linux
+    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
+    yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
 }
 
 setup_terminal() {
@@ -288,7 +280,7 @@ setup_multiplexer() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-_setup_devel() {
+setup_devel() {
     log_debug "START: ${BASH_SOURCE}"
 
     # ======================================================

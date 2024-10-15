@@ -17,6 +17,7 @@ main() {
 
     # 1_base.bash
     pre_setup_base
+
     setup_font
     setup_ime
     setup_util
@@ -29,7 +30,7 @@ main() {
     # post_setup_base
 
     # 2_extra.bash
-    pre_setup_extra
+    # pre_setup_extra
     # something here
     # post_setup_extra
 
