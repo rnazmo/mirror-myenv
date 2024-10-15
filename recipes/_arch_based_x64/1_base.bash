@@ -6,7 +6,9 @@ source "${MYENV_ROOT}/lib/util.bash"
 setup_base() {
     _setup_font
     _setup_input_method
+    _setup_shell
     _setup_terminal
+    _setup_multiplexer
     _setup_devel
     _setup_editor
     _setup_browser
@@ -63,7 +65,7 @@ _setup_input_method() {
     :
 }
 
-_setup_terminal() {
+_setup_shell() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
@@ -193,7 +195,9 @@ _setup_terminal() {
         log_info "Changed your default login shell to Zsh"
         # NOTE: Then, you must re-login (or reboot the machine) to reflect this change.
     fi
+}
 
+_setup_terminal() {
     # ======================================================
     # ======== alacritty (& theme)                         =
     # ======================================================
@@ -207,6 +211,9 @@ _setup_terminal() {
         "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/alacritty/tokyonight_night.toml" \
         "${HOME}/.config/alacritty/theme.local/tokyonight_night.toml"
 
+}
+
+_setup_multiplexer() {
     # ======================================================
     # ======== tmux (& plugin-manager & plugins)           =
     # ======================================================
