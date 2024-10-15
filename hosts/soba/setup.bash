@@ -5,6 +5,7 @@ source "${MYENV_ROOT}/lib/util.bash"
 
 source "${MYENV_ROOT}/recipes/archlinux_x64/core.bash"
 source "${MYENV_ROOT}/recipes/archlinux_x64/base.bash"
+source "${MYENV_ROOT}/recipes/archlinux_x64/extra.bash"
 
 main() {
     log_debug "START: ${BASH_SOURCE##*/}"
