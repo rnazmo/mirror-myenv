@@ -3,7 +3,7 @@ set -eu
 
 # virtualized environment guest
 
-source ${MYENV_DIR}/lib/util.bash
+source "${MYENV_ROOT}/lib/util.bash"
 
 setup_virtualbox() {
     log_debug "START: ${BASH_SOURCE}"
@@ -28,5 +28,3 @@ setup_virtualbox_guest() {
 
     log_debug "END  : ${BASH_SOURCE}"
 }
-
-main
