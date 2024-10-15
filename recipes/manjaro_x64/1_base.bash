@@ -3,7 +3,7 @@ set -eu
 
 source "${MYENV_ROOT}/recipes/_arch_based_x64/1_base.bash"
 
-___pre_setup_zsh_theme() {
+___pre_setup_zsh_theme_on_manjaro() {
     # ======== powerlevel10k (= theme)
     # (for Manjaro): Ensure that uninstall aur package "zsh-theme-powerlevel10k" to avoid conflict
     # Description:
@@ -23,23 +23,27 @@ ___pre_setup_zsh_theme() {
         yay -Rns --noconfirm "$MANJARO_ZSH_CONFIG_PKG"
     fi
 }
+readonly -f ___pre_setup_zsh_theme_on_manjaro
 
-__setup_zsh_theme() {
-    ___pre_setup_zsh_theme
+__setup_zsh_theme_on_manjaro() {
+    ___pre_setup_zsh_theme_on_manjaro
     ___install_powerlevel10k
 }
+readonly -f __setup_zsh_theme_on_manjaro
 
-_setup_zsh() {
+_setup_zsh_on_manjaro() {
     __install_zsh
     __setup_zsh_config
     __setup_zsh_completions
     __setup_zsh_keybindings
-    __setup_zsh_theme
+    __setup_zsh_theme_on_manjaro
     __setup_zsh_plugins
     __post_setup_zsh
 }
+readonly -f _setup_zsh_on_manjaro
 
-setup_shell() {
+setup_shell_on_manjaro() {
     _setup_zsh
     _setup_default_shell
 }
+readonly -f setup_shell_on_manjaro

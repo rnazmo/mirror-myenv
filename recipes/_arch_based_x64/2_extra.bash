@@ -10,14 +10,16 @@ source "${MYENV_ROOT}/lib/util.bash"
 # ======================================================
 
 pre_setup_extra() {
-    _refresh_packages
-    _install_some_dependencies
-}
+    _refresh_packages() {
+        sudo pacman -Syu --noconfirm
+        check_if_command_exists "yay" && yay -Syu --noconfirm
+    }
 
-_refresh_packages() {
-    sudo pacman -Syu --noconfirm
-    check_if_command_exists "yay" && yay -Syu --noconfirm
+    _refresh_packages
+
+    unset -f _refresh_packages
 }
+readonly -f pre_setup_extra
 
 # ======================================================
 # ======================================================
@@ -28,17 +30,20 @@ _refresh_packages() {
 setup_docker() {
     sudo pacman -S docker docker-compose
 }
+readonly -f setup_docker
 
 setup_virtualbox() {
     sudo pacman -S --needed virtualbox virtualbox-host-modules-arch virtualbox-guest-iso
     sudo gpasswd -a $USER vboxusers
     sudo modprobe vboxdrv
 }
+readonly -f setup_virtualbox
 
 setup_virtualbox_guest() {
     # Ref: https://wiki.archlinux.org/title/VirtualBox/Install_Arch_Linux_as_a_guest
     sudo pacman -S --needed virtualbox-guest-utils
 }
+readonly -f setup_virtualbox_guest
 
 # ======================================================
 # ======================================================
@@ -71,10 +76,12 @@ setup_vscode() {
         code --install-extension "$EXT"
     done
 }
+readonly -f setup_vscode
 
 setup_obsidian() {
     sudo pacman -S --needed obsidian
 }
+readonly -f setup_obsidian
 
 # ======================================================
 # ======================================================
@@ -85,3 +92,4 @@ setup_obsidian() {
 post_setup_extra() {
     :
 }
+readonly -f post_setup_extra

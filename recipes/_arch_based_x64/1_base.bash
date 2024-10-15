@@ -10,13 +10,16 @@ source "${MYENV_ROOT}/lib/util.bash"
 # ======================================================
 
 pre_setup_base() {
-    _refresh_packages
-}
+    _refresh_packages() {
+        sudo pacman -Syu --noconfirm
+        check_if_command_exists "yay" && yay -Syu --noconfirm
+    }
 
-_refresh_packages() {
-    sudo pacman -Syu --noconfirm
-    check_if_command_exists "yay" && yay -Syu --noconfirm
+    _refresh_packages
+
+    unset -f _refresh_packages
 }
+readonly -f pre_setup_base
 
 # ======================================================
 # ======================================================
@@ -42,12 +45,14 @@ setup_font() {
 
     _post_setup_font
 }
+readonly -f setup_font
 
 _install_noto_cjk() {
     # TODO: Install normal font (何にするかまだ決めてない)
     # yay -S --needed --noconfirm noto-fonts-cjk
     yay -S --needed --noconfirm noto-fonts-cjk
 }
+readonly -f _install_noto_cjk
 
 _install_udev_gothic() {
     # Ref:
@@ -55,15 +60,18 @@ _install_udev_gothic() {
     #     https://aur.archlinux.org/packages/ttf-udev-gothic
     yay -S --needed --noconfirm ttf-udev-gothic
 }
+readonly -f _install_udev_gothic
 
 _install_emoji() {
     yay -S --needed --noconfirm noto-fonts-emoji
 }
+readonly -f _install_emoji
 
 _post_setup_font() {
     # フォントキャッシュの更新（不要かも）
     fc-cache -v
 }
+readonly -f _post_setup_font
 
 # ======================================================
 # ======================================================
@@ -78,6 +86,7 @@ setup_ime() {
     # TODO:
     :
 }
+readonly -f setup_ime
 
 # ======================================================
 # ======================================================
@@ -90,18 +99,21 @@ setup_util() {
     _setup_fastfetch
     _setup_proper7y
 }
+readonly -f setup_util
 
 _install_many_util_clis() {
     sudo pacman -S --needed --noconfirm \
         ghq fzf tree xclip unzip \
         ripgrep bat eza fd bottom
 }
+readonly -f _install_many_util_clis
 
 _setup_fastfetch() {
     sudo pacman -S --needed --noconfirm fastfetch
     remove_unused_config "${HOME}/.config/fastfetch/config.jsonc"
     link_file "${MYENV_ROOT}/config/home/.config/fastfetch/config.jsonc" "${HOME}/.config/fastfetch/config.jsonc"
 }
+readonly -f _setup_fastfetch
 
 _setup_proper7y() {
     if ! check_if_command_exists "proper7y"; then
@@ -113,6 +125,7 @@ _setup_proper7y() {
         ./install.bash "$dest_dir"
     fi
 }
+readonly -f _setup_proper7y
 
 # ======================================================
 # ======================================================
@@ -124,6 +137,7 @@ setup_shell() {
     _setup_zsh
     _setup_default_shell
 }
+readonly -f setup_shell
 
 _setup_zsh() {
     __install_zsh
@@ -134,6 +148,7 @@ _setup_zsh() {
     __setup_zsh_plugins
     __post_setup_zsh
 }
+readonly -f _setup_zsh
 
 _setup_default_shell() {
     if check_if_command_exists "zsh" && [ "$SHELL" != "$(which zsh)" ]; then
@@ -142,10 +157,12 @@ _setup_default_shell() {
         # NOTE: Then, you must re-login (or reboot the machine) to reflect this change.
     fi
 }
+readonly -f _setup_default_shell
 
 __install_zsh() {
     sudo pacman -S --needed --noconfirm zsh
 }
+readonly -f __install_zsh
 
 __setup_zsh_config() {
     local -r ZDOTDIR="${HOME}/.config/zsh"
@@ -154,6 +171,7 @@ __setup_zsh_config() {
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
     link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
 }
+readonly -f __setup_zsh_config
 
 __setup_zsh_completions() {
     local -r ZSH_COMPLETIONS_LOCAL_DIR="${ZDOTDIR}/completions.local"
@@ -177,6 +195,7 @@ __setup_zsh_completions() {
         curl -o "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise" https://raw.githubusercontent.com/jdx/mise/refs/heads/main/completions/_mise
     fi
 }
+readonly -f __setup_zsh_completions
 
 __setup_zsh_keybindings() {
     local -r ZSH_KEYBINDINGS_LOCAL_DIR="${ZDOTDIR}/keybindings.local"
@@ -186,10 +205,12 @@ __setup_zsh_keybindings() {
         curl -o "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh
     fi
 }
+readonly -f __setup_zsh_keybindings
 
 __setup_zsh_theme() {
     ___install_powerlevel10k
 }
+readonly -f __setup_zsh_theme
 
 __setup_zsh_plugins() {
     local -r ZSH_PLUGINS_LOCAL_DIR="${ZDOTDIR}/plugins.local"
@@ -220,12 +241,14 @@ __setup_zsh_plugins() {
         https://github.com/zsh-users/zsh-history-substring-search.git \
         "${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search"
 }
+readonly -f __setup_zsh_plugins
 
 __post_setup_zsh() {
     # ======== compile
     # compile all *.zsh files under the path for performance
     find "$ZDOTDIR/" -name '*.zsh' -exec zsh -c 'zcompile "$0"' {} \;
 }
+readonly -f __post_setup_zsh
 
 ___install_powerlevel10k() {
     # Install powerlevel10k
@@ -234,6 +257,7 @@ ___install_powerlevel10k() {
     #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
     yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
 }
+readonly -f ___install_powerlevel10k
 
 # ======================================================
 # ======================================================
@@ -244,27 +268,32 @@ ___install_powerlevel10k() {
 setup_terminal() {
     _setup_alacritty
 }
+readonly -f setup_terminal
 
 _setup_alacritty() {
     __install_alacritty
     __setup_alacritty_config
     __setup_alacritty_theme
 }
+readonly -f _setup_alacritty
 
 __install_alacritty() {
     sudo pacman -S --needed --noconfirm alacritty
 }
+readonly -f __install_alacritty
 
 __setup_alacritty_config() {
     link_file "${MYENV_ROOT}/config/home/.config/alacritty/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
 
 }
+readonly -f __setup_alacritty_config
 
 __setup_alacritty_theme() {
     download_file \
         "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/alacritty/tokyonight_night.toml" \
         "${HOME}/.config/alacritty/theme.local/tokyonight_night.toml"
 }
+readonly -f __setup_alacritty_theme
 
 # ======================================================
 # ======================================================
@@ -275,6 +304,7 @@ __setup_alacritty_theme() {
 setup_multiplexer() {
     _setup_tmux
 }
+readonly -f setup_multiplexer
 
 _setup_tmux() {
     __install_tmux
@@ -283,15 +313,18 @@ _setup_tmux() {
     # __install_tpm
     # __refresh_tmux_plugins
 }
+readonly -f _setup_tmux
 
 __install_tmux() {
     sudo pacman -S --needed --noconfirm tmux
 }
+readonly -f __install_tmux
 
 __setup_tmux_config() {
     remove_unused_config "${HOME}/.tmux.conf"
     link_file "${MYENV_ROOT}/config/home/.config/tmux/tmux.conf" "${HOME}/.config/tmux/tmux.conf"
 }
+readonly -f __setup_tmux_config
 
 __setup_tmux_theme() {
     local -r TMUX_THEME_LOCAL_PATH="${HOME}/.config/tmux/themes.local"
@@ -312,6 +345,7 @@ __setup_tmux_theme() {
         "https://raw.githubusercontent.com/folke/tokyonight.nvim/refs/heads/main/extras/tmux/tokyonight_storm.tmux" \
         "${TMUX_THEME_LOCAL_PATH}/tokyonight_storm.tmux"
 }
+readonly -f __setup_tmux_theme
 
 __install_tpm() {
     # Install tpm (plugin manager)
@@ -326,6 +360,7 @@ __install_tpm() {
     local -r TMUX_PLUGIN_INSTALL_PATH="${HOME}/.config/tmux/plugins"
     clone_repo_shallow "https://github.com/tmux-plugins/tpm" "${TMUX_PLUGIN_INSTALL_PATH}/tpm"
 }
+readonly -f __install_tpm
 
 __refresh_tmux_plugins() {
     # Install plugins with tpm via CLI
@@ -338,6 +373,7 @@ __refresh_tmux_plugins() {
     # update plugins with tpm via CLI
     "${TMUX_PLUGIN_INSTALL_PATH}/tpm/bin/update_plugins" all
 }
+readonly -f __refresh_tmux_plugins
 
 # ======================================================
 # ======================================================
@@ -349,26 +385,31 @@ setup_devel() {
     _install_many_devel_tools
     _setup_lazygit
 }
+readonly -f setup_devel
 
 _install_many_devel_tools() {
     sudo pacman -S --needed --noconfirm \
         git-delta \
         shellcheck shfmt
 }
+readonly -f _install_many_devel_tools
 
 _setup_lazygit() {
     __install_lazygit
     __setup_lazygit_config
 }
+readonly -f _setup_lazygit
 
 __install_lazygit() {
     sudo pacman -S --needed --noconfirm lazygit
 }
+readonly -f __install_lazygit
 
 __setup_lazygit_config() {
     remove_unused_config "${HOME}/.config/lazygit/config.yml"
     link_file "${MYENV_ROOT}/config/home/.config/lazygit/config.yml" "${HOME}/.config/lazygit/config.yml"
 }
+readonly -f __setup_lazygit_config
 
 # ======================================================
 # ======================================================
@@ -380,29 +421,35 @@ setup_editor() {
     _setup_neovim
     _setup_editorconfig
 }
+readonly -f setup_editor
 
 _setup_neovim() {
     __install_neovim
     __setup_neovim_config
     __refresh_neovim_plugins
 }
+readonly -f _setup_neovim
 
 _setup_editorconfig() {
     link_file "${MYENV_ROOT}/config/home/.editorconfig" "${HOME}/.editorconfig"
 }
+readonly -f _setup_editorconfig
 
 __install_neovim() {
     sudo pacman -S --needed --noconfirm neovim
 }
+readonly -f __install_neovim
 
 __setup_neovim_config() {
     link_dir "${MYENV_ROOT}/config/home/.config/nvim" "${HOME}/.config/nvim" # NOTE: dir
 }
+readonly -f __setup_neovim_config
 
 __refresh_neovim_plugins() {
     # Sync (= install & cleanup & update) plugins
     nvim --headless "+Lazy! sync" +qa
 }
+readonly -f __refresh_neovim_plugins
 
 # ======================================================
 # ======================================================
@@ -415,70 +462,83 @@ setup_browser() {
     _setup_chrome
     _setup_firefox
 }
+readonly -f setup_browser
 
 _setup_chromium() {
     __install_chromium
     __setup_chromium_extensions
     __setup_chromium_bookmarklet
 }
+readonly -f _setup_chromium
 
 _setup_chrome() {
     __install_chrome
     __setup_chrome_extensions
     __setup_chrome_bookmarklet
 }
+readonly -f _setup_chrome
 
 _setup_firefox() {
     __install_firefox
     __setup_firefox_extensions
     __setup_firefox_bookmarklet
 }
+readonly -f _setup_firefox
 
 __install_chromium() {
     sudo pacman -S --needed --noconfirm chromium
 }
+readonly -f __install_chromium
 
 __setup_chromium_extensions() {
     # TODO:
     :
 }
+readonly -f __setup_chromium_extensions
 
 __setup_chromium_bookmarklet() {
     # TODO:
     # TODO: HTML file??
     :
 }
+readonly -f __setup_chromium_bookmarklet
 
 __install_chrome() {
     yay -S --needed --noconfirm google-chrome
 }
+readonly -f __install_chrome
 
 __setup_chrome_extensions() {
     # TODO:
     :
 }
+readonly -f __setup_chrome_extensions
 
 __setup_chrome_bookmarklet() {
     # TODO:
     # TODO: HTML file??
     :
 }
+readonly -f __setup_chrome_bookmarklet
 
 __install_firefox() {
     sudo pacman -S --needed --noconfirm firefox
 }
+readonly -f __install_firefox
 
 __setup_firefox_extensions() {
     # TODO:
     :
     sudo pacman -S --needed --noconfirm firefox-ublock-origin
 }
+readonly -f __setup_firefox_extensions
 
 __setup_firefox_bookmarklet() {
     # TODO:
     # TODO: HTML file??
     :
 }
+readonly -f __setup_firefox_bookmarklet
 
 # ======================================================
 # ======================================================
@@ -489,3 +549,4 @@ __setup_firefox_bookmarklet() {
 post_setup_base() {
     :
 }
+readonly -f post_setup_base

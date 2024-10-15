@@ -12,7 +12,11 @@ main() {
 
     # 0_core.bash
     pre_setup_core
-    setup_core
+    setup_git
+    setup_aur_helper
+    setup_runtime_version_manager
+    setup_programming_languages
+    setup_some_directories
     post_setup_core
 
     # 1_base.bash
@@ -20,7 +24,7 @@ main() {
     setup_font
     setup_ime
     setup_util
-    setup_shell
+    setup_shell_on_manjaro
     setup_terminal
     setup_multiplexer
     setup_devel
