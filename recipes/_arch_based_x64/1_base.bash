@@ -97,7 +97,7 @@ readonly -f setup_ime
 setup_util() {
     _install_many_util_clis
     _setup_fastfetch
-    _setup_proper7y
+    _install_proper7y
 }
 readonly -f setup_util
 
@@ -115,17 +115,18 @@ _setup_fastfetch() {
 }
 readonly -f _setup_fastfetch
 
-_setup_proper7y() {
-    if ! check_if_command_exists "proper7y"; then
-        local -r dest_dir="${HOME}/bin"
-
-        cd "$(mktemp -d)"
-        curl -O https://raw.githubusercontent.com/rnazmo/proper7y/main/install.bash
-        chmod +x ./install.bash
-        ./install.bash "$dest_dir"
+_install_proper7y() {
+    if check_if_command_exists "proper7y"; then
+        return 0
     fi
+
+    local -r dest_dir="${HOME}/bin"
+    cd "$(mktemp -d)"
+    curl -O https://raw.githubusercontent.com/rnazmo/proper7y/main/install.bash
+    chmod +x ./install.bash
+    ./install.bash "$dest_dir"
 }
-readonly -f _setup_proper7y
+readonly -f _install_proper7y
 
 # ======================================================
 # ======================================================
