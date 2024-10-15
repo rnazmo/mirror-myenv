@@ -12,12 +12,7 @@ main() {
 
     setup_core
 
-    setup_fonts
-    setup_input_method
-    setup_terminal
-    setup_devel
-    setup_editor
-    setup_browser
+    setup_base
 
     log_debug "END  : ${BASH_SOURCE##*/}"
 }

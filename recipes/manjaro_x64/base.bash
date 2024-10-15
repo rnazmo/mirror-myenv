@@ -3,7 +3,16 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-setup_fonts() {
+setup_base() {
+    _setup_fonts
+    _setup_input_method
+    _setup_terminal
+    _setup_devel
+    _setup_editor
+    _setup_browser
+}
+
+_setup_fonts() {
     log_debug "START: ${BASH_SOURCE}"
 
     yay -Syu --noconfirm
@@ -46,7 +55,7 @@ setup_fonts() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-setup_input_method() {
+_setup_input_method() {
     # Fcitx + Mozc
     # 日本語入力環境を整える
     # sudo pacman -S --needed --noconfirm fcitx-mozc
@@ -54,7 +63,7 @@ setup_input_method() {
     :
 }
 
-setup_terminal() {
+_setup_terminal() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
@@ -253,7 +262,7 @@ setup_terminal() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-setup_devel() {
+_setup_devel() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
@@ -290,7 +299,7 @@ setup_devel() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-setup_editor() {
+_setup_editor() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
@@ -351,7 +360,7 @@ setup_editor() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-setup_browser() {
+_setup_browser() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
