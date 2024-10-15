@@ -15,7 +15,7 @@ pre_setup_base() {
 
 _refresh_packages() {
     sudo pacman -Syu --noconfirm
-    yay -Syu --noconfirm
+    check_if_command_exists "yay" && yay -Syu --noconfirm
 }
 
 # ======================================================

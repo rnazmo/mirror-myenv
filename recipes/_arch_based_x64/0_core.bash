@@ -3,37 +3,61 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-setup_core() {
-    log_debug "START: ${BASH_SOURCE}"
+# ======================================================
+# ======================================================
+# ======== Pre                                         =
+# ======================================================
+# ======================================================
 
-    # ======================================================
-    # ======== system update                               =
-    # ======================================================
+pre_setup_core() {
+    _refresh_packages
+    _install_some_dependencies
+}
 
+_refresh_packages() {
     sudo pacman -Syu --noconfirm
+    check_if_command_exists "yay" && yay -Syu --noconfirm
+}
 
-    # ======================================================
-    # ======== some dependencies                           =
-    # ======================================================
-
+_install_some_dependencies() {
     sudo pacman -S --needed --noconfirm base-devel curl vim
+}
 
-    # ======================================================
-    # ======== git                                         =
-    # ======================================================
+# ======================================================
+# ======================================================
+# ======== Git                                         =
+# ======================================================
+# ======================================================
 
+setup_core() {
+    _install_git
+    _setup_git
+}
+
+_install_git() {
     sudo pacman -S --needed --noconfirm git
+}
 
+_setup_git() {
     remove_unused_config "${HOME}/.gitconfig"
     remove_unused_config "${HOME}/.gitignore"
     remove_unused_config "${HOME}/.gitignore_global"
     link_file "${MYENV_ROOT}/config/home/.config/git/config" "${HOME}/.config/git/config"
     link_file "${MYENV_ROOT}/config/home/.config/git/ignore" "${HOME}/.config/git/ignore"
+}
 
-    # ======================================================
-    # ======== yay                                         =
-    # ======================================================
+# ======================================================
+# ======================================================
+# ======== AUR helper                                  =
+# ======================================================
+# ======================================================
 
+setup_aur_helper() {
+    _install_yay
+
+}
+
+_install_yay() {
     if ! check_if_command_exists "yay"; then
         # Ensure that dependencies is installed
         sudo pacman -S --needed git base-devel
@@ -45,11 +69,20 @@ setup_core() {
         cd yay-bin
         makepkg -si
     fi
+}
 
-    # ======================================================
-    # ======== mise                                        =
-    # ======================================================
+# ======================================================
+# ======================================================
+# ======== Runtime version manager                     =
+# ======================================================
+# ======================================================
 
+setup_runtime_version_manager() {
+    _install_mise
+    _setup_mise_config
+}
+
+_install_mise() {
     # if ! check_if_command_exists "mise"; then
     #     # Install mise under `~/.local/bin/mise` with the script
     #     # Ref:
@@ -68,25 +101,42 @@ setup_core() {
     #     https://aur.archlinux.org/packages/mise
     #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
     yay -S --needed --noconfirm mise-bin
+}
 
+_setup_mise_config() {
     link_file "${MYENV_ROOT}/config/home/.config/mise/config.toml" "${HOME}/.config/mise/config.toml"
+}
 
-    # ======================================================
-    # ======== Programming Languages                       =
-    # ======================================================
+# ======================================================
+# ======================================================
+# ======== Programming Languages                       =
+# ======================================================
+# ======================================================
 
-    # mise install
+setup_programming_languages() {
+    _install_golang
+    _install_nodejs
+}
 
-    # ======== golang
+_install_golang() {
     mise use --global go@latest
+}
 
-    # ======== nodejs
+_install_nodejs() {
     mise use --global node@latest
+}
 
-    # ======================================================
-    # ======== aqua                                        =
-    # ======================================================
+# ======================================================
+# ======================================================
+# ======== CLI version manager                         =
+# ======================================================
+# ======================================================
 
+setup_cli_version_manager() {
+    _setup_aqua
+}
+
+_setup_aqua() {
     if ! check_if_command_exists "aqua"; then
         cd "$(mktemp -d)"
         curl -sSfL -O https://raw.githubusercontent.com/aquaproj/aqua-installer/v3.0.1/aqua-installer
@@ -95,11 +145,15 @@ setup_core() {
         ./aqua-installer
     fi
     link_file "${MYENV_ROOT}/config/home/.config/aquaproj-aqua/aqua.yaml" "${HOME}/.config/aquaproj-aqua/aqua.yaml"
+}
 
-    # ======================================================
-    # ======== misc                                        =
-    # ======================================================
+# ======================================================
+# ======================================================
+# ======== Misc                                        =
+# ======================================================
+# ======================================================
 
+setup_some_directories() {
     local -r DIRS=(
         "${HOME}/repos"
         "${HOME}/bin"
@@ -111,6 +165,14 @@ setup_core() {
     for DIR in "${DIRS[@]}"; do
         mkdir -p -v "$DIR"
     done
+}
 
-    log_debug "END  : ${BASH_SOURCE}"
+# ======================================================
+# ======================================================
+# ======== Post                                        =
+# ======================================================
+# ======================================================
+
+post_setup_core() {
+    :
 }
