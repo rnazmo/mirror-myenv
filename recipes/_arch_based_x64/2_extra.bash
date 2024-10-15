@@ -1,9 +1,29 @@
 #!/usr/bin/env bash
 set -eu
 
-# virtualized environment guest
-
 source "${MYENV_ROOT}/lib/util.bash"
+
+# ======================================================
+# ======================================================
+# ======== Pre                                         =
+# ======================================================
+# ======================================================
+
+pre_setup_extra() {
+    _refresh_packages
+    _install_some_dependencies
+}
+
+_refresh_packages() {
+    sudo pacman -Syu --noconfirm
+    check_if_command_exists "yay" && yay -Syu --noconfirm
+}
+
+# ======================================================
+# ======================================================
+# ======== Virtualization                              =
+# ======================================================
+# ======================================================
 
 setup_docker() {
     sudo pacman -S docker docker-compose
@@ -19,6 +39,12 @@ setup_virtualbox_guest() {
     # Ref: https://wiki.archlinux.org/title/VirtualBox/Install_Arch_Linux_as_a_guest
     sudo pacman -S --needed virtualbox-guest-utils
 }
+
+# ======================================================
+# ======================================================
+# ======== Editor                                      =
+# ======================================================
+# ======================================================
 
 setup_vscode() {
     yay -S --needed --noconfirm visual-studio-code-bin
@@ -48,4 +74,14 @@ setup_vscode() {
 
 setup_obsidian() {
     sudo pacman -S --needed obsidian
+}
+
+# ======================================================
+# ======================================================
+# ======== Post                                        =
+# ======================================================
+# ======================================================
+
+post_setup_extra() {
+    :
 }

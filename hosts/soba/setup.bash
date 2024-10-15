@@ -29,9 +29,9 @@ main() {
     post_setup_base
 
     # 2_extra.bash
-    # pre_setup_extra
+    pre_setup_extra
     # something here
-    # post_setup_extra
+    post_setup_extra
 
     log_debug "END  : ${BASH_SOURCE##*/}"
 }
