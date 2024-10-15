@@ -3,18 +3,7 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-setup_base() {
-    _setup_font
-    _setup_ime
-    _setup_shell
-    _setup_terminal
-    _setup_multiplexer
-    _setup_devel
-    _setup_editor
-    _setup_browser
-}
-
-_setup_font() {
+setup_font() {
     log_debug "START: ${BASH_SOURCE}"
 
     yay -Syu --noconfirm
@@ -57,7 +46,7 @@ _setup_font() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-_setup_ime() {
+setup_ime() {
     # Fcitx + Mozc
     # 日本語入力環境を整える
     # sudo pacman -S --needed --noconfirm fcitx-mozc
@@ -226,7 +215,7 @@ setup_shell() {
     fi
 }
 
-_setup_terminal() {
+setup_terminal() {
     # ======================================================
     # ======== alacritty (& theme)                         =
     # ======================================================
@@ -242,7 +231,7 @@ _setup_terminal() {
 
 }
 
-_setup_multiplexer() {
+setup_multiplexer() {
     # ======================================================
     # ======== tmux (& plugin-manager & plugins)           =
     # ======================================================
@@ -316,7 +305,7 @@ _setup_devel() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-_setup_editor() {
+setup_editor() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
@@ -377,7 +366,7 @@ _setup_editor() {
     log_debug "END  : ${BASH_SOURCE}"
 }
 
-_setup_browser() {
+setup_browser() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
