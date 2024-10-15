@@ -4,7 +4,7 @@ set -eu
 source "${MYENV_ROOT}/lib/util.bash"
 
 setup_base() {
-    _setup_fonts
+    _setup_font
     _setup_input_method
     _setup_terminal
     _setup_devel
@@ -12,7 +12,7 @@ setup_base() {
     _setup_browser
 }
 
-_setup_fonts() {
+_setup_font() {
     log_debug "START: ${BASH_SOURCE}"
 
     yay -Syu --noconfirm
