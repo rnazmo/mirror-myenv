@@ -10,32 +10,37 @@ source "${MYENV_ROOT}/recipes/manjaro_x64/2_extra.bash"
 main() {
     log_debug "START: ${BASH_SOURCE##*/}"
 
-    # 0_core.bash
-    pre_setup_core
-    setup_git
-    setup_aur_helper
-    setup_runtime_version_manager
-    setup_programming_languages
-    setup_some_directories
-    post_setup_core
+    call_func_in_0_core() {
+        pre_setup_core
+        setup_git
+        setup_aur_helper
+        setup_runtime_version_manager
+        setup_programming_languages
+        setup_some_directories
+        post_setup_core
+    }
+    call_func_in_1_base() {
+        pre_setup_base
+        setup_font
+        setup_ime
+        setup_util
+        setup_shell_on_manjaro
+        setup_terminal
+        setup_multiplexer
+        setup_devel
+        setup_editor
+        setup_browser
+        post_setup_base
+    }
+    call_func_in_2_extra() {
+        pre_setup_extra
+        # something here
+        post_setup_extra
+    }
 
-    # 1_base.bash
-    pre_setup_base
-    setup_font
-    setup_ime
-    setup_util
-    setup_shell_on_manjaro
-    setup_terminal
-    setup_multiplexer
-    setup_devel
-    setup_editor
-    setup_browser
-    post_setup_base
-
-    # 2_extra.bash
-    pre_setup_extra
-    # something here
-    post_setup_extra
+    call_func_in_0_core
+    call_func_in_1_base
+    call_func_in_2_extra
 
     log_debug "END  : ${BASH_SOURCE##*/}"
 }
