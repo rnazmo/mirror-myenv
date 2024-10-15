@@ -3,7 +3,7 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-main() {
+setup_fonts() {
     log_debug "START: ${BASH_SOURCE}"
 
     yay -Syu --noconfirm
@@ -45,5 +45,3 @@ main() {
 
     log_debug "END  : ${BASH_SOURCE}"
 }
-
-main

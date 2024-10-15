@@ -3,7 +3,7 @@ set -eu
 
 source ${MYENV_ROOT}/lib/util.bash
 
-main() {
+setup_editor() {
     log_debug "START: ${BASH_SOURCE}"
 
     sudo pacman -Syu --noconfirm
@@ -63,5 +63,3 @@ main() {
 
     log_debug "END  : ${BASH_SOURCE}"
 }
-
-main

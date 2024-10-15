@@ -3,7 +3,7 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-main() {
+setup_base() {
     log_debug "START: ${BASH_SOURCE}"
 
     # ======================================================
@@ -114,5 +114,3 @@ main() {
 
     log_debug "END  : ${BASH_SOURCE}"
 }
-
-main
