@@ -35,15 +35,44 @@ return {
 
   --- outline
   {
-    "hedyhli/outline.nvim",
+    "stevearc/aerial.nvim",
+
     opts = {
-      outline_window = {
-        width = 15,
-        auto_close = true,
+      layout = {
+        min_width = 28,
+        -- default_direction = "right",
+        -- placement = "edge",
+      },
+
+      -- Place floating window at upper right of current window.
+      -- Ref: https://github.com/stevearc/aerial.nvim/issues/107
+      float = {
+        relative = "win",
+        override = function(conf, source_winid) -- <- the source_winid is new
+          local padding = 1
+          conf.anchor = "NE"
+          conf.row = padding
+          conf.col = vim.api.nvim_win_get_width(source_winid) - padding
+          return conf
+        end,
       },
     },
-    keys = { { "<leader>o", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
+    keys = {
+      { "<leader>o", "<cmd>AerialToggle float<cr>", desc = "Toggle Aerial (floating)" },
+      { "<leader>O", "<cmd>AerialToggle<cr>", desc = "Toggle Aerial" },
+    },
   },
+
+  -- {
+  --   "hedyhli/outline.nvim",
+  --   opts = {
+  --     outline_window = {
+  --       width = 15,
+  --       auto_close = true,
+  --     },
+  --   },
+  --   keys = { { "<leader>o", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
+  -- },
 
   -- twilight
   {
