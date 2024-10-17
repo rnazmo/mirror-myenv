@@ -36,10 +36,9 @@ return {
   -- twilight
   {
     "folke/twilight.nvim",
-    opts = { dimming = {
-      alpha = 0.30,
-    } },
-
+    opts = {
+      dimming = { alpha = 0.30 },
+    },
     keys = { { "<leader>ct", "<cmd>Twilight<cr>", desc = "Toggle Twilight" } },
   },
 
