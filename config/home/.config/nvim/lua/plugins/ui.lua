@@ -12,6 +12,7 @@ return {
     "akinsho/bufferline.nvim",
     opts = {
       options = {
+        separator_style = "slope",
         -- Buffers are hard to manage, so I don't use them.
         mode = "tabs",
         show_buffer_close_icons = false,
