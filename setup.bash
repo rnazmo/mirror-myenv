@@ -5,15 +5,15 @@ set -eu
 #     Provision the machine.
 #
 # Prerequisites:
-#     myenv-v3 repository (~/.myenv-v3)
+#     myenv repository (~/.myenv)
 #
 # Usage:
-#     foo/bar/myenv-v3/setup.bash "<host_name>"
+#     foo/bar/myenv/setup.bash "<host_name>"
 #
 # Example:
-#     ~/myenv-v3/setup.bash "soba"
+#     ~/myenv/setup.bash "soba"
 
-export MYENV_ROOT="${HOME}/.myenv-v3"
+export MYENV_ROOT="${HOME}/.myenv"
 
 source "${MYENV_ROOT}/lib/util.bash"
 

@@ -7,10 +7,10 @@ drafted_at: 2024-10-05T18:04
 created_at: 2024-10-05T18:04
 last_updated_at:
 last_reviewed_at:
-categories: ["myenv-v3"]
+categories: ["myenv"]
 tags: ["keybinding"]
 keywords:
-title: "myenv-v3: My keybindings"
+title: "myenv: My keybindings"
 aliases:
 ---
 

@@ -2,7 +2,7 @@
 set -eu
 
 # What is this:
-#     Clone myenv-v3 repo from https://gitlab.com/rnazmo/myenv-v3 to ~/.myenv-v3.
+#     Clone myenv repo from https://gitlab.com/rnazmo/myenv to ~/.myenv.
 #
 # Prerequisites:
 #     git
@@ -11,16 +11,16 @@ set -eu
 #     $ ./init.sh
 #
 # Example:
-#     $ /bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv-v3/-/raw/main/init.bash)"
+#     $ /bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv/-/raw/main/init.bash)"
 
 main() {
-    local -r SRC_URL="git@gitlab.com:rnazmo/myenv-v3.git"
+    local -r SRC_URL="git@gitlab.com:rnazmo/myenv.git"
     local -r DEST_PARENT_DIR="${HOME}"
-    local -r DEST_REPO_NAME=".myenv-v3"
+    local -r DEST_REPO_NAME=".myenv"
     local -r DEST_REPO_PATH="${DEST_PARENT_DIR}/${DEST_REPO_NAME}"
 
     # ======================================================
-    # ======== myenv-v3                                    =
+    # ======== myenv                                    =
     # ======================================================
 
     if [ -e "$DEST_REPO_PATH" ]; then

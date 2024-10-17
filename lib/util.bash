@@ -162,7 +162,7 @@ link_dir() {
 #         There must not be anything (regular file, symbolic, directory, ...) in its path.
 #
 # Example:
-#     copy_file "~/.myenv-v3/config/home/.config/alacritty/my-theme.toml" "~/.config/alacritty/my-theme.toml"
+#     copy_file "~/.myenv/config/home/.config/alacritty/my-theme.toml" "~/.config/alacritty/my-theme.toml"
 copy_file() {
     # 引数の受け取り
     local -r SRC_PATH=$1

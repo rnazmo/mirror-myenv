@@ -1,4 +1,4 @@
-# myenv-v3
+# myenv
 
 my provisioning scripts.
 
@@ -35,9 +35,9 @@ my provisioning scripts.
 #### 新規マシンのセットアップ
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv-v3/-/raw/main/init.bash)"
+/bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv/-/raw/main/init.bash)"
 
-cd ~/.myenv-v3 && ./setup.bash "soba"
+cd ~/.myenv && ./setup.bash "soba"
 
 ```
 
@@ -47,7 +47,7 @@ cd ~/.myenv-v3 && ./setup.bash "soba"
 
 ```bash
 # Apply changes
-cd ~/.myenv-v3 && git pull && ./setup.bash "soba"
+cd ~/.myenv && git pull && ./setup.bash "soba"
 
 ```
 
@@ -55,7 +55,7 @@ cd ~/.myenv-v3 && git pull && ./setup.bash "soba"
 
 ```bash
 # Push changes
-cd ~/.myenv-v3 && git add -i && git commit -m "update" && git push
+cd ~/.myenv && git add -i && git commit -m "update" && git push
 
 ```
 

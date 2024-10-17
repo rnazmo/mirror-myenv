@@ -8,8 +8,8 @@
 # ======== zsh
 export ZDOTDIR="${HOME}/.config/zsh"
 
-# ======== myenv-v3
-export MYENV_ROOT="${HOME}/.myenv-v3"
+# ======== myenv
+export MYENV_ROOT="${HOME}/.myenv"
 
 # ======== basic
 export LANG=en_US.UTF-8
