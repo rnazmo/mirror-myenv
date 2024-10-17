@@ -33,6 +33,18 @@ return {
     end,
   },
 
+  --- outline
+  {
+    "hedyhli/outline.nvim",
+    opts = {
+      outline_window = {
+        width = 15,
+        auto_close = true,
+      },
+    },
+    keys = { { "<leader>o", "<cmd>Outline<cr>", desc = "Toggle Outline" } },
+  },
+
   -- twilight
   {
     "folke/twilight.nvim",
