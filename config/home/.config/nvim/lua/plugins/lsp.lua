@@ -16,7 +16,7 @@ return {
         svelte = { "prettier" },
         css = { "prettier" },
         html = { "prettier" },
-        markdown = { "prettier" },
+        -- markdown = { "prettier" },
         json = { "prettier" },
         yaml = { "prettier" },
         -- graphql = { "prettier" },
