@@ -80,13 +80,56 @@ readonly -f _post_setup_font
 # ======================================================
 
 setup_ime() {
-    # Fcitx + Mozc
-    # 日本語入力環境を整える
-    # sudo pacman -S --needed --noconfirm fcitx-mozc
-    # TODO:
-    :
+    _setup_fcitx5_mozc
+}
+
+_setup_fcitx5_mozc() {
+    # Fcitx5 + Mozc to Japanese Input
+    # NOTE: Desktop is Xfce, X11
+    # Ref:
+    #     https://fcitx-im.org/wiki/Fcitx_5
+    #     https://fcitx-im.org/wiki/Install_Fcitx_5
+    #     https://fcitx-im.org/wiki/Setup_Fcitx_5
+    #     https://fcitx-im.org/wiki/Input_method_engines
+    #     https://wiki.archlinux.jp/index.php/Fcitx5
+    #     https://wiki.archlinux.org/title/Fcitx5
+    #     https://archlinux.org/packages/extra/x86_64/fcitx5-configtool/
+    #     https://archlinux.org/packages/extra/x86_64/fcitx5-mozc/
+    # See also:
+    #     https://github.com/fcitx/fcitx5
+    #     https://github.com/google/mozc
+
+    __install_fcitx5_mozc
+    __setup_fcitx5_config
 }
 readonly -f setup_ime
+
+__install_fcitx5_mozc() {
+    # Uninstall fcitx related packages to avoid conflict
+    local PKGS=("fcitx-mozc" "fcitx-configtool" "fcitx-qt5" "fcitx")
+    for PKG in "${PKGS[@]}"; do
+        if pacman -Qi "$PKG" &>/dev/null; then
+            sudo pacman -Rns --noconfirm "$PKG"
+        fi
+    done
+    unset PKGS
+
+    # Install fcitx5 related packages
+    # NOTE: fcitx5-im include:
+    #    1) fcitx5  2) fcitx5-configtool  3) fcitx5-gtk  4) fcitx5-qt
+    sudo pacman -S --needed --noconfirm "fcitx5-mozc" "fcitx5-im"
+}
+readonly -f __install_fcitx5_mozc
+
+__setup_fcitx5_config() {
+    remove_unused_config "${HOME}/.config/fcitx5/config"
+    remove_unused_config "${HOME}/.config/fcitx5/profile"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx5/config" "${HOME}/.config/fcitx5/config"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx5/profile" "${HOME}/.config/fcitx5/profile"
+    remove_unused_config "${HOME}/.xprofile"
+    link_file "${MYENV_ROOT}/config/home/.xprofile" "${HOME}/.xprofile"
+}
+readonly -f __setup_fcitx5_config
 
 # ======================================================
 # ======================================================
