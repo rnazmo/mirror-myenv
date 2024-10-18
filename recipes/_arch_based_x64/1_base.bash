@@ -120,7 +120,7 @@ _install_many_util_clis() {
     for PKG in "${PKGS[@]}"; do
         sudo pacman -S --needed --noconfirm "$PKG"
     done
-    unset PKG
+    unset PKGS
 }
 readonly -f _install_many_util_clis
 
@@ -432,7 +432,7 @@ _install_many_devel_tools() {
     for PKG in "${PKGS[@]}"; do
         sudo pacman -S --needed --noconfirm "$PKG"
     done
-    unset PKG
+    unset PKGS
 
     # TODO: Instll goimports (go formatter) via go install
     # TODO: Install hadolint-bin (dockerfile linter) via aur
