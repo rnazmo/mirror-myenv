@@ -40,7 +40,12 @@ return {
 
       -- tabline
       tabline = {
-        lualine_a = { "tabs" },
+        lualine_a = {
+          {
+            "tabs",
+            mode = 2, -- Shows tab_nr + tab_name
+          },
+        },
       },
 
       -- winbar (window bar)
