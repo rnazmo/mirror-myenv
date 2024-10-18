@@ -10,17 +10,18 @@ return {
   -- bufferline
   {
     "akinsho/bufferline.nvim",
-    opts = {
-      options = {
-        separator_style = "slope",
-        -- Buffers are hard to manage, so I don't use them.
-        mode = "tabs",
-        show_buffer_close_icons = false,
-        show_close_icon = false,
-
-        always_show_bufferline = true,
-      },
-    },
+    enabled = false,
+    -- opts = {
+    --   options = {
+    --     separator_style = "slope",
+    --     -- Buffers are hard to manage, so I don't use them.
+    --     mode = "tabs",
+    --     show_buffer_close_icons = false,
+    --     show_close_icon = false,
+    --
+    --     always_show_bufferline = true,
+    --   },
+    -- },
   },
 
   -- statusline & window bar
@@ -35,6 +36,12 @@ return {
         -- Remove the time info (= luzline_z) from lualine
         lualine_z = {},
       },
+
+      -- tabline
+      tabline = {
+        lualine_a = { "tabs" },
+      },
+
       -- Display winbar (window bar) with lualine
       winbar = {
         lualine_c = {
