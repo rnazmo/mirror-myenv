@@ -96,16 +96,30 @@ readonly -f setup_ime
 
 setup_util() {
     _install_many_util_clis
-    _setup_fastfetch  # display system info
     _setup_yazi       # cli file manager
+    _setup_fastfetch  # display system info
     _install_proper7y # display system info
 }
 readonly -f setup_util
 
 _install_many_util_clis() {
-    sudo pacman -S --needed --noconfirm \
-        ghq fzf tree xclip unzip \
-        ripgrep bat eza fd bottom jq
+    local -r PKGS=(
+        "tree"    # tree command
+        "xclip"   # clipboard util
+        "unzip"   # zip util
+        "ghq"     # repository manager
+        "fzf"     # fazzy finder
+        "eza"     # better ls
+        "ripgrep" # better grep
+        "bat"     # better cat
+        "fd"      # better find
+        "bottom"  # system monitor
+        "jq"      # json util
+    )
+    for PKG in "${PKGS[@]}"; do
+        sudo pacman -S --needed --noconfirm "$PKG"
+    done
+    unset PKG
 }
 readonly -f _install_many_util_clis
 
@@ -417,6 +431,7 @@ _install_many_devel_tools() {
     for PKG in "${PKGS[@]}"; do
         sudo pacman -S --needed --noconfirm "$PKG"
     done
+    unset PKG
 
     # TODO: Instll goimports (go formatter) via go install
     # TODO: Install hadolint-bin (dockerfile linter) via aur
