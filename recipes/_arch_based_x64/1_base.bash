@@ -109,6 +109,7 @@ _install_many_util_clis() {
         "unzip"   # zip util
         "ghq"     # repository manager
         "fzf"     # fazzy finder
+        "zoxide"  # better cd
         "eza"     # better ls
         "ripgrep" # better grep
         "bat"     # better cat
