@@ -104,7 +104,7 @@ readonly -f setup_util
 _install_many_util_clis() {
     sudo pacman -S --needed --noconfirm \
         ghq fzf tree xclip unzip \
-        ripgrep bat eza fd bottom
+        ripgrep bat eza fd bottom yazi jq
 }
 readonly -f _install_many_util_clis
 
