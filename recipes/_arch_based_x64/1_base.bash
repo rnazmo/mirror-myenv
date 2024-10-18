@@ -97,6 +97,7 @@ readonly -f setup_ime
 setup_util() {
     _install_many_util_clis
     _setup_fastfetch
+    _setup_yazi
     _install_proper7y
 }
 readonly -f setup_util
@@ -104,7 +105,7 @@ readonly -f setup_util
 _install_many_util_clis() {
     sudo pacman -S --needed --noconfirm \
         ghq fzf tree xclip unzip \
-        ripgrep bat eza fd bottom yazi jq
+        ripgrep bat eza fd bottom jq
 }
 readonly -f _install_many_util_clis
 
@@ -114,6 +115,13 @@ _setup_fastfetch() {
     link_file "${MYENV_ROOT}/config/home/.config/fastfetch/config.jsonc" "${HOME}/.config/fastfetch/config.jsonc"
 }
 readonly -f _setup_fastfetch
+
+_setup_yazi() {
+    sudo pacman -S --needed --noconfirm yazi
+    remove_unused_config "${HOME}/.config/yazi/yazi.toml"
+    link_file "${MYENV_ROOT}/config/home/.config/yazi/yazi.toml" "${HOME}/.config/yazi/yazi.toml"
+}
+readonly -f _setup_yazi
 
 _install_proper7y() {
     if check_if_command_exists "proper7y"; then
