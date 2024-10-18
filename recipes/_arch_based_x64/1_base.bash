@@ -334,6 +334,7 @@ readonly -f ___install_powerlevel10k
 
 setup_terminal() {
     _setup_alacritty
+    _setup_wezterm
 }
 readonly -f setup_terminal
 
@@ -343,6 +344,12 @@ _setup_alacritty() {
     __setup_alacritty_theme
 }
 readonly -f _setup_alacritty
+
+_setup_wezterm() {
+    __install_wezterm
+    ___setup_wezterm_config
+}
+readonly -f _setup_wezterm
 
 __install_alacritty() {
     sudo pacman -S --needed --noconfirm alacritty
@@ -361,6 +368,15 @@ __setup_alacritty_theme() {
         "${HOME}/.config/alacritty/theme.local/tokyonight_night.toml"
 }
 readonly -f __setup_alacritty_theme
+
+__install_wezterm() {
+    sudo pacman -S --needed --noconfirm wezterm
+}
+readonly -f __install_wezterm
+
+___setup_wezterm_config() {
+    link_file "${MYENV_ROOT}/config/home/.config/wezterm/wezterm.lua" "${HOME}/.config/wezterm/wezterm.lua"
+}
 
 # ======================================================
 # ======================================================
