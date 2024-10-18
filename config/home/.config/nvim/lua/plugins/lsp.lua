@@ -22,7 +22,6 @@ return {
         -- graphql = { "prettier" },
         go = { "goimports" },
         sh = { "shfmt" },
-        zsh = { "shfmt" }, -- shfmt not support Zsh, but may work
         lua = { "stylua" },
         -- python = { "isort", "black" },
         -- TODO: scss, ...
