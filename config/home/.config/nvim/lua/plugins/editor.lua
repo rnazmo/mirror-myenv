@@ -22,6 +22,35 @@ return {
     },
   },
 
+  --- outline with aerial.nvim
+  {
+    "stevearc/aerial.nvim",
+    opts = {
+      layout = {
+        min_width = 28,
+        -- default_direction = "right",
+        -- placement = "edge",
+      },
+
+      -- Place floating window at upper right of current window.
+      -- Ref: https://github.com/stevearc/aerial.nvim/issues/107
+      float = {
+        relative = "win",
+        override = function(conf, source_winid) -- <- the source_winid is new
+          local padding = 1
+          conf.anchor = "NE"
+          conf.row = padding
+          conf.col = vim.api.nvim_win_get_width(source_winid) - padding
+          return conf
+        end,
+      },
+    },
+    keys = {
+      { "<leader>o", "<cmd>AerialToggle float<cr>", desc = "Toggle Aerial (floating)" },
+      { "<leader>O", "<cmd>AerialToggle<cr>", desc = "Toggle Aerial" },
+    },
+  },
+
   -- dial.nvim has default config in LazyVim, but somehow it doesn't work.
   -- So explicitly override the key--indings.
   -- Ref:
