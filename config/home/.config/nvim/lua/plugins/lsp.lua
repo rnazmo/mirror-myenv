@@ -45,7 +45,6 @@ return {
         go = { "staticcheck" }, -- golangcilint
         -- python = { "flake8", pylint" }, -- ruff
         sh = { "shellcheck" },
-        zsh = { "shellcheck" },
         lua = { "selene" }, -- luacheck
         yaml = { "eslint_d" },
         json = { "eslint_d" },
