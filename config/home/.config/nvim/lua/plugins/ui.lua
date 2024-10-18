@@ -24,13 +24,14 @@ return {
     -- },
   },
 
-  -- statusline & window bar
+  -- statusline & tabline & window bar
   -- Ref:
   --     https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/ui.lua#L96
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = {
+      -- statusline
       -- TODO: Improve statusline (Display buffer?, ...)
       sections = {
         -- Remove the time info (= luzline_z) from lualine
@@ -42,7 +43,7 @@ return {
         lualine_a = { "tabs" },
       },
 
-      -- Display winbar (window bar) with lualine
+      -- winbar (window bar)
       winbar = {
         lualine_c = {
           { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
