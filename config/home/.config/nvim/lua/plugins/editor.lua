@@ -21,4 +21,43 @@ return {
       },
     },
   },
+
+  -- dial.nvim has default config in LazyVim, but somehow it doesn't work.
+  -- So explicitly override the key--indings.
+  -- Ref:
+  --     https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/editor/dial.lua
+  --     https://github.com/monaqa/dial.nvim/blob/master/README.md
+  {
+    "monaqa/dial.nvim",
+    keys = {
+      {
+        "<C-a>",
+        function()
+          return require("dial.map").inc_normal()
+        end,
+        expr = true,
+        desc = "Increment",
+      },
+      {
+        "<C-x>",
+        function()
+          return require("dial.map").dec_normal()
+        end,
+        expr = true,
+        desc = "Decrement",
+      },
+      -- TODO: Add "g<C-a>", "g<C-x>"
+    },
+    config = function()
+      local augend = require("dial.augend")
+      require("dial.config").augends:register_group({
+        default = {
+          augend.integer.alias.decimal,
+          augend.constant.alias.bool, -- boolean value (true <-> false)
+          -- augend.date.alias["%Y-%m-%d"],
+          -- Add more augends as needed
+        },
+      })
+    end,
+  },
 }
