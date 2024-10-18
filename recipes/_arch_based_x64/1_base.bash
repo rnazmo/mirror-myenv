@@ -103,7 +103,7 @@ setup_util() {
 readonly -f setup_util
 
 _install_many_util_clis() {
-    local -r PKGS=(
+    local PKGS=(
         "tree"    # tree command
         "xclip"   # clipboard util
         "unzip"   # zip util
@@ -412,7 +412,7 @@ setup_devel() {
 readonly -f setup_devel
 
 _install_many_devel_tools() {
-    local -r PKGS=(
+    local PKGS=(
         "git-delta"         # better git diff
         "shellcheck"        # bash linter
         "shfmt"             # bash formatter
