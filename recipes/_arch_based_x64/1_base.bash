@@ -96,9 +96,9 @@ readonly -f setup_ime
 
 setup_util() {
     _install_many_util_clis
-    _setup_fastfetch
-    _setup_yazi
-    _install_proper7y
+    _setup_fastfetch  # display system info
+    _setup_yazi       # cli file manager
+    _install_proper7y # display system info
 }
 readonly -f setup_util
 
