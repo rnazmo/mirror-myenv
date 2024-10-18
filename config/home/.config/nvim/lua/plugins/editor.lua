@@ -46,8 +46,8 @@ return {
       },
     },
     keys = {
-      { "<leader>o", "<cmd>AerialToggle float<cr>", desc = "Toggle Aerial (floating)" },
-      { "<leader>O", "<cmd>AerialToggle<cr>", desc = "Toggle Aerial" },
+      { "<leader>a", "<cmd>AerialToggle float<cr>", desc = "Toggle Aerial (floating)" },
+      { "<leader>A", "<cmd>AerialToggle<cr>", desc = "Toggle Aerial" },
     },
   },
 
