@@ -107,15 +107,57 @@ setup_ime() {
     #         https://fcitx-im.org/wiki/Fcitx
     #     NOTE: fcitx (= fcitx4) is under maintainence now
     #     TODO: Migrate to fcitx5
-    _setup_fcitx4_mozc
+    # NOTE:
+    #     For manjaro:
+    #         If "manjaro-asian-input-support-fcitx" or "manjaro-asian-input-support-fcitx5"
+    #         package is installed, remove it avoid conflict.
+
+    # NOTE: Choose fcitx5 *or* fcitx4
+    _setup_fcitx5_mozc
+    # _setup_fcitx4_mozc
 }
 readonly -f setup_ime
+
+_setup_fcitx5_mozc() {
+    __install_fcitx5_mozc
+    # __setup_fcitx5_config
+}
+readonly -f _setup_fcitx5_mozc
 
 _setup_fcitx4_mozc() {
     __install_fcitx4_mozc
     __setup_fcitx4_config
 }
 readonly -f _setup_fcitx4_mozc
+
+__install_fcitx5_mozc() {
+    # Uninstall fcitx to avoid conflict
+    local PKGS=("fcitx-mozc" "fcitx-configtool" "fcitx-qt5" "fcitx")
+    for PKG in "${PKGS[@]}"; do
+        if pacman -Qi "$PKG" &>/dev/null; then
+            sudo pacman -Rns --noconfirm "$PKG"
+        fi
+    done
+    unset PKGS
+
+    # Install fcitx5 related packages
+    # NOTE: The "fcitx5-im" include:
+    #    1) fcitx5  2) fcitx5-configtool  3) fcitx5-gtk  4) fcitx5-qt
+    sudo pacman -S --needed --noconfirm "fcitx5-mozc" "fcitx5-im"
+}
+readonly -f __install_fcitx5_mozc
+
+__setup_fcitx5_config() {
+    remove_unused_config "${HOME}/.config/fcitx5/config"
+    remove_unused_config "${HOME}/.config/fcitx5/profile"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx5/config" "${HOME}/.config/fcitx5/config"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx5/profile" "${HOME}/.config/fcitx5/profile"
+    remove_unused_config "${HOME}/.config/fcitx/conf/xim.config"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx/conf/xim.conf" "${HOME}/.config/fcitx/conf/xim.conf"
+    remove_file_as_root "/etc/profile.d/fcitx.sh"
+    copy_file_as_root "${MYENV_ROOT}/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
+}
+readonly -f __setup_fcitx5_config
 
 __install_fcitx4_mozc() {
     # Uninstall fcitx5 to avoid conflict
