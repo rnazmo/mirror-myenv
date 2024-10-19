@@ -36,7 +36,7 @@ typeset -U path PATH
 # ======== PATH
 path=(
   # ======== basic
-  $HOME/bin(N-/)
+  $HOME/.bin(N-/)
   # ======== mise
   # Ref:
   #     https://mise.jdx.dev/getting-started.html#_2b-alternative-add-mise-shims-to-path
