@@ -130,6 +130,7 @@ __install_fcitx4_mozc() {
     # Install fcitx related packages
     sudo pacman -S --needed --noconfirm "fcitx-mozc" "fcitx-qt5" "fcitx-configtool"
 }
+readonly -f __install_fcitx4_mozc
 
 __setup_fcitx4_config() {
     remove_unused_config "${HOME}/.config/fcitx/config"
