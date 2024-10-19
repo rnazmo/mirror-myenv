@@ -89,7 +89,6 @@ cd ~/.myenv && git add -i && git commit -m "update" && git push
     - feat:
         - [ ] feat(myenv): Log *to file* for debug
         - [ ] feat: 前提 (Bash 4.0+ など) をチェックするようにする
-        - [ ] feat: Add command (`sync`, `apply`, `dry-run`, `test`)
     - ci:
         - [ ] ci: Add unit-test
         - [ ] ci: Add integ-test

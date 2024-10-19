@@ -197,6 +197,7 @@ setup_util() {
     _setup_yazi       # cli file manager
     _setup_fastfetch  # display system info
     _install_proper7y # display system info
+    _install_myenv    # myenv util command
 }
 readonly -f setup_util
 
@@ -248,6 +249,15 @@ _install_proper7y() {
     ./install.bash "$dest_dir"
 }
 readonly -f _install_proper7y
+
+_install_myenv() {
+    if check_if_command_exists "myenv"; then
+        return 0
+    fi
+
+    local -r dest_dir="${HOME}/.bin"
+    link_file "${MYENV_ROOT}/config/home/.bin/myenv.bash" "${dest_dir}/myenv"
+}
 
 # ======================================================
 # ======================================================
