@@ -27,7 +27,6 @@ check_if_command_exists() {
         return 1
     fi
 }
-readonly -f check_if_command_exists
 
 # What is this:
 #     Remove symbolic link if the path is symbolic link.
@@ -38,7 +37,6 @@ unlink_symlink() {
     local -r TARGET_PATH=$1
     unlink "$TARGET_PATH"
 }
-readonly -f unlink_symlink
 
 # What is this:
 #     Create symbolic link to a file.
@@ -91,7 +89,6 @@ link_file() {
     ln -s "$SOURCE_FILE" "$TARGET_FILE"
     log_info "Symbolic link created: '$TARGET_FILE' -> '$SOURCE_FILE'"
 }
-readonly -f link_file
 
 # What is this:
 #     Create symbolic link to a directory.
@@ -151,7 +148,6 @@ link_dir() {
     ln -s "$SOURCE_DIR" "$TARGET_DIR"
     log_info "Symbolic link created: '$TARGET_DIR' -> '$SOURCE_DIR'"
 }
-readonly -f link_dir
 
 # What is this:
 #     Copy a file from <src_path> to <dest_path>.
@@ -194,7 +190,6 @@ copy_file() {
     cp "$SRC_PATH" "$DEST_PATH"
     log_info "Copied file: '$SRC_PATH' -> '$DEST_PATH'"
 }
-readonly -f copy_file
 
 # What is this:
 #     *Same as copy_file*, but with root privilege.
@@ -229,7 +224,6 @@ copy_file_as_root() {
     sudo cp "$SRC_PATH" "$DEST_PATH"
     log_info "Copied file: '$SRC_PATH' -> '$DEST_PATH'"
 }
-readonly -f copy_file_as_root
 
 # What is this:
 #     Download a file from <remote_path> to <dest_path> with curl.
@@ -272,7 +266,6 @@ download_file() {
         return 1
     fi
 }
-readonly -f download_file
 
 # What is this:
 #     Download a Git repository from <remote_path> to <dest_path> with git clone.
@@ -322,7 +315,6 @@ clone_repo_shallow() {
         return 1
     fi
 }
-readonly -f clone_repo_shallow
 
 # What is this:
 #     Remoev the file.
@@ -355,7 +347,6 @@ remove_file() {
     fi
     return 0
 }
-readonly -f remove_file
 
 # What is this:
 #     *Same as remove_file*, but with root privilege.
@@ -378,7 +369,6 @@ remove_file_as_root() {
     fi
     return 0
 }
-readonly -f remove_file_as_root
 
 # What is this:
 #     Ensure that unnecessary configuration files are removed.
@@ -418,7 +408,6 @@ remove_unused_config() {
     fi
     return 0
 }
-readonly -f remove_unused_config
 
 # VirtualBoxのゲストマシンかどうかを判別する関数
 # 戻り値：
@@ -431,7 +420,6 @@ is_virtualbox_guest() {
         return 1 # Not running in a VirtualBox guest
     fi
 }
-readonly -f is_virtualbox_guest
 
 # その環境が仮想化環境(VM やコンテナ)でないことを判別する関数
 # 注：
@@ -448,28 +436,23 @@ is_not_virtualized_environment() {
         return 0 # Not running in a vm guest (= host machine)
     fi
 }
-readonly -f is_not_virtualized_environment
 
 log_debug() {
     local -r PREFIX="DEBUG:"
     echo "$PREFIX $1"
 }
-readonly -f log_debug
 
 log_info() {
     local -r PREFIX="INFO :"
     echo "$PREFIX $1"
 }
-readonly -f log_info
 
 log_warn() {
     local -r PREFIX="WARN :" >&2
     echo "$PREFIX $1"
 }
-readonly -f log_warn
 
 log_err() {
     local -r PREFIX="ERROR:" >&2
     echo "$PREFIX $1"
 }
-readonly -f log_err
