@@ -80,8 +80,24 @@ readonly -f _post_setup_font
 # ======================================================
 
 setup_ime() {
-    _setup_fcitx5_mozc
+    _setup_fcitx_mozc
+    # _setup_fcitx5_mozc
 }
+readonly -f setup_ime
+
+_setup_fcitx_mozc() {
+    # Fcitx + Mozc to Japanese Input
+    # Ref:
+    #     https://wiki.archlinux.org/title/Fcitx
+    #     https://wiki.archlinux.jp/index.php/Fcitx
+    #     https://github.com/fcitx/fcitx
+    #     https://fcitx-im.org/wiki/Fcitx
+    # NOTE: fcitx (= fcitx4) is under maintainence now
+    # TODO: Migrate to fcitx5
+    __install_fcitx_mozc
+    __setup_fcitx_config
+}
+readonly -f _setup_fcitx_mozc
 
 _setup_fcitx5_mozc() {
     # Fcitx5 + Mozc to Japanese Input
@@ -98,14 +114,31 @@ _setup_fcitx5_mozc() {
     # See also:
     #     https://github.com/fcitx/fcitx5
     #     https://github.com/google/mozc
-
     __install_fcitx5_mozc
     __setup_fcitx5_config
 }
 readonly -f setup_ime
 
+__install_fcitx_mozc() {
+    # Uninstall fcitx5 to avoid conflict
+    local PKGS=("fcitx5-mozc" "fcitx5-im")
+    for PKG in "${PKGS[@]}"; do
+        if pacman -Qi "$PKG" &>/dev/null; then
+            sudo pacman -Rns --noconfirm "$PKG"
+        fi
+    done
+    unset PKGS
+
+    # Install fcitx related packages
+    sudo pacman -S --needed --noconfirm "fcitx-mozc" "fcitx-qt5" "fcitx-configtool"
+}
+
+__setup_fcitx_config() {
+    :
+}
+
 __install_fcitx5_mozc() {
-    # Uninstall fcitx related packages to avoid conflict
+    # Uninstall fcitx to avoid conflict
     local PKGS=("fcitx-mozc" "fcitx-configtool" "fcitx-qt5" "fcitx")
     for PKG in "${PKGS[@]}"; do
         if pacman -Qi "$PKG" &>/dev/null; then
