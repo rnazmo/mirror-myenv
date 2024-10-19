@@ -107,17 +107,17 @@ setup_ime() {
     #         https://fcitx-im.org/wiki/Fcitx
     #     NOTE: fcitx (= fcitx4) is under maintainence now
     #     TODO: Migrate to fcitx5
-    _setup_fcitx_mozc
+    _setup_fcitx4_mozc
 }
 readonly -f setup_ime
 
-_setup_fcitx_mozc() {
-    __install_fcitx_mozc
-    __setup_fcitx_config
+_setup_fcitx4_mozc() {
+    __install_fcitx4_mozc
+    __setup_fcitx4_config
 }
-readonly -f _setup_fcitx_mozc
+readonly -f _setup_fcitx4_mozc
 
-__install_fcitx_mozc() {
+__install_fcitx4_mozc() {
     # Uninstall fcitx5 to avoid conflict
     local PKGS=("fcitx5-mozc" "fcitx5-im")
     for PKG in "${PKGS[@]}"; do
@@ -131,7 +131,7 @@ __install_fcitx_mozc() {
     sudo pacman -S --needed --noconfirm "fcitx-mozc" "fcitx-qt5" "fcitx-configtool"
 }
 
-__setup_fcitx_config() {
+__setup_fcitx4_config() {
     remove_unused_config "${HOME}/.config/fcitx/config"
     remove_unused_config "${HOME}/.config/fcitx/profile"
     remove_unused_config "${HOME}/.config/fcitx/conf/fcitx-xim.config"
@@ -141,7 +141,7 @@ __setup_fcitx_config() {
     remove_file_as_root "/etc/profile.d/fcitx.sh"
     copy_file_as_root "${MYENV_ROOT}/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
 }
-readonly -f __setup_fcitx_config
+readonly -f __setup_fcitx4_config
 
 # ======================================================
 # ======================================================
