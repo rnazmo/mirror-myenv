@@ -86,11 +86,6 @@ cd ~/.myenv && git add -i && git commit -m "update" && git push
 ### TODO
 
 - myenv:
-    - all:
-        - [ ] Restructure `/recipes/*`, `/hosts/*`
-        - [ ] Rename project to `myenv`
-        - [ ] Publish `v4`
-        - [ ] Use semantic versioning
     - feat:
         - [ ] feat(myenv): Log *to file* for debug
         - [ ] feat: 前提 (Bash 4.0+ など) をチェックするようにする
@@ -119,10 +114,6 @@ cd ~/.myenv && git add -i && git commit -m "update" && git push
 - browser:
     - [ ] feat: Support browser bookmarklet
     - [ ] feat: Support browser extension
-- ime:
-    - [ ] feat: Migrate { fcitx-mozc => fcitx5-mozc }
-        - [Arch Linux - fcitx5-mozc 2.26.4632.102.g4d2e3bd-2 (x86_64)](https://archlinux.org/packages/extra/x86_64/fcitx5-mozc/)
-    - [ ] feat: Support config file of fcitx5-mozc
 - shell:
     - [ ] feat: Update Zsh config
 - bat:
