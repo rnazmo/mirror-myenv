@@ -135,9 +135,9 @@ readonly -f __install_fcitx4_mozc
 __setup_fcitx4_config() {
     remove_unused_config "${HOME}/.config/fcitx/config"
     remove_unused_config "${HOME}/.config/fcitx/profile"
-    remove_unused_config "${HOME}/.config/fcitx/conf/fcitx-xim.config"
     link_file "${MYENV_ROOT}/config/home/.config/fcitx/config" "${HOME}/.config/fcitx/config"
     link_file "${MYENV_ROOT}/config/home/.config/fcitx/profile" "${HOME}/.config/fcitx/profile"
+    remove_unused_config "${HOME}/.config/fcitx/conf/fcitx-xim.config"
     link_file "${MYENV_ROOT}/config/home/.config/fcitx/conf/fcitx-xim.config" "${HOME}/.config/fcitx/conf/fcitx-xim.config"
     remove_file_as_root "/etc/profile.d/fcitx.sh"
     copy_file_as_root "${MYENV_ROOT}/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
