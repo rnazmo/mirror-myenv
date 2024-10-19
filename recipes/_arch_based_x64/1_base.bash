@@ -80,13 +80,66 @@ readonly -f _post_setup_font
 # ======================================================
 
 setup_ime() {
-    # Fcitx + Mozc
-    # 日本語入力環境を整える
-    # sudo pacman -S --needed --noconfirm fcitx-mozc
-    # TODO:
-    :
+    # Fcitx5 (or Fcitx4) + Mozc to Japanese Input
+    # NOTE: my current desktop env is Xfce, X11
+    # Fcitx5:
+    #     Ref:
+    #         https://fcitx-im.org/wiki/Fcitx_5
+    #         https://fcitx-im.org/wiki/Install_Fcitx_5
+    #         https://fcitx-im.org/wiki/Setup_Fcitx_5
+    #         https://fcitx-im.org/wiki/Input_method_engines
+    #         https://wiki.archlinux.jp/index.php/Fcitx5
+    #         https://wiki.archlinux.org/title/Fcitx5
+    #         https://archlinux.org/packages/extra/x86_64/fcitx5-configtool/
+    #         https://archlinux.org/packages/extra/x86_64/fcitx5-mozc/
+    #         https://aur.archlinux.org/pkgbase/manjaro-asian-input-support
+    #         https://aur.archlinux.org/packages/fcitx-input-support
+    #         https://aur.archlinux.org/packages/fcitx5-input-support
+    #         https://gitlab.manjaro.org/packages/extra/manjaro-asian-input-support
+    #     See also:
+    #         https://github.com/fcitx/fcitx5
+    #         https://github.com/google/mozc
+    # Fcitx4:
+    #     Ref:
+    #         https://wiki.archlinux.org/title/Fcitx
+    #         https://wiki.archlinux.jp/index.php/Fcitx
+    #         https://github.com/fcitx/fcitx
+    #         https://fcitx-im.org/wiki/Fcitx
+    #     NOTE: fcitx (= fcitx4) is under maintainence now
+    #     TODO: Migrate to fcitx5
+    _setup_fcitx_mozc
 }
 readonly -f setup_ime
+
+_setup_fcitx_mozc() {
+    __install_fcitx_mozc
+    __setup_fcitx_config
+}
+readonly -f _setup_fcitx_mozc
+
+__install_fcitx_mozc() {
+    # Uninstall fcitx5 to avoid conflict
+    local PKGS=("fcitx5-mozc" "fcitx5-im")
+    for PKG in "${PKGS[@]}"; do
+        if pacman -Qi "$PKG" &>/dev/null; then
+            sudo pacman -Rns --noconfirm "$PKG"
+        fi
+    done
+    unset PKGS
+
+    # Install fcitx related packages
+    sudo pacman -S --needed --noconfirm "fcitx-mozc" "fcitx-qt5" "fcitx-configtool"
+}
+
+__setup_fcitx_config() {
+    remove_unused_config "${HOME}/.config/fcitx/config"
+    remove_unused_config "${HOME}/.config/fcitx/profile"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx/config" "${HOME}/.config/fcitx/config"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx/profile" "${HOME}/.config/fcitx/profile"
+    remove_file_as_root "/etc/profile.d/fcitx.sh"
+    copy_file_as_root "${MYENV_ROOT}/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
+}
+readonly -f __setup_fcitx_config
 
 # ======================================================
 # ======================================================

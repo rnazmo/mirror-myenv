@@ -192,6 +192,40 @@ copy_file() {
 }
 
 # What is this:
+#     *Same as copy_file*, but with root privilege.
+#
+# Example:
+#     copy_file "~/.myenv/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
+#
+# TODO:
+#     Refactor!!!
+copy_file_as_root() {
+    local -r SRC_PATH=$1
+    local -r DEST_PATH=$2
+    local -r TARGET_PARENT_DIR="$(dirname "$DEST_PATH")"
+
+    if [[ ! -e "$SRC_PATH" ]]; then
+        log_err "Source file '$SRC_PATH' does not exist."
+        return 1
+    fi
+    if [[ -L "$SRC_PATH" ]]; then
+        log_err "Source file '$SRC_PATH' is symbolic link. Must be a regular file."
+    fi
+    if [[ ! -f "$SRC_PATH" ]]; then
+        log_err "Source file '$SRC_PATH' must be a regular file."
+        return 1
+    fi
+
+    if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
+        log_info "Created diractory $TARGET_PARENT_DIR"
+        mkdir -p "$TARGET_PARENT_DIR"
+    fi
+
+    sudo cp "$SRC_PATH" "$DEST_PATH"
+    log_info "Copied file: '$SRC_PATH' -> '$DEST_PATH'"
+}
+
+# What is this:
 #     Download a file from <remote_path> to <dest_path> with curl.
 #     If the <dest_path> already exists and is a regular file,
 #     do nothing. If the <dest_path> already exists and is not
@@ -280,6 +314,60 @@ clone_repo_shallow() {
         log_err "The path $DEST_PATH must be nothing or a regular directory."
         return 1
     fi
+}
+
+# What is this:
+#     Remoev the file.
+#
+# Description:
+#     If the <target_file> is nothing, do nothing and return 0.
+#     If the <target_file> is a regular file, remove it and return 0.
+#     If the <target_file> is a symbolic link, directory, or something,
+#     do nothing and return 1.
+#
+# Usage:
+#     remove_file <target_file>
+#
+# Arguments:
+#     target_file:
+#         path of regular file.
+#
+# Example:
+#     remove_file "/etc/profile.d/fcitx.sh"
+remove_file() {
+    local -r TARGET_PATH="$1"
+    if [[ ! -e "$TARGET_PATH" ]]; then
+        : # do nothing
+    elif [[ -f "$TARGET_PATH" ]]; then
+        # the path is regular file
+        rm -f "$TARGET_PATH" "${TARGET_PATH}.old"
+    else
+        log_err "$TARGET_PATH is not regular file"
+        return 1
+    fi
+    return 0
+}
+
+# What is this:
+#     *Same as remove_file*, but with root privilege.
+#
+# Example:
+#     remove_file_as_root "/etc/profile.d/fcitx.sh"
+#
+# TODO:
+#     Refactor!!!
+remove_file_as_root() {
+    local -r TARGET_PATH="$1"
+    if [[ ! -e "$TARGET_PATH" ]]; then
+        : # do nothing
+    elif [[ -f "$TARGET_PATH" ]]; then
+        # the path is regular file
+        sudo rm -f "$TARGET_PATH"
+    else
+        log_err "$TARGET_PATH is not regular file"
+        return 1
+    fi
+    return 0
 }
 
 # What is this:
