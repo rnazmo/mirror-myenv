@@ -110,6 +110,6 @@ _sub_command_push() {
 
 _sub_command_test() {
   # TODO: Validate arguments?
-  echo "Executing _sub_command_test"
-  echo "TODO: Implement..."
+  cd "$MYENV_ROOT" && \
+    ./devel-tools/script/run-lint.arch_based_x64.bash
 }
