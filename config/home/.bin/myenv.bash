@@ -11,7 +11,9 @@ set -eu
 #         test: TODO: run staticcheck (lint, format, unit-test, integ-test)
 #
 # Example:
-#     $ myenv apply "soba"
+#     $ myenv apply "udon"
+#     $ myenv pull
+#     $ myenv push
 readonly MYENV_ROOT="${HOME}/.myenv"
 
 main() {
