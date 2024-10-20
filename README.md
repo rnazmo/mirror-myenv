@@ -27,11 +27,58 @@ my provisioning scripts.
 
 #### 新規マシンのセットアップ
 
+##### 0. Install EndeavourOS in VirtualBox
+
+略
+
+##### 1. Install prerequisites
+
+```bash
+sudo pacman -S --needed --noconfirm curl git xclip
+```
+
+##### 2. Setup Git
+
+1. グローバル設定の登録
+
+```bash
+git config --global user.name "rnazmo"
+git config --global user.email "rnazmo@gmail.com"
+git config --list
+```
+
+2. GitLab, GitHub への SSH 接続設定
+
+See: [Git：GitHub（または GitLab）に SSH キーを登録する手順（GitHub CLI 無し）（v2024-09](f585a709-fde5-47d8-80ab-ee079d5b99ef.md)
+
+- 要点のみメモ：
+    - `ssh-keygen -t ed25519`
+    - `xclip -sel c < ~/.ssh/id_ed25519.pub`
+    - [https://github.com/settings/ssh/new](https://github.com/settings/ssh/new)
+    - [https://gitlab.com/-/user_settings/ssh_keys](https://gitlab.com/-/user_settings/ssh_keys)
+
+接続確認：
+
+```bash
+ssh -T git@github.com # 聞かれる
+```
+
+```bash
+ssh -T git@gitlab.com # 聞かれる
+```
+
+##### 3. Run myenv
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv/-/raw/main/init.bash)"
 
 cd ~/.myenv && ./setup.bash "udon"
+```
 
+##### 4. Reboot machine
+
+```bash
+reboot now
 ```
 
 #### 日々の更新
@@ -39,17 +86,14 @@ cd ~/.myenv && ./setup.bash "udon"
 ##### リモートの更新を適用
 
 ```bash
-# Apply changes
-cd ~/.myenv && git pull && ./setup.bash "udon"
+myenv pull && myenv "udon"
 
 ```
 
 ##### 更新をリモートへプッシュ
 
 ```bash
-# Push changes
-cd ~/.myenv && git add -i && git commit -m "update" && git push
-
+myenv push
 ```
 
 ## Documentation for developers
