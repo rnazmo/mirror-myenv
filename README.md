@@ -17,27 +17,20 @@ my provisioning scripts.
 
 - 自分で使うため
 
-### 対応環境リスト
-
-- List (2024-09-25 時点)
-    - `soba`
-        - OS: Manjaro
-        - Chassis: VM
-
 ### 前提
 
 - Bash 4.0+
 - git, curl
 - GitLab, (GitHub) への SSH 公開鍵の登録
 
-### ワークフロー (例：`soba`)
+### ワークフロー (例：`udon`)
 
 #### 新規マシンのセットアップ
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv/-/raw/main/init.bash)"
 
-cd ~/.myenv && ./setup.bash "soba"
+cd ~/.myenv && ./setup.bash "udon"
 
 ```
 
@@ -47,7 +40,7 @@ cd ~/.myenv && ./setup.bash "soba"
 
 ```bash
 # Apply changes
-cd ~/.myenv && git pull && ./setup.bash "soba"
+cd ~/.myenv && git pull && ./setup.bash "udon"
 
 ```
 
@@ -96,14 +89,8 @@ cd ~/.myenv && git add -i && git commit -m "update" && git push
             - ref: proper7y
     - docs:
         - [ ] docs: できること・できないことをまとめる
-            - `init.bash`：
-            - `setup.bash`：
-                - `soba`：
-                    - できること：
-                    - できないこと：
-                        - 日本語入力の設定（GUI でやって）
-                        - 時刻同期 (Manjaro は GUI が楽)
-                        - Git の初期設定。GitHub, GitLab への SSH 公開鍵の登録
+            - 時刻同期 (Manjaro は GUI が楽)
+            - Git の初期設定。GitHub, GitLab への SSH 公開鍵の登録
         - [ ] docs: Add dicision-redords
 - keyboard:
     - [ ] feat: Add ErgoDox EZ config
