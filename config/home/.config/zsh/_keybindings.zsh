@@ -1,8 +1,18 @@
 readonly ZSH_KEYBINDINGS_LOCAL_DIR="${ZDOTDIR}/keybindings.local"
 
+# ======== mode
+
+# Use emacs key bindings (it's important:) )
+bindkey -e
+
+# ======== reset
+# Remove some default keybindings
+
+# I use Ctrl-g as a tmux prefix keybinding.
+bindkey -r '^G'
+
 # ======== basic
 
-bindkey -e                                        # emacs key bindings (it's important:) )
 bindkey ' ' magic-space                           # do history expansion on space
 bindkey '^[[3;5~' kill-word                       # ctrl + Supr
 bindkey '^[[3~' delete-char                       # delete
