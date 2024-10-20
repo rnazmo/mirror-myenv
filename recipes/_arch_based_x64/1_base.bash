@@ -160,8 +160,8 @@ __setup_fcitx5_config() {
     remove_unused_config "${HOME}/.config/fcitx5/profile"
     link_file "${MYENV_ROOT}/config/home/.config/fcitx5/config" "${HOME}/.config/fcitx5/config"
     link_file "${MYENV_ROOT}/config/home/.config/fcitx5/profile" "${HOME}/.config/fcitx5/profile"
-    remove_unused_config "${HOME}/.config/fcitx/conf/xim.config"
-    link_file "${MYENV_ROOT}/config/home/.config/fcitx/conf/xim.conf" "${HOME}/.config/fcitx/conf/xim.conf"
+    remove_unused_config "${HOME}/.config/fcitx5/conf/xim.config"
+    link_file "${MYENV_ROOT}/config/home/.config/fcitx5/conf/xim.conf" "${HOME}/.config/fcitx5/conf/xim.conf"
     remove_file_as_root "/etc/profile.d/fcitx.sh"
     copy_file_as_root "${MYENV_ROOT}/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
 }
