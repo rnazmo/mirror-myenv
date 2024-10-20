@@ -28,6 +28,7 @@ main() {
         setup_devel
         setup_editor
         setup_browser
+        setup_desktop
         post_setup_base
     }
     call_func_in_2_extra() {

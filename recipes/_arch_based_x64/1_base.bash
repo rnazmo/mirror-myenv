@@ -718,6 +718,90 @@ readonly -f __setup_firefox_bookmarklet
 
 # ======================================================
 # ======================================================
+# ======== Desktop                                     =
+# ======================================================
+# ======================================================
+
+setup_desktop() {
+    _setup_xfce4
+}
+readonly -f setup_desktop
+
+_setup_xfce4() {
+    # Ref:
+    #     https://wiki.archlinux.org/title/Xfce#Configuration
+    #     https://github.com/endeavouros-team/endeavouros-xfce4-theming/tree/master
+
+    rm -rf "${HOME}/.config/xfce4" "${HOME}/.cache"
+
+    __setup_panel
+    __setup_keybindings
+    __setup_window_manager
+    __setup_wallpaper
+    __setup_thunar
+
+    # NOTE: Reboot required
+    # sudo reboot
+}
+readonly -f _setup_xfce4
+
+__setup_panel() {
+    # Install dependencies
+    sudo pacman -S --needed xfce4-systemload-plugin
+
+    # dependencies configs
+    remove_unused_config \
+        "${HOME}/.config/xfce4/panel/datetime-18.rc"
+    copy_file \
+        "${MYENV_ROOT}/config/home/.config/xfce4/panel/datetime-18.rc" \
+        "${HOME}/.config/xfce4/panel/datetime-18.rc"
+
+    remove_unused_config \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+    copy_file \
+        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml" \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+}
+readonly -f __setup_panel
+
+__setup_keybindings() {
+    remove_unused_config \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+    copy_file \
+        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml" \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml"
+}
+readonly -f __setup_keybindings
+
+__setup_window_manager() {
+    remove_unused_config \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+    copy_file \
+        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+}
+readonly -f __setup_window_manager
+
+__setup_wallpaper() {
+    remove_unused_config \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+    copy_file \
+        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+}
+readonly -f __setup_wallpaper
+
+__setup_thunar() {
+    remove_unused_config \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml"
+    copy_file \
+        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml" \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml"
+}
+readonly -f __setup_thunar
+
+# ======================================================
+# ======================================================
 # ======== Post                                        =
 # ======================================================
 # ======================================================
