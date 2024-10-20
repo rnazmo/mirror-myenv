@@ -22,8 +22,11 @@ main() {
   apply)
     sub_command_apply "$@"
     ;;
-  sync)
-    sub_command_sync
+  pull)
+    sub_command_pull
+    ;;
+  push)
+    sub_command_push
     ;;
   test)
     sub_command_test
@@ -42,10 +45,14 @@ sub_command_apply() {
   "${MYENV_ROOT}/setup.bash" "$@"
 }
 
-sub_command_sync() {
-  # TODO: Validate arguments?
-  echo "Executing sub_command_sync"
-  echo "TODO: Implement..."
+sub_command_pull() {
+  cd "$MYENV_ROOT"
+  git pull
+}
+
+sub_command_push() {
+  cd "$MYENV_ROOT"
+  git push
 }
 
 sub_command_test() {
