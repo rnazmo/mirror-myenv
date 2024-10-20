@@ -42,10 +42,12 @@ update_pacman_mirror() {
     local -r MIRROR_URL="https://archlinux.org/mirrorlist/?country=JP&country=AU&protocol=https&use_mirror_status=on"
     local -r MIRROR_FILE="/etc/pacman.d/mirrorlist"
     local -r NUM_MIRRORS=5
+    log_info "Updating pacman mirror..."
     curl -s "$MIRROR_URL" |
         sed -e 's/^#Server/Server/' -e '/^#/d' |
         rankmirrors -n "$NUM_MIRRORS" - |
         sudo tee "$MIRROR_FILE"
+    log_info "pacman mirror updated"
 
     sudo pacman -Syu --noconfirm
 }
