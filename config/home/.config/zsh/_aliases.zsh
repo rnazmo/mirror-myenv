@@ -67,6 +67,9 @@ myenv_function() {
   shift # discards the first param ($1) and shifts all other params
 
   case "$subcommand" in
+  cd)
+    _sub_command_cd
+    ;;
   apply)
     _sub_command_apply "$@"
     ;;
@@ -85,6 +88,10 @@ myenv_function() {
     exit 1
     ;;
   esac
+}
+
+_sub_command_cd() {
+  cd "$MYENV_ROOT"
 }
 
 _sub_command_apply() {
