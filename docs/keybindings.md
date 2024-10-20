@@ -61,7 +61,7 @@ TODO:
 ## Multiplexer - tmux
 
 - Notes:
-    - 今の空きキー→ `wxvy@#$<>()-+=`
+    - 今の空きキー→ `wvy@#$<>()-+=`
     - 使えない・使うべきでないキー：
         - Warn (SHOULD NOT):
             - `Ctrl-i`: = `Tab`
@@ -102,7 +102,7 @@ TODO:
 #### edit
 
 - `<prefix> ←` (`|↓|↑|→`): resize
-- `<prefix> i`: rename (∵ r"i"ne-mu)
+- `<prefix> x`: rename (∵ 余ってるキーを割り当てた)
 - `<prefix> z`: toggle maximize (∵ "z"en mode)
 
 #### movement
@@ -134,7 +134,7 @@ TODO:
 
 #### edit
 
-- `<prefix> Ctrl-i`: rename (∵ r"i"ne-mu)
+- `<prefix> Ctrl-x`: rename (∵ 余ってるキーを割り当てた)
 
 #### movement
 
@@ -163,7 +163,7 @@ TODO:
 
 #### edit
 
-- `<prefix> Alt-i`: rename (∵ r"i"ne-mu)
+- `<prefix> Alt-x`: rename (∵ 余ってるキーを割り当てた)
 
 ### server
 
