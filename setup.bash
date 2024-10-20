@@ -30,7 +30,7 @@ parse_args() {
 
 check_prerequisites() {
     if [ ! -d "$MYENV_ROOT" ]; then
-        log_err "The myenv-3 repository not found"
+        log_err "The myenv repository not found"
         exit 1
     fi
 }
