@@ -96,6 +96,7 @@ Move cursor to...
     - [にわか管理者のためのLinux運用入門(286) zshを使う - ショートカットキーの読み方 | TECH+（テックプラス）](https://news.mynavi.jp/techplus/article/techp5581/)
     - [zshのキーバインドで余っているキーを探す - mollifier delta blog](https://mollifier.hatenablog.com/entry/20081213/1229148947)
     - [Zsh - ArchWiki](https://wiki.archlinux.org/title/Zsh)
+    - [たった2つのポイントで！zshでもfish並のインクリメンタル補完を実現する - Panda Noir](https://www.pandanoir.info/entry/2018/02/23/193721)
 
 <!--
 
