@@ -29,6 +29,27 @@ readonly -f pre_setup_core
 
 # ======================================================
 # ======================================================
+# ======== pacman mirror                               =
+# ======================================================
+# ======================================================
+
+update_pacman_mirror() {
+    # Ref:
+    #     https://wiki.archlinux.org/title/Mirrors
+    #     https://wiki.archlinux.jp/index.php/%E3%83%9F%E3%83%A9%E3%83%BC
+    #     https://archlinux.org/mirrorlist/
+    #     https://ikmnjrd.github.io/blog/pacman-mirrorlist
+    local -r MIRROR_URL="https://archlinux.org/mirrorlist/?country=JP&country=AU&protocol=https&use_mirror_status=on"
+    local -r MIRROR_FILE="/etc/pacman.d/mirrorlist"
+    local -r NUM_MIRRORS=5
+    curl -s "$MIRROR_URL" |
+        sed -e 's/^#Server/Server/' -e '/^#/d' |
+        rankmirrors -n "$NUM_MIRRORS" - |
+        sudo tee "$MIRROR_FILE"
+}
+
+# ======================================================
+# ======================================================
 # ======== Git                                         =
 # ======================================================
 # ======================================================

@@ -10,6 +10,7 @@ source "${MYENV_ROOT}/recipes/endeavouros_x64/2_extra.bash"
 main() {
     call_func_in_0_core() {
         pre_setup_core
+        update_pacman_mirror
         setup_git
         setup_aur_helper
         setup_runtime_version_manager
