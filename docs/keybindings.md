@@ -61,7 +61,7 @@ TODO:
 ## Multiplexer - tmux
 
 - Notes:
-    - 今の空きキー→ `wxvyu@#$<>()-+=`
+    - 今の空きキー→ `wxvy@#$<>()-+=`
     - 使えない・使うべきでないキー：
         - Warn (SHOULD NOT):
             - `Ctrl-i`: = `Tab`
