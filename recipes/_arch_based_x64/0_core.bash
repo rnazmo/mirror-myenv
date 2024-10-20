@@ -46,6 +46,8 @@ update_pacman_mirror() {
         sed -e 's/^#Server/Server/' -e '/^#/d' |
         rankmirrors -n "$NUM_MIRRORS" - |
         sudo tee "$MIRROR_FILE"
+
+    sudo pacman -Syu --noconfirm
 }
 
 # ======================================================
