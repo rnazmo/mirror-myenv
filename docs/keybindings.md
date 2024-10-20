@@ -35,7 +35,67 @@ The terminal has no keybindings.
 
 ## Shell - Zsh
 
-TODO:
+Zsh はほぼデフォルト！
+
+### Basic
+
+- `Alt` = `C-[`
+
+#### navigation
+
+Move cursor to...
+
+- `Ctrl-a`: start of line
+- `Ctrl-e`: end of line
+- `Alt-b`: backward-word
+- `Alt-f`: forward-word
+- `Ctrl-b`: backward-char
+    - `←`
+- `Ctrl-f`: forward-char
+    - or `→`
+
+#### edit
+
+- `Backspace`: delete a char
+    - or `Ctrl-d`
+- `Ctrl-w`: delete word before cursor
+- `Alt-d`: delete word after cursor
+- `Ctrl-k`: delete from cursor to end of line
+- `Ctrl-u`: delete entire line
+- `Alt-t`: swap current word with previous word
+- `Ctrl-t`: swap the last two characters before the cursor
+    - TODO: これ、fzf のキーバインディングに吸われてる。どうしよう。いらないか？
+- TODO: more
+
+#### history
+
+- `↑`: previous command in history
+    - or `Ctrl-p`
+- `↓`: next command in history
+    - or `Ctrl-n`
+- `Ctrl-r`: ?? (Search command history?)
+
+#### misc
+
+- `Ctrl-j`: accept line
+    - or `Ctrl-m`
+- `Ctrl-l`: clear screen
+- `Ctrl-c`: interrupt/kill current process
+- `Ctrl-z`: suspend/stop current process
+    - TODO: これ何？
+- `Ctrl-x u`: undo
+    - or `Ctrl-x Ctrl-u`
+- `Ctrl-x`: this is prefix!
+- `Alt-Ctlr-g`: send break??
+- `Ctrl-y`: カットした文字列をペースト？
+
+- ~~`Ctrl-r`: Reverse history search~~
+
+- TODO: more...
+- Ref:
+    - [にわか管理者のためのLinux運用入門(286) zshを使う - ショートカットキーの読み方 | TECH+（テックプラス）](https://news.mynavi.jp/techplus/article/techp5581/)
+    - [zshのキーバインドで余っているキーを探す - mollifier delta blog](https://mollifier.hatenablog.com/entry/20081213/1229148947)
+    - [Zsh - ArchWiki](https://wiki.archlinux.org/title/Zsh)
 
 <!--
 
