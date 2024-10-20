@@ -6,6 +6,8 @@
 
 - Introduce semantic versioning
 - Add `CHANGELOG.md`
+- Add new host `udon`
+    -  EndeavourOS
 
 ## [v4.0.0]
 
