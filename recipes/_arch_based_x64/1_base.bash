@@ -128,7 +128,7 @@ readonly -f setup_ime
 
 _setup_fcitx5_mozc() {
     __install_fcitx5_mozc
-    # __setup_fcitx5_config
+    __setup_fcitx5_config
 }
 readonly -f _setup_fcitx5_mozc
 
