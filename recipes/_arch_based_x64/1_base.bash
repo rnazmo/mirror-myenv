@@ -313,16 +313,22 @@ __setup_zsh_completions() {
     #         (https://qiita.com/yamaday0u/items/ee8acb35709bcc8c7fc7#tab%E8%A3%9C%E5%AE%8C%E6%A9%9F%E8%83%BD%E3%82%92%E5%AE%9F%E8%A3%85git-completion)
     # TODO: Is this working???
     if [[ ! -f "${ZSH_COMPLETIONS_LOCAL_DIR}/_git" ]]; then
-        curl -o "${ZSH_COMPLETIONS_LOCAL_DIR}/_git" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+        download_file \
+            "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh" \
+            "${ZSH_COMPLETIONS_LOCAL_DIR}/_git"
     fi
     if [[ ! -f "${ZSH_COMPLETIONS_LOCAL_DIR}/git-completion.bash" ]]; then
-        curl -o "${ZSH_COMPLETIONS_LOCAL_DIR}/git-completion.bash" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+        download_file \
+            "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" \
+            "${ZSH_COMPLETIONS_LOCAL_DIR}/git-completion.bash"
     fi
 
     # ======== mise
     # Ref: https://mise.jdx.dev/cli/completion.html
     if [[ ! -f "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise" ]]; then
-        curl -o "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise" https://raw.githubusercontent.com/jdx/mise/refs/heads/main/completions/_mise
+        download_file \
+            "https://raw.githubusercontent.com/jdx/mise/refs/heads/main/completions/_mise" \
+            "${ZSH_COMPLETIONS_LOCAL_DIR}/_mise"
     fi
 }
 readonly -f __setup_zsh_completions
@@ -332,7 +338,9 @@ __setup_zsh_keybindings() {
 
     # ======== fzf
     if [[ ! -f "${ZSH_KEYBINDINGS_LOCAL_DIR}/fzf.zsh" ]]; then
-        curl -o "${ZSH_KEYBINDINGS_LOCAL_DIR}/fzf.zsh" https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh
+        download_file \
+            "https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh" \
+            "${ZSH_KEYBINDINGS_LOCAL_DIR}/fzf.zsh"
     fi
 }
 readonly -f __setup_zsh_keybindings
