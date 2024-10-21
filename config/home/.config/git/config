@@ -19,7 +19,7 @@
 
 [merge]
     # https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeff
-    # ff = fales
+    ff = false
 
 [init]
     defaultBranch = "main"
