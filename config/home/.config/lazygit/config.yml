@@ -10,5 +10,10 @@ os:
 git:
   paging:
     pager: "delta --dark --paging=never"
+  merging:
+    # Ref:
+    #     https://github.com/jesseduffield/lazygit/issues/785
+    #     https://github.com/jesseduffield/lazygit/pull/797
+    args: "--no-ff"
   # branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium --oneline {{branchName}} --"
   branchLogCmd: "git log --graph --color=always --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %C(green)- %an, %cr%Creset'"
