@@ -51,6 +51,7 @@ update_pacman_mirror() {
 
     sudo pacman -Syu --noconfirm
 }
+readonly -f update_pacman_mirror
 
 # ======================================================
 # ======================================================
