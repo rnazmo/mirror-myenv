@@ -330,8 +330,8 @@ __setup_zsh_keybindings() {
     local -r ZSH_KEYBINDINGS_LOCAL_DIR="${ZDOTDIR}/keybindings.local"
 
     # ======== fzf
-    if [[ ! -f "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" ]]; then
-        curl -o "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh" https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh
+    if [[ ! -f "${ZSH_KEYBINDINGS_LOCAL_DIR}/fzf.zsh" ]]; then
+        curl -o "${ZSH_KEYBINDINGS_LOCAL_DIR}/fzf.zsh" https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/shell/key-bindings.zsh
     fi
 }
 readonly -f __setup_zsh_keybindings

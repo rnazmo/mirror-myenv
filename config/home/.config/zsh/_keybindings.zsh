@@ -55,4 +55,4 @@ zle -N _fuzzy_choose_repo
 bindkey "^Xq" _fuzzy_choose_repo
 
 # ======== fzf
-source "${ZSH_KEYBINDINGS_LOCAL_DIR}/key-bindings.zsh"
+source "${ZSH_KEYBINDINGS_LOCAL_DIR}/fzf.zsh"
