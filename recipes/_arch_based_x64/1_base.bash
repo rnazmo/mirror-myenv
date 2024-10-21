@@ -298,7 +298,8 @@ __setup_zsh_config() {
     remove_unused_config "${HOME}/.zshrc"
     remove_unused_config "${HOME}/.zshenv"
     link_file "${MYENV_ROOT}/config/home/.zshenv" "${HOME}/.zshenv"
-    link_dir "${MYENV_ROOT}/config/home/.config/zsh" "$ZDOTDIR" # NOTE: the path is directory
+    link_file "${MYENV_ROOT}/config/home/.config/zsh/.zshrc" "${ZDOTDIR}/.zshrc"
+    link_dir "${MYENV_ROOT}/config/home/.config/zsh/zshrc.d" "${ZDOTDIR}/zshrc.d" # NOTE: the path is directory
 }
 readonly -f __setup_zsh_config
 

@@ -103,13 +103,13 @@ setopt share_history          # share command history data ref: https://askubunt
 # ======== Keybinding                                  =
 # ======================================================
 
-zsh-defer source "${ZDOTDIR}/_keybindings.zsh"
+zsh-defer source "${ZDOTDIR}/${zshrc.d}/_keybindings.zsh"
 
 # ======================================================
 # ======== Completion                                  =
 # ======================================================
 
-zsh-defer source "${ZDOTDIR}/_completions.zsh"
+zsh-defer source "${ZDOTDIR}/${zshrc.d}/_completions.zsh"
 
 # ======================================================
 # ======== Prompt                                      =
@@ -119,13 +119,13 @@ zsh-defer source "${ZDOTDIR}/_completions.zsh"
 # Ref: https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#arch-linux
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-source "${ZDOTDIR}/.p10k.zsh"
+source "${ZDOTDIR}/${zshrc.d}/.p10k.zsh"
 
 # ======================================================
 # ======== Aliase                                      =
 # ======================================================
 
-zsh-defer source "${ZDOTDIR}/_aliases.zsh"
+zsh-defer source "${ZDOTDIR}/${zshrc.d}/_aliases.zsh"
 
 # ======================================================
 # ======== Plugin (post)                               =
