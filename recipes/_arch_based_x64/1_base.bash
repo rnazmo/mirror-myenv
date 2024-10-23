@@ -543,7 +543,6 @@ readonly -f setup_devel
 
 _install_many_devel_tools() {
     local PKGS=(
-        "git-delta"         # better git diff
         "shellcheck"        # bash linter
         "shfmt"             # bash formatter
         "selene"            # lua linter

@@ -60,6 +60,9 @@ readonly -f update_pacman_mirror
 # ======================================================
 
 setup_git() {
+    # dependencies
+    _install_delta # better git diff
+
     _install_git
     _setup_git_config
 }
@@ -69,6 +72,11 @@ _install_git() {
     sudo pacman -S --needed --noconfirm git
 }
 readonly -f _install_git
+
+_install_delta() {
+    sudo pacman -S --needed --noconfirm git-delta
+}
+readonly -f _install_delta
 
 _setup_git_config() {
     remove_unused_config "${HOME}/.gitconfig"

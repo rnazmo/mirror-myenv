@@ -13,6 +13,31 @@
     #   https://help.github.com/en/github/using-git/ignoring-files
     excludefile = ~/.gitignore_global
 
+    pager = delta
+
+
+# git-delta
+# Ref:
+#     https://dandavison.github.io/delta/configuration.html
+#     https://dandavison.github.io/delta/choosing-colors-styles.html
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    ; features = collared-trogon
+    navigate = true    # use n and N to move between diff sections
+    line-numbers = true
+    light = false
+    syntax-theme = Monokai Extended
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+
 [pull]
     # Ref: https://git-scm.com/docs/git-pull#Documentation/git-pull.txt---ff-only
   	ff = only
