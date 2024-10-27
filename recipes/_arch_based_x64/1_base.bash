@@ -745,7 +745,7 @@ readonly -f _setup_xfce4
 
 __setup_panel() {
     # Install dependencies
-    sudo pacman -S --needed xfce4-systemload-plugin
+    sudo pacman -S --needed --noconfirm xfce4-systemload-plugin
 
     # dependencies configs
     remove_unused_config \
