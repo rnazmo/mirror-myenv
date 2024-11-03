@@ -1,6 +1,6 @@
 # Specs
 
-## udon
+## ~~udon~~ (outdated)
 
 - VirtualBox Guest
 - EndeavourOS
@@ -10,8 +10,6 @@
 - Neovim with LazyVim
 
 ## soba
-
-### Spec
 
 - VirtualBox Guest
 - Manjaro
