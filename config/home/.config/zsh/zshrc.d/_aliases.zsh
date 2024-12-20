@@ -85,7 +85,6 @@ myenv_function() {
   *)
     echo "Unknown subcommand: $subcommand"
     echo "Usage: $0 {cd|apply|pull|push|test} [arguments]"
-    exit 1
     ;;
   esac
 }
