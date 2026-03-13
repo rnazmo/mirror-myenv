@@ -138,12 +138,21 @@ _install_mise() {
     #     ./install.sh
     # fi
 
-    # Insatll mise (binary)
+    # # Insatll mise (binary)
+    # # Ref:
+    # #     https://aur.archlinux.org/packages/mise-bin
+    # #     https://aur.archlinux.org/packages/mise
+    # #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
+    # # NOTE: See following "NOTE" section
+    # yay -S --needed --noconfirm mise-bin
+
+    # Install mise
     # Ref:
-    #     https://aur.archlinux.org/packages/mise-bin
-    #     https://aur.archlinux.org/packages/mise
-    #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
-    yay -S --needed --noconfirm mise-bin
+    #     https://archlinux.org/packages/extra/x86_64/mise/
+    #     https://mise.jdx.dev/installing-mise.html#pacman
+    # NOTE: Maintenance of mise has been moved from the AUR
+    #     to the official Arch package.
+    yay -S --needed --noconfirm mise
 }
 readonly -f _install_mise
 
