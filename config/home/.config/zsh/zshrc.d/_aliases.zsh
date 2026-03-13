@@ -49,9 +49,12 @@ alias v="nvim"
 #
 # Usage:
 #     subcommands:
+#         cd:   Move to the myenv directory
 #         apply <hostname>: Run myenv setup as <hostname>
-#         sync: TODO: git pull & git push ?
-#         test: TODO: run staticcheck (lint, format, unit-test, integ-test)
+#         pull: git pull
+#         push: git push
+#         TODO: sync: git pull && git push
+#         test: Run staticcheck (lint, format, unit-test, integ-test)
 #
 # Example:
 #     $ myenv cd
@@ -84,7 +87,7 @@ myenv_function() {
     ;;
   *)
     echo "Unknown subcommand: $subcommand"
-    echo "Usage: $0 {cd|apply|pull|push|test} [arguments]"
+    echo "Usage: $0 {cd|apply [arguments]|pull|push|test}"
     ;;
   esac
 }
