@@ -86,7 +86,7 @@ reboot now
 ##### リモートの更新を適用
 
 ```bash
-myenv pull && myenv "udon"
+myenv pull && myenv apply "udon"
 
 ```
 
