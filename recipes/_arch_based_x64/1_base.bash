@@ -397,6 +397,13 @@ ___install_powerlevel10k() {
     # Ref:
     #     https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#arch-linux
     #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
+    #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k
+
+    # If a conflicting package is already installed, remove it first
+    if pacman -Q zsh-theme-powerlevel10k &>/dev/null; then
+        sudo pacman -R --noconfirm zsh-theme-powerlevel10k
+    fi
+    
     yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
 }
 readonly -f ___install_powerlevel10k
