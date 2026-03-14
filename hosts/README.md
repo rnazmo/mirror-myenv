@@ -9,11 +9,11 @@
 - tmux
 - Neovim with LazyVim
 
-## udon
+## soba
 
 - VirtualBox Guest
-- Manjaro
+- CachyOS
 - Xfce4
 - Alacritty
 - tmux
-- Neovim with LazyVim
+- TODO: Neovim with LazyVim

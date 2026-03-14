@@ -3,9 +3,9 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-source "${MYENV_ROOT}/recipes/manjaro_x64/0_core.bash"
-source "${MYENV_ROOT}/recipes/manjaro_x64/1_base.bash"
-source "${MYENV_ROOT}/recipes/manjaro_x64/2_extra.bash"
+source "${MYENV_ROOT}/recipes/cachyos_x64/0_core.bash"
+source "${MYENV_ROOT}/recipes/cachyos_x64/1_base.bash"
+source "${MYENV_ROOT}/recipes/cachyos_x64/2_extra.bash"
 
 main() {
     call_func_in_0_core() {
