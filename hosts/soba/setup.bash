@@ -9,13 +9,9 @@ source "${MYENV_ROOT}/recipes/cachyos_x64/2_extra.bash"
 
 main() {
     call_func_in_0_core() {
-        log_debug "/hosts/soba/setup.bash - pre_setup_core"
         pre_setup_core
-        log_debug "/hosts/soba/setup.bash - setup_git"
         setup_git
-        log_debug "/hosts/soba/setup.bash - setup_aur_helper"
         setup_aur_helper
-        log_debug "/hosts/soba/setup.bash - setup_runtime_version_manager"
         setup_runtime_version_manager
         setup_programming_languages
         setup_some_directories
