@@ -117,7 +117,7 @@ _install_yay() {
         local -r ORIGINAL_DIR="$(pwd)"
         git clone https://aur.archlinux.org/yay-bin.git "$TMP_DIR/yay-bin"
         cd "$TMP_DIR/yay-bin"
-        makepkg -si
+        makepkg -si --noconfirm
         cd "$ORIGINAL_DIR" # Go back to the previous directory, just in case
     fi
 }
