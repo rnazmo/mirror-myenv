@@ -44,7 +44,7 @@ _setup_zsh_on_cachyos() {
 readonly -f _setup_zsh_on_cachyos
 
 setup_shell_on_cachyos() {
-    _setup_zsh
+    _setup_zsh_on_cachyos
     _setup_default_shell
 }
 readonly -f setup_shell_on_cachyos
