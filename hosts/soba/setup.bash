@@ -10,6 +10,7 @@ source "${MYENV_ROOT}/recipes/cachyos_x64/2_extra.bash"
 main() {
     call_func_in_0_core() {
         pre_setup_core
+        update_pacman_mirror
         setup_git
         setup_aur_helper
         setup_runtime_version_manager
@@ -22,11 +23,13 @@ main() {
         setup_font
         setup_ime
         setup_util
+        setup_shell
         setup_terminal
         setup_multiplexer
         setup_devel
         setup_editor
         setup_browser
+        setup_desktop
         post_setup_base
     }
     call_func_in_2_extra() {
