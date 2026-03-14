@@ -26,7 +26,6 @@ main() {
         setup_font
         setup_ime
         setup_util
-        setup_shell_on_manjaro
         setup_terminal
         setup_multiplexer
         setup_devel
