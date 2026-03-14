@@ -109,12 +109,14 @@ _install_yay() {
         # Ensure that dependencies is installed
         sudo pacman -S --needed git base-devel
 
+        cd "$(mktemp -d)"
         # Install yay (binary)
         # Ref:
         #     https://github.com/Jguer/yay/blob/138c2dd6cdf1a3738ee18f6bf94c1e8c37e15dc4/README.md#binary
         git clone https://aur.archlinux.org/yay-bin.git
         cd yay-bin
         makepkg -si
+        cd - # Go back to the previous directory, just in case
     fi
 }
 readonly -f _install_yay
