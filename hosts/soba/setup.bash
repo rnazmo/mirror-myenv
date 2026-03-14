@@ -23,7 +23,7 @@ main() {
         setup_font
         setup_ime
         setup_util
-        setup_shell
+        setup_shell_on_cachyos
         setup_terminal
         setup_multiplexer
         setup_devel
