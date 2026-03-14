@@ -12,7 +12,13 @@ source "${MYENV_ROOT}/lib/util.bash"
 pre_setup_core() {
     _refresh_packages() {
         sudo pacman -Syu --noconfirm
-        check_if_command_exists "yay" && yay -Syu --noconfirm
+
+        # NOTE: yay may not be installed yet at this point.
+        # If yay is not found, skip the yay update and continue.
+        # Do not stop the whole script.
+        if check_if_command_exists "yay"; then
+            yay -Syu --noconfirm
+        fi
     }
     _install_some_dependencies() {
         sudo pacman -S --needed --noconfirm base-devel curl vim
