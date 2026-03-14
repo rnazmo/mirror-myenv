@@ -22,6 +22,7 @@ ___pre_setup_zsh_theme_on_cachyos() {
     if yay -Qi "$CACHYOS_ZSH_CONFIG_PKG" &>/dev/null; then
         yay -Rns --noconfirm "$CACHYOS_ZSH_CONFIG_PKG"
     fi
+    yay -Rns --noconfirm zsh-theme-powerlevel10k
 }
 readonly -f ___pre_setup_zsh_theme_on_cachyos
 
