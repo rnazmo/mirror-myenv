@@ -4,6 +4,7 @@ set -eu
 source "${MYENV_ROOT}/recipes/_arch_based_x64/1_base.bash"
 
 ___pre_setup_zsh_theme_on_cachyos() {
+    log_debug "/recipes/cachyos_x64/1_base.bash > ___pre_setup_zsh_theme_on_cachyos"
     # ======== powerlevel10k (= theme)
     # (for CachyOS): Ensure that uninstall aur package "zsh-theme-powerlevel10k" to avoid conflict
     # Description:
@@ -27,12 +28,14 @@ ___pre_setup_zsh_theme_on_cachyos() {
 readonly -f ___pre_setup_zsh_theme_on_cachyos
 
 __setup_zsh_theme_on_cachyos() {
+    log_debug "/recipes/cachyos_x64/1_base.bash > __setup_zsh_theme_on_cachyos"
     ___pre_setup_zsh_theme_on_cachyos
     ___install_powerlevel10k
 }
 readonly -f __setup_zsh_theme_on_cachyos
 
 _setup_zsh_on_cachyos() {
+    log_debug "/recipes/cachyos_x64/1_base.bash > _setup_zsh_on_cachyos"
     __install_zsh
     __setup_zsh_config
     __setup_zsh_completions
@@ -44,6 +47,7 @@ _setup_zsh_on_cachyos() {
 readonly -f _setup_zsh_on_cachyos
 
 setup_shell_on_cachyos() {
+    log_debug "/recipes/cachyos_x64/1_base.bash > setup_shell_on_cachyos"
     _setup_zsh_on_cachyos
     _setup_default_shell
 }
