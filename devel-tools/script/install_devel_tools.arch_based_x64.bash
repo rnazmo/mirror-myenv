@@ -29,8 +29,8 @@ install_devel_tools() {
 }
 
 _install_shellcheck() {
-    local -r TEMP_DIR="$(mktemp -d)"
-    cd "$TEMP_DIR"
+    local -r ORIGINAL_DIR="$(pwd)"
+    cd "$(mktemp -d)"
 
     curl -OL "$SHELLCHECK_DL_URL"
     tar -xf "./shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz"
@@ -38,6 +38,8 @@ _install_shellcheck() {
 
     # check
     "$SHELLCHECK_CMD_PATH" --version
+
+    cd "$ORIGINAL_DIR"
 }
 
 _install_shfmt() {
@@ -50,8 +52,8 @@ _install_shfmt() {
 }
 
 _install_bats() {
-    local -r TEMP_DIR="$(mktemp -d)"
-    cd "$TEMP_DIR"
+    local -r ORIGINAL_DIR="$(pwd)"
+    cd "$(mktemp -d)"
 
     # Ref: https://bats-core.readthedocs.io/en/stable/installation.html#any-os-installing-bats-from-source
     git clone --single-branch --branch "$BATS_VERSION" "$BATS_REPO_URL"
@@ -60,6 +62,8 @@ _install_bats() {
 
     # check
     "$BATS_CMD_PATH" --version
+
+    cd "$ORIGINAL_DIR"
 }
 
 main

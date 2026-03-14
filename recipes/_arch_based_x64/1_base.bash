@@ -249,11 +249,15 @@ _install_proper7y() {
         return 0
     fi
 
-    local -r dest_dir="${HOME}/.bin"
+    local -r ORIGINAL_DIR="$(pwd)"
     cd "$(mktemp -d)"
+
+    local -r DEST_DIR="${HOME}/.bin"
     curl -O https://raw.githubusercontent.com/rnazmo/proper7y/main/install.bash
     chmod +x ./install.bash
-    ./install.bash "$dest_dir"
+    ./install.bash "$DEST_DIR"
+
+    cd "$ORIGINAL_DIR"
 }
 readonly -f _install_proper7y
 

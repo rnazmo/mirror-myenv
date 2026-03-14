@@ -142,11 +142,13 @@ _install_mise() {
     #     # Ref:
     #     #     https://mise.jdx.dev/getting-started.html#alternate-installation-methods
     #     #     https://github.com/jdx/mise/blob/4ac34dac72144f9084b49359dc0181e8f762f0bf/docs/getting-started.md#alternate-installation-methods
+    #     local -r ORIGINAL_DIR="$(pwd)"
     #     cd "$(mktemp -d)"
     #     export MISE_INSTALL_PATH="${HOME}/.local/bin/mise"
     #     curl -fsSL https://mise.jdx.dev/install.sh -o install.sh
     #     chmod +x ./install.sh
     #     ./install.sh
+    #     cd "$ORIGINAL_DIR"
     # fi
 
     # # Insatll mise (binary)
@@ -210,11 +212,15 @@ readonly -f setup_cli_version_manager
 
 _setup_aqua() {
     if ! check_if_command_exists "aqua"; then
+        local -r ORIGINAL_DIR="$(pwd)"
         cd "$(mktemp -d)"
+
         curl -sSfL -O https://raw.githubusercontent.com/aquaproj/aqua-installer/v3.0.1/aqua-installer
         echo "fb4b3b7d026e5aba1fc478c268e8fbd653e01404c8a8c6284fdba88ae62eda6a  aqua-installer" | sha256sum -c
         chmod +x aqua-installer
         ./aqua-installer
+
+        cd "$ORIGINAL_DIR"
     fi
     link_file "${MYENV_ROOT}/config/home/.config/aquaproj-aqua/aqua.yaml" "${HOME}/.config/aquaproj-aqua/aqua.yaml"
 }
