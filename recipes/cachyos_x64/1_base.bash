@@ -18,12 +18,17 @@ ___pre_setup_zsh_theme_on_cachyos() {
     #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git
     #     https://aur.archlinux.org/packages/zsh-theme-powerlevel10k
     #     https://github.com/CachyOS/cachyos-zsh-config
+
+    # Uninstll the packages if they are installed
     local -r CACHYOS_ZSH_CONFIG_PKG="cachyos-zsh-config"
-    # Uninstll the package if it is installed
     if yay -Qi "$CACHYOS_ZSH_CONFIG_PKG" &>/dev/null; then
         yay -Rns --noconfirm "$CACHYOS_ZSH_CONFIG_PKG"
     fi
-    yay -Rns --noconfirm zsh-theme-powerlevel10k
+
+    local -r P10K_ANOTHER_PKG="zsh-theme-powerlevel10k"
+    if yay -Qi "$P10K_ANOTHER_PKG" &>/dev/null; then
+        yay -Rns --noconfirm "$P10K_ANOTHER_PKG"
+    fi
 }
 readonly -f ___pre_setup_zsh_theme_on_cachyos
 
