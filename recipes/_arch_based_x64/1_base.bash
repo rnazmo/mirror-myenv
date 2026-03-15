@@ -393,7 +393,6 @@ __post_setup_zsh() {
 readonly -f __post_setup_zsh
 
 ___install_powerlevel10k() {
-    log_debug "/recipes/_arch_based_x64/1_base.bash > ___install_powerlevel10k"
     # Install powerlevel10k
     # Ref:
     #     https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#arch-linux
