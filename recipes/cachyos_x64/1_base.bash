@@ -30,7 +30,7 @@ ___pre_setup_zsh_theme_on_cachyos() {
     local -r P10K_ANOTHER_PKG="zsh-theme-powerlevel10k"
     if pacman -Qi "$P10K_ANOTHER_PKG" &>/dev/null; then
         log_debug "WIP /recipes/cachyos_x64/1_base.bash > ___pre_setup_zsh_theme_on_cachyos > yay -Rns --noconfirm $P10K_ANOTHER_PKG"
-        yay -Rns --noconfirm "$P10K_ANOTHER_PKG"
+        yay -Rns --noconfirm "$P10K_ANOTHER_PKG" || true # NOTE: WORKAROUND. Needs to be rewritten
     fi
     log_debug "END /recipes/cachyos_x64/1_base.bash > ___pre_setup_zsh_theme_on_cachyos"
 }
