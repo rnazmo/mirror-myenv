@@ -23,7 +23,9 @@ main() {
         setup_font
         setup_ime
         setup_util
+        log_debug "BEFORE /hosts/soba/setup.bash > call_func_in_1_base > call setup_shell_on_cachyos"
         setup_shell_on_cachyos
+        log_debug "AFTER  /hosts/soba/setup.bash > call_func_in_1_base > call setup_shell_on_cachyos"
         setup_terminal
         setup_multiplexer
         setup_devel
