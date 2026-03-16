@@ -747,8 +747,8 @@ _setup_xfce4() {
 
     __setup_panel
     __setup_keybindings
-    __setup_window_manager
-    __setup_wallpaper
+    # __setup_window_manager # This config isn't worth syncing.
+    # __setup_wallpaper # This config isn't worth syncing.
     __setup_thunar
 
     # NOTE: Reboot required
@@ -784,23 +784,32 @@ __setup_keybindings() {
 }
 readonly -f __setup_keybindings
 
-__setup_window_manager() {
-    remove_unused_config \
-        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
-    copy_file \
-        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" \
-        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
-}
-readonly -f __setup_window_manager
+# __setup_window_manager() {
+#     remove_unused_config \
+#         "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+#     copy_file \
+#         "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" \
+#         "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+# }
+# readonly -f __setup_window_manager
+#
+# __setup_wallpaper() {
+#     remove_unused_config \
+#         "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+#     copy_file \
+#         "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" \
+#         "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+# }
+# readonly -f __setup_wallpaper
 
-__setup_wallpaper() {
+__setup_screensaver() {
     remove_unused_config \
-        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml"
     copy_file \
-        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml" \
-        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml"
+        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml" \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml"
 }
-readonly -f __setup_wallpaper
+readonly -f __setup_thunar
 
 __setup_thunar() {
     remove_unused_config \

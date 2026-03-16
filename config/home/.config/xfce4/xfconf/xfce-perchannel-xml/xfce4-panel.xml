@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.1" encoding="UTF-8"?>
 
 <channel name="xfce4-panel" version="1.0">
   <property name="configver" type="int" value="2"/>
@@ -12,11 +12,13 @@
       <property name="icon-size" type="uint" value="0"/>
       <property name="size" type="uint" value="28"/>
       <property name="plugin-ids" type="array">
-        <value type="int" value="26"/>
+        <value type="int" value="1"/>
         <value type="int" value="16"/>
         <value type="int" value="2"/>
         <value type="int" value="5"/>
         <value type="int" value="4"/>
+        <value type="int" value="3"/>
+        <value type="int" value="7"/>
         <value type="int" value="6"/>
         <value type="int" value="8"/>
         <value type="int" value="9"/>
@@ -76,115 +78,16 @@
     <property name="plugin-13" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
     </property>
-    <property name="plugin-26" type="string" value="whiskermenu">
-      <property name="button-title" type="string" value=" EndeavourOS  "/>
-      <property name="button-icon" type="string" value="/usr/share/endeavouros/endeavouros-icon.png"/>
-      <property name="show-button-title" type="bool" value="false"/>
-      <property name="view-mode" type="int" value="1"/>
-      <property name="favorites-in-recent" type="bool" value="true"/>
-      <property name="position-search-alternate" type="bool" value="false"/>
-      <property name="position-commands-alternate" type="bool" value="false"/>
-      <property name="position-categories-alternate" type="bool" value="true"/>
-      <property name="menu-width" type="int" value="450"/>
-      <property name="menu-height" type="int" value="530"/>
-      <property name="command-switchuser" type="string" value="dm-tool switch-to-greeter"/>
-      <property name="show-command-restart" type="bool" value="true"/>
-      <property name="show-command-shutdown" type="bool" value="true"/>
-      <property name="show-command-menueditor" type="bool" value="false"/>
-      <property name="show-command-profile" type="bool" value="false"/>
-      <property name="favorites" type="array">
-        <value type="string" value="xfce-settings-manager.desktop"/>
-        <value type="string" value="xfce4-terminal-emulator.desktop"/>
-        <value type="string" value="xfce4-file-manager.desktop"/>
-        <value type="string" value="firefox.desktop"/>
-        <value type="string" value="org.xfce.Parole.desktop"/>
-        <value type="string" value="blueman-manager.desktop"/>
-        <value type="string" value="firewall-config.desktop"/>
-        <value type="string" value="eos-quickstart.desktop"/>
-        <value type="string" value="eos-apps-info.desktop"/>
-        <value type="string" value="eos-log-tool.desktop"/>
-        <value type="string" value="reflector-simple.desktop"/>
-        <value type="string" value="welcome.desktop"/>
-      </property>
-      <property name="recent" type="array">
-        <value type="string" value="thunar.desktop"/>
-        <value type="string" value="xfce-wm-settings.desktop"/>
-        <value type="string" value="xfce-keyboard-settings.desktop"/>
-        <value type="string" value="xfce4-terminal-emulator.desktop"/>
-        <value type="string" value="fcitx5-configtool.desktop"/>
-        <value type="string" value="org.fcitx.Fcitx5.desktop"/>
-        <value type="string" value="Alacritty.desktop"/>
-        <value type="string" value="xfce-settings-manager.desktop"/>
-        <value type="string" value="xterm.desktop"/>
-        <value type="string" value="blueman-manager.desktop"/>
-        <value type="string" value="blueman-adapters.desktop"/>
-        <value type="string" value="panel-preferences.desktop"/>
-        <value type="string" value="reflector-simple.desktop"/>
-      </property>
-      <property name="search-actions" type="int" value="7">
-        <property name="action-0" type="empty">
-          <property name="name" type="string" value="Man Pages"/>
-          <property name="pattern" type="string" value="#"/>
-          <property name="command" type="string" value="exo-open --launch TerminalEmulator man %s"/>
-          <property name="regex" type="bool" value="false"/>
-        </property>
-        <property name="action-1" type="empty">
-          <property name="name" type="string" value="Search the Web"/>
-          <property name="pattern" type="string" value="?"/>
-          <property name="command" type="string" value="exo-open --launch WebBrowser https://duckduckgo.com/?q=%u"/>
-          <property name="regex" type="bool" value="false"/>
-        </property>
-        <property name="action-2" type="empty">
-          <property name="name" type="string" value="Search for Files"/>
-          <property name="pattern" type="string" value="-"/>
-          <property name="command" type="string" value="catfish --path=~ --start %s"/>
-          <property name="regex" type="bool" value="false"/>
-        </property>
-        <property name="action-3" type="empty">
-          <property name="name" type="string" value="Wikipedia"/>
-          <property name="pattern" type="string" value="!w"/>
-          <property name="command" type="string" value="exo-open --launch WebBrowser https://en.wikipedia.org/wiki/%u"/>
-          <property name="regex" type="bool" value="false"/>
-        </property>
-        <property name="action-4" type="empty">
-          <property name="name" type="string" value="Run in Terminal"/>
-          <property name="pattern" type="string" value="!"/>
-          <property name="command" type="string" value="exo-open --launch TerminalEmulator %s"/>
-          <property name="regex" type="bool" value="false"/>
-        </property>
-        <property name="action-5" type="empty">
-          <property name="name" type="string" value="Open URI"/>
-          <property name="pattern" type="string" value="^(file|http|https):\/\/(.*)$"/>
-          <property name="command" type="string" value="exo-open \0"/>
-          <property name="regex" type="bool" value="true"/>
-        </property>
-        <property name="action-6" type="empty">
-          <property name="name" type="string" value="EndeavourOS Forum"/>
-          <property name="pattern" type="string" value="forum"/>
-          <property name="command" type="string" value="exo-open --launch WebBrowser https://forum.endeavouros.com"/>
-          <property name="regex" type="bool" value="false"/>
-        </property>
-      </property>
-      <property name="launcher-show-name" type="bool" value="true"/>
-      <property name="launcher-show-tooltip" type="bool" value="true"/>
-      <property name="launcher-show-description" type="bool" value="true"/>
-      <property name="category-icon-size" type="int" value="1"/>
-      <property name="launcher-icon-size" type="int" value="2"/>
-      <property name="position-profile-alternate" type="bool" value="false"/>
-      <property name="default-category" type="int" value="0"/>
-      <property name="hover-switch-category" type="bool" value="false"/>
-      <property name="recent-items-max" type="int" value="20"/>
-      <property name="show-command-suspend" type="bool" value="true"/>
-      <property name="show-command-hibernate" type="bool" value="true"/>
-      <property name="profile-shape" type="int" value="0"/>
-      <property name="show-button-icon" type="bool" value="true"/>
-      <property name="button-single-row" type="bool" value="false"/>
-      <property name="category-show-name" type="bool" value="true"/>
-    </property>
     <property name="plugin-16" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
     </property>
     <property name="plugin-15" type="string" value="systemload"/>
     <property name="plugin-18" type="string" value="datetime"/>
+    <property name="plugin-1" type="string" value="whiskermenu">
+      <property name="show-command-restart" type="bool" value="true"/>
+      <property name="show-command-shutdown" type="bool" value="true"/>
+    </property>
+    <property name="plugin-3" type="string" value="screenshooter"/>
+    <property name="plugin-7" type="string" value="separator"/>
   </property>
 </channel>
