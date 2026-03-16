@@ -806,10 +806,10 @@ readonly -f __setup_keybindings
 
 __setup_screensaver() {
     remove_unused_config \
-        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml"
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
     copy_file \
-        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml" \
-        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml"
+        "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml" \
+        "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-screensaver.xml"
 }
 readonly -f __setup_screensaver
 
