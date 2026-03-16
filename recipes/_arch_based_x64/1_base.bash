@@ -809,7 +809,7 @@ __setup_screensaver() {
         "${MYENV_ROOT}/config/home/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml" \
         "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/screensaver.xml"
 }
-readonly -f __setup_thunar
+readonly -f __setup_screensaver
 
 __setup_thunar() {
     remove_unused_config \
