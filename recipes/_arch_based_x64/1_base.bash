@@ -743,7 +743,9 @@ _setup_xfce4() {
     #     https://wiki.archlinux.org/title/Xfce#Configuration
     #     https://github.com/endeavouros-team/endeavouros-xfce4-theming/tree/master
 
-    rm -rf "${HOME}/.config/xfce4" "${HOME}/.cache"
+    # TODO: These may cause error
+    # rm -r "${HOME}/.config/xfce4"
+    # rm -r "${HOME}/.cache/sessions"
 
     __setup_panel
     __setup_keybindings
