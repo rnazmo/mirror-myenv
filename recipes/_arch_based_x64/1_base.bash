@@ -751,6 +751,7 @@ _setup_xfce4() {
     __setup_keybindings
     # __setup_window_manager # This config isn't worth syncing.
     # __setup_wallpaper # This config isn't worth syncing.
+    __setup_screensaver
     __setup_thunar
 
     # NOTE: Reboot required
