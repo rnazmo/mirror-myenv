@@ -51,13 +51,20 @@ git config --list
 
 See: [Git：GitHub（または GitLab）に SSH キーを登録する手順（GitHub CLI 無し）（v2024-09](f585a709-fde5-47d8-80ab-ee079d5b99ef.md)
 
-- 要点のみメモ：
-    - `ssh-keygen -t ed25519`
-    - `xclip -sel c < ~/.ssh/id_ed25519.pub`
-    - [https://github.com/settings/ssh/new](https://github.com/settings/ssh/new)
-    - [https://gitlab.com/-/user_settings/ssh_keys](https://gitlab.com/-/user_settings/ssh_keys)
+**手順の要点のみメモ**：
 
-接続確認：
+```bash
+ssh-keygen -t ed25519
+```
+
+```bash
+xclip -sel c < ~/.ssh/id_ed25519.pub
+```
+
+- [https://github.com/settings/ssh/new](https://github.com/settings/ssh/new)
+- [https://gitlab.com/-/user_settings/ssh_keys](https://gitlab.com/-/user_settings/ssh_keys)
+
+**接続確認**：
 
 ```bash
 ssh -T git@github.com # 聞かれる
@@ -71,7 +78,9 @@ ssh -T git@gitlab.com # 聞かれる
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://gitlab.com/rnazmo/myenv/-/raw/main/init.bash)"
+```
 
+```bash
 cd ~/.myenv && ./setup.bash "udon"
 ```
 
@@ -86,7 +95,7 @@ reboot now
 ##### リモートの更新を適用
 
 ```bash
-myenv pull && myenv apply "udon"
+myenv cd && myenv pull && myenv apply "$(hostname)"
 
 ```
 
