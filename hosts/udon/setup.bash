@@ -34,6 +34,7 @@ main() {
     }
     call_func_in_2_extra() {
         pre_setup_extra
+        setup_virtualbox_guest
         # something here
         post_setup_extra
     }
