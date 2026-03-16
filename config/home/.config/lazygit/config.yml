@@ -3,13 +3,11 @@
 gui:
   scrollHeight: 3
   nerdFontsVersion: "3"
-
 os:
   editPreset: "nvim"
-
 git:
-  paging:
-    pager: "delta --dark --paging=never"
+  pagers:
+    - pager: "delta --dark --paging=never"
   merging:
     # Ref:
     #     https://github.com/jesseduffield/lazygit/issues/785
