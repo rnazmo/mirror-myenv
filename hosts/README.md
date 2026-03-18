@@ -1,27 +1,33 @@
 # Specs
 
-TODO: Rename. soba -> Manjaro, udon -> EndeavourOS, hoto -> CachyOS
+## Machine & Spec List
 
-## Common
+### Common
 
 - Terminal: Alacritty
 - Multiplexer: tmux
-- Editor: Neovim with LazyVim (TODO:)
+- Editor: Neovim with LazyVim
 
-## ~~soba~~ (outdated)
-
-- VirtualBox Guest
-- Manjaro
-- Xfce4
-
-## udon
+### ~~`soba`~~ (outdated)
 
 - VirtualBox Guest
-- EndeavourOS
-- Xfce4
+- OS: Manjaro
+- DE: Xfce4
 
-## ~~soba~~ (outdated)
+### `udon`
 
 - VirtualBox Guest
-- CachyOS
-- Xfce4
+- OS: EndeavourOS
+- DE: Xfce4
+
+### ~~`soba`~~ (outdated)
+
+- VirtualBox Guest
+- OS: CachyOS
+- DE: Xfce4
+
+### ~~`zoni`~~ (unknown)
+
+- VirtualBox Guest
+- OS: Kali
+- DE: ?
