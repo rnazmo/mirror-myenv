@@ -1,8 +1,8 @@
 -- Ref: [Masonをやめようかな、ま、そんなところです](https://zenn.dev/vim_jp/articles/f24212092323d9)
 return {
-  {
-    "neovim/nvim-lspconfig",
-  },
+--   {
+--     "neovim/nvim-lspconfig",
+--   },
 
   -- formatting
   {

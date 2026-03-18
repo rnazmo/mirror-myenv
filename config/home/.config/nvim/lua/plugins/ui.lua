@@ -1,7 +1,7 @@
 return {
-  -- Disable notify
-  -- Ref: https://www.lazyvim.org/plugins/ui#nvim-notify
-  { "rcarriga/nvim-notify", enabled = false },
+--   -- Disable notify
+--   -- Ref: https://www.lazyvim.org/plugins/ui#nvim-notify
+--   { "rcarriga/nvim-notify", enabled = false },
 
   -- Disable noice
   -- Ref: https://www.lazyvim.org/plugins/ui#noicenvim
