@@ -1,14 +1,23 @@
 # TODO
 
-## Milestone: vX.X.X - TBD
+## Milestone: v4.10.0 - 軽めの整備
+
+バグ修正・誤記修正・すぐ終わる改善が中心。
 
 ### セキュリティ・バグ修正
 
-無し。
+- [ ] fix: `log_warn` のバグを修正する
+    - `lib/util.bash` の `log_warn` 関数で `>&2` の位置が間違っている
+    - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
 
 ### コード・機能
 
-無し。
+- [ ] chore: `run-lint` スクリプトに `nullglob` を設定する
+    - `devel-tools/script/run-lint.arch_based_x64.bash` でグロブがマッチしない場合の挙動を安全にする
+    - スクリプト先頭に `shopt -s nullglob` を追加する
+- [ ] refactor: `setup.bash` の `HOST_NAME` 変数の宣言方法を整理する
+    - `parse_args` 関数内で `readonly HOST_NAME="$1"` としているが、グローバル変数の扱いが不明瞭
+    - 意図を明示するよう修正する
 
 ### テスト・CI
 
@@ -16,14 +25,20 @@
 
 ### ドキュメント
 
-- [ ] docs: 意思決定の記録（ADR）を追記する
+- [x] `TODO.md` を導入
+    - [x] 雛形の作成
+    - [x] タスクの洗い出し
+    - [x] タスクの優先順位付け・マイルストーンの設定
+- [x] docs: `ADR.md` を導入
+- [x] docs: `README.md` に、`TODO.md`, `ADR.md` への誘導を記述する
+- [ ] docs: `hosts/README.md` のホスト情報の誤記を修正する
+    - `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
 
 ### プロジェクト管理
 
-- [ ] TODO.md の作成
-    - [x] 雛形の作成
-    - [ ] タスクの洗い出し
-    - [ ] タスクの優先順位付け
+無し。
+
+---
 
 ## Backlog（いつかやる）
 
@@ -33,20 +48,11 @@
 
 ### コード・機能
 
-- [ ] fix: `log_warn` のバグを修正する
-    - `lib/util.bash` の `log_warn` 関数で `>&2` の位置が間違っている
-    - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
 - [ ] refactor: `copy_file` と `copy_file_as_root` の重複コードを解消する
     - `lib/util.bash` の2関数はほぼ同じ実装。第3引数でsudo有無を切り替える形に統合する
     - 同様に `remove_file` と `remove_file_as_root` も対象
 - [ ] refactor: `link_file` と `link_dir` のバリデーション重複を解消する
     - `lib/util.bash` の2関数で共通するバリデーション処理を内部関数に切り出す
-- [ ] refactor: `setup.bash` の `HOST_NAME` 変数の宣言方法を整理する
-    - `parse_args` 関数内で `readonly HOST_NAME="$1"` としているが、グローバル変数の扱いが不明瞭
-    - 意図を明示するよう修正する
-- [ ] chore: `run-lint` スクリプトに `nullglob` を設定する
-    - `devel-tools/script/run-lint.arch_based_x64.bash` でグロブがマッチしない場合の挙動を安全にする
-    - スクリプト先頭に `shopt -s nullglob` を追加する
 - [ ] refactor: レシピファイルの肥大化に備えてファイル分割を検討する
     - `recipes/_arch_based_x64/1_base.bash` が大きくなりつつある
     - shell / terminal / editor などの責務ごとにファイルを分割する
@@ -75,8 +81,6 @@
 
 - [ ] docs: README.md の TODO セクションを削除し、このファイルに一本化する
     - 移行完了後に README.md の TODO セクションを削除する
-- [ ] docs: README.md のホスト情報（Specs セクション）の誤記を修正する
-    - `hosts/README.md` で `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
 - [ ] docs: できること・できないことを README.md にまとめる
     - 時刻同期、Git の初期設定、SSH 公開鍵登録など
     - 例えば、時刻同期は GUI が楽だからそっちでやって、みたいな。

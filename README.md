@@ -128,3 +128,11 @@ myenv push
             - いや、「斧を研ぐ」ことは重要では？
     - ちょこちょこタグを付ける
         - `v2024-XX-XX` みたいな日付形式が良さそう
+
+### ADR
+
+See: [ADR.md](./ADR.md)
+
+### TODO
+
+See: [TODO.md](./TODO.md)
