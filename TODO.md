@@ -30,6 +30,7 @@
     - [x] タスクの洗い出し
     - [x] タスクの優先順位付け・マイルストーンの設定
 - [x] docs: `ADR.md` を導入
+- [ ] docs: 何かしらの ADR を書く
 - [x] docs: `README.md` に、`TODO.md`, `ADR.md` への誘導を記述する
 - [ ] docs: `hosts/README.md` のホスト情報の誤記を修正する
     - `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
