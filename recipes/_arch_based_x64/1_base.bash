@@ -558,14 +558,14 @@ readonly -f setup_devel
 
 _install_many_devel_tools() {
     local PKGS=(
-        "shellcheck"        # bash linter
-        "shfmt"             # bash formatter
-        "selene"            # lua linter
-        "stylua"            # lua formatter
-        "staticcheck"       # golang linter
-        "eslint_d"          # js/ts/jsx/tsx/json/yaml linter
-        "prettier"          # js/ts/jsx/css/scss/html/markdown/json/yaml linter
-        "stylelint"         # css linter
+        "shellcheck"  # bash linter
+        "shfmt"       # bash formatter
+        "selene"      # lua linter
+        "stylua"      # lua formatter
+        "staticcheck" # golang linter
+        "eslint_d"    # js/ts/jsx/tsx/json/yaml linter
+        "prettier"    # js/ts/jsx/css/scss/html/markdown/json/yaml linter
+        # "stylelint"         # css linter (npm package; will be set up when starting frontend development)
         "markdownlint-cli2" # markdown linter
         "actionlint"        # github actions linter
         "typos"             # spell checker
