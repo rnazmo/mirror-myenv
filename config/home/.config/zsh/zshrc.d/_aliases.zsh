@@ -55,6 +55,7 @@ alias v="nvim"
 #         push: git push
 #         TODO: sync: git pull && git push
 #         test: Run staticcheck (lint, format, unit-test, integ-test)
+#         bump: Commit and push lazy-lock.json changes
 #
 # Example:
 #     $ myenv cd
@@ -85,6 +86,9 @@ myenv_function() {
   test)
     _sub_command_test
     ;;
+  bump)
+    _sub_command_bump
+    ;;
   *)
     echo "Unknown subcommand: $subcommand"
     echo "Usage: $0 {cd|apply [arguments]|pull|push|test}"
@@ -114,4 +118,25 @@ _sub_command_test() {
   # TODO: Validate arguments?
   cd "$MYENV_ROOT" && \
     ./devel-tools/script/run-lint.arch_based_x64.bash
+}
+
+_sub_command_bump() {
+  bump_nvim_plugins
+}
+
+_bump_nvim_plugins() {
+  local -r LOCKFILE="${MYENV_ROOT}/config/home/.config/nvim/lazy-lock.json"
+  local -r COMMIT_MSG="chore(nvim): bump plugin"
+
+  cd "$MYENV_ROOT"
+
+  # Do nothing if lazy-lock.json has no changes
+  if git diff --quiet "$LOCKFILE"; then
+    echo "No changes in lazy-lock.json. Nothing to do."
+    return 0
+  fi
+
+  git add "$LOCKFILE"
+  git commit -m "$COMMIT_MSG"
+  git push
 }
