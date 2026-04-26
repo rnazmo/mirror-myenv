@@ -121,7 +121,7 @@ _sub_command_test() {
 }
 
 _sub_command_bump() {
-  bump_nvim_plugins
+  _bump_nvim_plugins
 }
 
 _bump_nvim_plugins() {
