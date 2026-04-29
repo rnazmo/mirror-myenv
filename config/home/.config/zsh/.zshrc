@@ -35,8 +35,10 @@ typeset -U path PATH
 
 # ======== PATH
 path=(
-  # ======== basic
+  # ======== my scripts
   $HOME/.bin(N-/)
+  # ======== local bin (XDG standard location for user executables)
+  $HOME/.local/bin(N-/)
   # ======== mise
   # Ref:
   #     https://mise.jdx.dev/getting-started.html#_2b-alternative-add-mise-shims-to-path
