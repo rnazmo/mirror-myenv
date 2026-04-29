@@ -34,6 +34,12 @@
 - [x] docs: `README.md` に、`TODO.md`, `ADR.md` への誘導を記述する
 - [ ] docs: `hosts/README.md` のホスト情報の誤記を修正する
     - `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
+- [ ] keybindings.md に、LazyVim のデフォルトのキーバインドについてまとめたものを追記することを検討する
+    - [⌨️ Keymaps | LazyVim](https://www.lazyvim.org/keymaps)
+        - [lazyvim.github.io／docs／keymaps.md at main · LazyVim／lazyvim.github.io](https://github.com/LazyVim/lazyvim.github.io/blob/main/docs/keymaps.md)
+        - <https://raw.githubusercontent.com/LazyVim/lazyvim.github.io/refs/heads/main/docs/keymaps.md>
+    - 分量が多すぎなので、別のファイルとしたほうが良いのでは？
+- [ ] 自作スクリプト・コマンド（~/.bin の Bash ファイルや Zsh の関数として実装）の簡易まとめを作りたい
 
 ### プロジェクト管理
 
@@ -63,7 +69,7 @@
 - [ ] feat: Zsh の設定を更新・改善する
 - [ ] feat: bat の設定ファイルを追加する
 - [ ] feat: baobab を追加する (GUI ディスクユーザアナライザ)
-    - https://archlinux.org/packages/extra/x86_64/baobab/
+    - <https://archlinux.org/packages/extra/x86_64/baobab/>
 - [ ] feat: cspell をタイポチェックとして追加する
 - [ ] feat: `myenv` コマンドに `sync` サブコマンドを追加する (`pull` + `push`)
     - `_aliases.zsh` の TODO コメントより
