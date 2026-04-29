@@ -232,11 +232,9 @@ readonly -f _setup_aqua
 setup_some_directories() {
     local -r DIRS=(
         "${HOME}/repos"
-        "${HOME}/bin"
         "${HOME}/workspace"
         "${HOME}/workspace/sandboxes"
         "${HOME}/workspace/temp"
-        # "${HOME}/.vscode-workspaces"
     )
     for DIR in "${DIRS[@]}"; do
         mkdir -p -v "$DIR"
