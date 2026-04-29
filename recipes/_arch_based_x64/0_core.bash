@@ -165,7 +165,7 @@ _install_mise() {
     #     https://mise.jdx.dev/installing-mise.html#pacman
     # NOTE: Maintenance of mise has been moved from the AUR
     #     to the official Arch package.
-    check_if_command_exists "yay" &&  yay -S --needed --noconfirm mise
+    check_if_command_exists "yay" && yay -S --needed --noconfirm mise
 }
 readonly -f _install_mise
 
