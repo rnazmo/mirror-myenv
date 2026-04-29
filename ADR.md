@@ -1,12 +1,6 @@
 # ADR (myenv)
 
-## ADR-003: Foo
-
-TODO:
-
-## ADR-002: Foo
-
-TODO:
+<!-- ADRs are listed in reverse chronological order (newest first). -->
 
 ## ADR-001: ユーザースクリプトの置き場所を `~/.bin` にする
 
