@@ -239,6 +239,10 @@ setup_some_directories() {
     for DIR in "${DIRS[@]}"; do
         mkdir -p -v "$DIR"
     done
+
+    # Link ~/.bin to the managed directory in myenv.
+    # Scripts placed in config/home/.bin/ will be available via PATH.
+    link_dir "${MYENV_ROOT}/config/home/.bin" "${HOME}/.bin"
 }
 readonly -f setup_some_directories
 
