@@ -241,7 +241,9 @@ setup_some_directories() {
     done
 
     # Link ~/.bin to the managed directory in myenv.
-    # Scripts placed in config/home/.bin/ will be available via PATH.
+    # Place custom scripts in config/home/.bin/ to make them available via PATH.
+    # External binaries (e.g. proper7y) should go to ~/.local/bin instead.
+    remove_unused_config "${HOME}/.bin"
     link_dir "${MYENV_ROOT}/config/home/.bin" "${HOME}/.bin"
 }
 readonly -f setup_some_directories
