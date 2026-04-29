@@ -169,7 +169,7 @@ Move cursor to...
 #### movement
 
 - `<prefix> s` (`|f`): swap current position with previous/next position
-<!-- - `<prefix> d` (`|e`): swap current with first/last -->
+      <!-- - `<prefix> d` (`|e`): swap current with first/last -->
 - `<prefix> b`: break current pane to new tabpage (∵ "b"reak)
 - `<prefix> [` (`|]`): break current pane to previous/next tabpage
 
@@ -185,7 +185,7 @@ Move cursor to...
 
 - `<prefix> Ctrl-h` (`|l`): change focus ☆
 - `<prefix> Ctrl-j` (`|k`): change focus to first/last
-<!--TODO: Change focus to previous/next with Ctrl-r/n ?-->
+      <!--TODO: Change focus to previous/next with Ctrl-r/n ?-->
 
 #### create/close
 
@@ -207,6 +207,7 @@ Move cursor to...
 #### navigation
 
 <!-- - `<prefix> Alt-n` (`|r`): change focus to next/previous (∵ "n"ext, p"r"evious/"r"everse) -->
+
 - `<prefix> Alt-u`: choose from tree (∵ 余ってるキーの中で押しやすそうなやつを割り当てた)
 
 <!--    - or `:choose-tree -w` -->
@@ -398,6 +399,10 @@ While selecting rows in view mode:
 - `>`: Increase indentation of selected lines
 - `<`: Decrease indentation of selected lines
 - `5>`: Increase indentation 5 times of selected lines
+
+### patch
+
+- `<leader>P`: Apply unified diff from clipboard to current file (∵ "P"atch)
 
 ---
 

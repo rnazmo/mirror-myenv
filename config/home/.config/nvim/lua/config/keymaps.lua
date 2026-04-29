@@ -174,6 +174,9 @@ map("n", "<leader>k", "{", { desc = "Jump to previous paragraph" })
 map("n", "<leader>j", "}", { desc = "Jump to next paragraph" })
 
 -- ========= etc
+-- Apply unified diff from X11 clipboard to current file
+-- (uses my custom script "~/.bin/applypatch" which auto-detects -p0/-p1)
+map("n", "<leader>P", ":!applypatch %<CR>", { desc = "Apply clipboard patch to current file", silent = false })
 
 -- lazy
 map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
