@@ -765,13 +765,6 @@ __setup_panel() {
     # Install dependencies
     sudo pacman -S --needed --noconfirm xfce4-systemload-plugin
 
-    # dependencies configs
-    remove_unused_config \
-        "${HOME}/.config/xfce4/panel/datetime-18.rc"
-    copy_file \
-        "${MYENV_ROOT}/config/home/.config/xfce4/panel/datetime-18.rc" \
-        "${HOME}/.config/xfce4/panel/datetime-18.rc"
-
     remove_unused_config \
         "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
     copy_file \

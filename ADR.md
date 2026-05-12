@@ -2,6 +2,53 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-002 xfce4-datetime-plugin を Xfce 組み込み clock プラグインへ移行
+
+- **日付**: 2026-05-12
+- **ステータス**: 採用
+
+### コンテキスト
+
+Xfce パネルの日時表示に AUR パッケージ `xfce4-datetime-plugin` を使用していた。
+2026-05-12 に実施した `myenv apply` において、このパッケージのビルドが
+`./configure: No such file or directory` エラーで失敗した。
+
+調査の結果、以下のことが判明した。
+
+- **EOL の確認**: AUR パッケージのコメント（jujudusud, 2026-04-11）に
+  "As of the 4.18 release, this plugin is considered End-of-Life(EOL).
+  For similar functionality, consider using the built-in Clock plugin." との記載がある
+- **ビルド失敗の原因**: バージョン 0.8.3-4 の PKGBUILD にソースの tarball URL が
+  含まれておらず、ビルドに必要なソースコードが取得できない状態になっている
+
+参考：
+
+- [AUR (en) - xfce4-datetime-plugin](https://aur.archlinux.org/packages/xfce4-datetime-plugin)
+- [xfce:xfce4-panel:clock [Xfce Docs]](https://docs.xfce.org/xfce/xfce4-panel/clock)
+- [plugins／clock · master · Xfce ／ xfce4-panel · GitLab](https://gitlab.xfce.org/xfce/xfce4-panel/-/tree/master/plugins/clock?ref_type=heads)
+
+### 決定
+
+`xfce4-datetime-plugin` の使用を止め、`xfce4-panel` 組み込みの
+`clock` プラグインへ移行する。
+
+`clock` プラグインの時刻フォーマット等の細かい設定は、当面デフォルトのまま使用する。
+実際に触ってみて使い勝手が固まり次第、設定の myenv 管理を検討する。
+
+### 理由
+
+- EOL となったパッケージを使い続けることはセキュリティ・安定性の観点から望ましくない
+- 公式が推奨する代替手段（`xfce4-panel` 組み込みの `clock` プラグイン）が存在する
+- 組み込みプラグインであれば AUR 経由のビルドが不要で、パッケージ管理の複雑さが下がる
+
+### トレードオフ
+
+- `clock` プラグインの設定フォーマットが異なるため、既存の `datetime-18.rc`
+  による設定管理ができなくなる。当面はデフォルト設定で運用し、
+  必要に応じて xfconf XML による管理を追加する
+- 外見・機能が多少変わる可能性があるが、EOL パッケージへの依存を解消する
+  メリットの方が大きいと判断した
+
 ## ADR-001 「自作スクリプト」と「自作CLI（外部）」の置き場所を決める
 
 - **日付**: 2026-04-29

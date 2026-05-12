@@ -82,7 +82,7 @@
       <property name="style" type="uint" value="0"/>
     </property>
     <property name="plugin-15" type="string" value="systemload"/>
-    <property name="plugin-18" type="string" value="datetime"/>
+    <property name="plugin-18" type="string" value="clock"/>
     <property name="plugin-1" type="string" value="whiskermenu">
       <property name="show-command-restart" type="bool" value="true"/>
       <property name="show-command-shutdown" type="bool" value="true"/>
