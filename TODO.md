@@ -1,66 +1,17 @@
 # TODO (myenv)
 
-## Milestone: v4.9.1 - 軽めの整備
-
-### 概要
-
-- バグ修正・誤記修正・すぐ終わる改善が中心。
-
-### セキュリティ・バグ修正
-
-- [x] fix: `log_warn` のバグを修正する
-    - `lib/util.bash` の `log_warn` 関数で `>&2` の位置が間違っている
-    - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
-- [x] fix: `init.bash` の `log_warn` にも同じバグがある
-    - `lib/util.bash` の `log_warn` のバグ（上述）と同じく，`>&2` の位置が間違っている
-    - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
-- [x] fix: `recipes/_common/setup_git.bash` の変数名タイポを修正する
-    - `GIT_GLOBAL_ENAIL` → `GIT_GLOBAL_EMAIL`
-
-### コード・機能
-
-- [ ] chore: `run-lint` スクリプトに `nullglob` を設定する
-    - `devel-tools/script/run-lint.arch_based_x64.bash` でグロブがマッチしない場合の挙動を安全にする
-    - スクリプト先頭に `shopt -s nullglob` を追加する
-- [x] refactor: `setup.bash` の `HOST_NAME` 変数の宣言方法を整理する
-    - `parse_args` 関数内で `readonly HOST_NAME="$1"` としているが、グローバル変数の扱いが不明瞭
-    - 意図を明示するよう修正する
-- [x] fix: `recipes/_arch_based_x64/1_base.bash` の `___setup_wezterm_config` に `readonly -f` が抜けている
-    - 他の関数はすべて `readonly -f` されているのに、この関数だけ抜けている
-    - 関数定義の直後に `readonly -f ___setup_wezterm_config` を追加する
-
-### テスト・CI
-
-無し。
-
-### ドキュメント
-
-- [ ] docs: `hosts/README.md` のホスト情報の誤記を修正する
-    - `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
-    - soba は manjaro にして，別のやつを新規で cachy 用にしよう
-- [ ] README.md の骨組みを完成させる
-    - 他のプロジェクトで使った骨組みをそのまま持ってくれば良い
-- [ ] README.md に，TODO.md, ADR.md に関する Conventions を書く
-- [ ] README.md に，このプロジェクトの目的や方針を書く
-
-### プロジェクト管理
-
-無し。
-
----
-
 ## Milestone: v4.9.2 - スクリプトのパフォーマンス改善
 
 ### 概要
 
-- 日々使うスクリプトのパフォーマンスが悪いので，抜本的に見直す。
+- 日々使うスクリプトのパフォーマンスが悪いので，抜本的に見直す
 - pacman のミラーリスト最適化・更新処理の改善がメイン
 
 ### セキュリティ・バグ修正
 
 無し。
 
-### 
+### コード・機能
 
 無し。
 
@@ -90,7 +41,7 @@
 
 無し。
 
-### 
+### コード・機能
 
 無し。
 
@@ -119,7 +70,7 @@
 
 無し。
 
-### 
+### コード・機能
 
 無し。
 
@@ -148,7 +99,7 @@
 
 無し。
 
-### 
+### コード・機能
 
 無し。
 
@@ -215,6 +166,14 @@
     - ref: rnazmo/proper7y
 
 ### ドキュメント
+
+- [ ] docs: `hosts/README.md` のホスト情報の誤記を修正する
+    - `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
+    - soba は manjaro にして，別のやつを新規で cachy 用にしよう
+- [ ] README.md の骨組みを完成させる
+    - 他のプロジェクトで使った骨組みをそのまま持ってくれば良い
+- [ ] README.md に，TODO.md, ADR.md に関する Conventions を書く
+- [ ] README.md に，このプロジェクトの目的や方針を書く
 
 - [ ] docs: README.md の TODO セクションを削除し、このファイルに一本化する
     - 移行完了後に README.md の TODO セクションを削除する
