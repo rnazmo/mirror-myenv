@@ -11,7 +11,7 @@
 - [ ] fix: `log_warn` のバグを修正する
     - `lib/util.bash` の `log_warn` 関数で `>&2` の位置が間違っている
     - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
-- [ ] fix: `init.bash` の `log_warn` にも同じバグがある
+- [x] fix: `init.bash` の `log_warn` にも同じバグがある
     - `lib/util.bash` の `log_warn` のバグ（上述）と同じく，`>&2` の位置が間違っている
     - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
 - [ ] fix: `recipes/_common/setup_git.bash` の変数名タイポを修正する
