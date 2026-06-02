@@ -25,7 +25,7 @@
 - [x] refactor: `setup.bash` の `HOST_NAME` 変数の宣言方法を整理する
     - `parse_args` 関数内で `readonly HOST_NAME="$1"` としているが、グローバル変数の扱いが不明瞭
     - 意図を明示するよう修正する
-- [ ] fix: `recipes/_arch_based_x64/1_base.bash` の `___setup_wezterm_config` に `readonly -f` が抜けている
+- [x] fix: `recipes/_arch_based_x64/1_base.bash` の `___setup_wezterm_config` に `readonly -f` が抜けている
     - 他の関数はすべて `readonly -f` されているのに、この関数だけ抜けている
     - 関数定義の直後に `readonly -f ___setup_wezterm_config` を追加する
 

@@ -463,6 +463,7 @@ readonly -f __install_wezterm
 ___setup_wezterm_config() {
     link_file "${MYENV_ROOT}/config/home/.config/wezterm/wezterm.lua" "${HOME}/.config/wezterm/wezterm.lua"
 }
+readonly -f ___setup_wezterm_config
 
 # ======================================================
 # ======================================================
