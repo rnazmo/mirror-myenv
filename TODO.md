@@ -9,6 +9,11 @@
 - [ ] fix: `log_warn` のバグを修正する
     - `lib/util.bash` の `log_warn` 関数で `>&2` の位置が間違っている
     - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
+- [ ] fix: `init.bash` の `log_warn` にも同じバグがある
+    - `lib/util.bash` の `log_warn` のバグ（上述）と同じく，`>&2` の位置が間違っている
+    - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
+- [ ] fix: `recipes/_common/setup_git.bash` の変数名タイポを修正する
+    - `GIT_GLOBAL_ENAIL` → `GIT_GLOBAL_EMAIL`
 
 ### コード・機能
 
@@ -23,6 +28,9 @@
 - [ ] refactor: `setup.bash` の `HOST_NAME` 変数の宣言方法を整理する
     - `parse_args` 関数内で `readonly HOST_NAME="$1"` としているが、グローバル変数の扱いが不明瞭
     - 意図を明示するよう修正する
+- [ ] fix: `recipes/_arch_based_x64/1_base.bash` の `___setup_wezterm_config` に `readonly -f` が抜けている
+    - 他の関数はすべて `readonly -f` されているのに、この関数だけ抜けている
+    - 関数定義の直後に `readonly -f ___setup_wezterm_config` を追加する
 
 ### テスト・CI
 
@@ -60,6 +68,12 @@
 
 ### コード・機能
 
+- [ ] feat/fix: `recipes/_common/setup_git.bash` と `recipes/_common/setup_myenv.bash` が未実装
+    - どちらも `# TODO:` のみで実質機能していない
+    - 必要な処理を実装するか、不要なら削除することを検討する
+- [ ] feat: `lib/util_test.bash` にユニットテストを書く
+    - 現状 `# TODO:` のみで空ファイルになっている
+    - `lib/util.bash` の各関数に対するテストを追加する
 - [ ] refactor: `copy_file` と `copy_file_as_root` の重複コードを解消する
     - `lib/util.bash` の2関数はほぼ同じ実装。第3引数でsudo有無を切り替える形に統合する
     - 同様に `remove_file` と `remove_file_as_root` も対象
