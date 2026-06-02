@@ -8,7 +8,7 @@
 
 ### セキュリティ・バグ修正
 
-- [ ] fix: `log_warn` のバグを修正する
+- [x] fix: `log_warn` のバグを修正する
     - `lib/util.bash` の `log_warn` 関数で `>&2` の位置が間違っている
     - `local -r PREFIX="WARN :" >&2` → `echo "$PREFIX $1" >&2` に修正する
 - [x] fix: `init.bash` の `log_warn` にも同じバグがある
@@ -37,6 +37,7 @@
 
 - [ ] docs: `hosts/README.md` のホスト情報の誤記を修正する
     - `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
+    - soba は manjaro にして，別のやつを新規で cachy 用にしよう
 - [ ] README.md の骨組みを完成させる
     - 他のプロジェクトで使った骨組みをそのまま持ってくれば良い
 - [ ] README.md に，TODO.md, ADR.md に関する Conventions を書く
