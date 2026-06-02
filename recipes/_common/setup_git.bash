@@ -13,11 +13,11 @@ main() {
     # ======================================================
 
     local -r GIT_GLOBAL_NAME="rnazmo"
-    local -r GIT_GLOBAL_ENAIL="rnazmo@gmail.com"
+    local -r GIT_GLOBAL_EMAIL="rnazmo@gmail.com"
 
     # Set git global config
     git config --global user.name "$GIT_GLOBAL_NAME"
-    git config --global user.email "$GIT_GLOBAL_ENAIL"
+    git config --global user.email "$GIT_GLOBAL_EMAIL"
 
     if ssh -T git@github.com &>/dev/null && ssh -T git@gitlab.com &>/dev/null; then
         : # Do nothing. (The SSH connection settings are already done)
