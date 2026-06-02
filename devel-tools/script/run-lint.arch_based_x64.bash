@@ -3,6 +3,9 @@ set -eu
 
 # TODO: refactor
 
+# グロブがマッチしない場合にパターン文字列がそのまま残るのを防ぐ
+shopt -s nullglob
+
 readonly MYENV_ROOT="${HOME}/.myenv"
 
 source "${MYENV_ROOT}/lib/util.bash"

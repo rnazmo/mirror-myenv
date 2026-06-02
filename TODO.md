@@ -19,7 +19,7 @@
 
 ### コード・機能
 
-- [ ] chore: `run-lint` スクリプトに `nullglob` を設定する
+- [] chore: `run-lint` スクリプトに `nullglob` を設定する
     - `devel-tools/script/run-lint.arch_based_x64.bash` でグロブがマッチしない場合の挙動を安全にする
     - スクリプト先頭に `shopt -s nullglob` を追加する
 - [ ] refactor: `setup.bash` の `HOST_NAME` 変数の宣言方法を整理する
