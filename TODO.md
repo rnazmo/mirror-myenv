@@ -1,8 +1,10 @@
 # TODO (myenv)
 
-## Milestone: v4.10.0 - 軽めの整備
+## Milestone: v4.9.1 - 軽めの整備
 
-バグ修正・誤記修正・すぐ終わる改善が中心。
+### 概要
+
+- バグ修正・誤記修正・すぐ終わる改善が中心。
 
 ### セキュリティ・バグ修正
 
@@ -17,11 +19,6 @@
 
 ### コード・機能
 
-- [ ] applypatch スクリプトに以下の機能を追加することを検討する
-    - 安全・ミス予防のための機能
-        - クリップボードの中身の確認
-        - 作業場所・対象ファイルの確認
-        - 最初に上記の確認をして、ダメそうなら警告を出して中断したい。
 - [ ] chore: `run-lint` スクリプトに `nullglob` を設定する
     - `devel-tools/script/run-lint.arch_based_x64.bash` でグロブがマッチしない場合の挙動を安全にする
     - スクリプト先頭に `shopt -s nullglob` を追加する
@@ -38,21 +35,128 @@
 
 ### ドキュメント
 
-- [x] `TODO.md` を導入
-    - [x] 雛形の作成
-    - [x] タスクの洗い出し
-    - [x] タスクの優先順位付け・マイルストーンの設定
-- [x] docs: `ADR.md` を導入
-- [ ] docs: 何かしらの ADR を書く
-- [x] docs: `README.md` に、`TODO.md`, `ADR.md` への誘導を記述する
 - [ ] docs: `hosts/README.md` のホスト情報の誤記を修正する
     - `soba` の記述が2回あり、片方は CachyOS のはずなのに Manjaro と誤記されている
-- [ ] keybindings.md に、LazyVim のデフォルトのキーバインドについてまとめたものを追記することを検討する
-    - [⌨️ Keymaps | LazyVim](https://www.lazyvim.org/keymaps)
-        - [lazyvim.github.io／docs／keymaps.md at main · LazyVim／lazyvim.github.io](https://github.com/LazyVim/lazyvim.github.io/blob/main/docs/keymaps.md)
-        - <https://raw.githubusercontent.com/LazyVim/lazyvim.github.io/refs/heads/main/docs/keymaps.md>
-    - 分量が多すぎなので、別のファイルとしたほうが良いのでは？
-- [ ] 自作スクリプト・コマンド（~/.bin の Bash ファイルや Zsh の関数として実装）の簡易まとめを作りたい
+- [ ] README.md の骨組みを完成させる
+    - 他のプロジェクトで使った骨組みをそのまま持ってくれば良い
+- [ ] README.md に，TODO.md, ADR.md に関する Conventions を書く
+- [ ] README.md に，このプロジェクトの目的や方針を書く
+
+### プロジェクト管理
+
+無し。
+
+---
+
+## Milestone: v4.10.0 - スクリプトのパフォーマンス改善
+
+### 概要
+
+- 日々使うスクリプトのパフォーマンスが悪いので，抜本的に見直す。
+
+### セキュリティ・バグ修正
+
+無し。
+
+### 
+
+無し。
+
+### テスト・CI
+
+無し。
+
+### ドキュメント
+
+無し。
+
+### プロジェクト管理
+
+無し。
+
+---
+
+## Milestone: v4.11.0 - 構成の見直し
+
+### 概要
+
+- 構成を抜本的に見直す。
+- ディレクトリ構成だけでなく，リポジトリ構成，技術構成から見直す
+    - nix, chezmoi など
+
+### セキュリティ・バグ修正
+
+無し。
+
+### 
+
+無し。
+
+### テスト・CI
+
+無し。
+
+### ドキュメント
+
+無し。
+
+### プロジェクト管理
+
+無し。
+
+---
+
+## Milestone: v4.12.0 - テストの導入
+
+### 概要
+
+- ユニットテスト，インテグレーションテスト
+- 別プロジェクトである proper7y で使った bats をそのまま使えそう
+
+### セキュリティ・バグ修正
+
+無し。
+
+### 
+
+無し。
+
+### テスト・CI
+
+無し。
+
+### ドキュメント
+
+無し。
+
+### プロジェクト管理
+
+無し。
+
+---
+
+## Milestone: v4.13.0 - CI の導入
+
+### 概要
+
+- 自動テスト
+- README にバッジ付ける
+
+### セキュリティ・バグ修正
+
+無し。
+
+### 
+
+無し。
+
+### テスト・CI
+
+無し。
+
+### ドキュメント
+
+無し。
 
 ### プロジェクト管理
 
@@ -64,10 +168,15 @@
 
 ### セキュリティ・バグ修正
 
-無し。
+- [ ] 自作の applypatch スクリプトが全然まともに使えないので deprecated とする，または削除する
 
 ### コード・機能
 
+- [ ] applypatch スクリプトに以下の機能を追加することを検討する
+    - 安全・ミス予防のための機能
+        - クリップボードの中身の確認
+        - 作業場所・対象ファイルの確認
+        - 最初に上記の確認をして、ダメそうなら警告を出して中断したい。
 - [ ] feat/fix: `recipes/_common/setup_git.bash` と `recipes/_common/setup_myenv.bash` が未実装
     - どちらも `# TODO:` のみで実質機能していない
     - 必要な処理を実装するか、不要なら削除することを検討する
@@ -112,6 +221,12 @@
     - 例えば、時刻同期は GUI が楽だからそっちでやって、みたいな。
 - [ ] docs: CHANGELOG.md の各バージョンセクションに内容を記入する
     - 現状 `v1.0.0` 〜 `v4.0.0` が `TODO:` のまま
+- [ ] keybindings.md に、LazyVim のデフォルトのキーバインドについてまとめたものを追記することを検討する
+    - [⌨️ Keymaps | LazyVim](https://www.lazyvim.org/keymaps)
+        - [lazyvim.github.io／docs／keymaps.md at main · LazyVim／lazyvim.github.io](https://github.com/LazyVim/lazyvim.github.io/blob/main/docs/keymaps.md)
+        - <https://raw.githubusercontent.com/LazyVim/lazyvim.github.io/refs/heads/main/docs/keymaps.md>
+    - 分量が多すぎなので、別のファイルとしたほうが良いのでは？
+- [ ] 自作スクリプト・コマンド（~/.bin の Bash ファイルや Zsh の関数として実装）の簡易まとめを作りたい
 
 ### プロジェクト管理
 
