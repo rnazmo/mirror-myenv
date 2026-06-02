@@ -17,15 +17,19 @@ export MYENV_ROOT="${HOME}/.myenv"
 
 source "${MYENV_ROOT}/lib/util.bash"
 
+# スクリプト全体で参照するグローバル変数
+# parse_args() 内で値が設定される
+HOST_NAME=""
+
 parse_args() {
-    # Parse arguments
     local -r EXPECTED_ARGS=1
     if [ $# -ne $EXPECTED_ARGS ]; then
         echo "Error: Number of arguments must be $EXPECTED_ARGS"
         echo "Usage: $0 <host_name>"
         exit 1
     fi
-    readonly HOST_NAME="$1"
+    HOST_NAME="$1"
+    readonly HOST_NAME
 }
 
 check_prerequisites() {
