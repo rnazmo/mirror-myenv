@@ -1,6 +1,23 @@
 #!/usr/bin/env bash
 set -eu
 
+# ======================================================
+# ======== 設定値                                      =
+# ======================================================
+
+# pacman ミラーのホワイトリスト。
+# 個人運営は廃止リスクが高いため除外し、法人・研究機関・公式コミュニティのみを採用している。
+# ミラーが廃止された場合は該当行を削除する。追加する場合も同じ基準で選定すること。
+# 選定の詳細は ADR-003 を参照。
+# Ref:
+#   https://archlinux.org/mirrors/
+#   https://archlinux.org/mirrors/status/
+readonly PACMAN_MIRROR_WHITELIST=(
+    "https://ftp.jaist.ac.jp/pub/Linux/ArchLinux/"
+    "https://mirrors.cat.net/archlinux/"
+    "https://ftp.yz.yamagata-u.ac.jp/pub/linux/archlinux/"
+)
+
 source "${MYENV_ROOT}/lib/util.bash"
 
 # ======================================================
@@ -14,7 +31,6 @@ pre_setup_core() {
         sudo pacman -Syu --noconfirm
 
         # NOTE: yay may not be installed yet at this point.
-        # If yay is not found, skip the yay update and continue.
         # Do not stop the whole script.
         if check_if_command_exists "yay"; then
             yay -Syu --noconfirm
@@ -26,6 +42,13 @@ pre_setup_core() {
 
     _refresh_packages
     _install_some_dependencies
+
+    # ミラーリストを更新してから _refresh_packages を実行する順序にすること。
+    # mirrorlist が古いまま pacman -Syu を実行すると、古いミラーを使い続けてしまうため。
+    # ただし update_pacman_mirror の中では pacman -Syu を呼ばない（関心事の分離）。
+    # pacman -Syu は _refresh_packages に任せる。
+    update_pacman_mirror
+    _refresh_packages
 
     unset -f \
         _refresh_packages \
@@ -39,25 +62,101 @@ readonly -f pre_setup_core
 # ======================================================
 # ======================================================
 
+# Ref:
+#     https://wiki.archlinux.org/title/Mirrors
+#     https://wiki.archlinux.jp/index.php/%E3%83%9F%E3%83%A9%E3%83%BC
+#     https://archlinux.org/mirrorlist/
 update_pacman_mirror() {
+    # エントリーポイント。処理の順序と全体の流れをここで把握できるようにする。
+    # 個々の処理は内部関数に委譲する。
+    #
+    # 設計方針:
+    #   - ホワイトリストで信頼済みミラーを静的管理する（動的選定より制御しやすい）
+    #   - タイムスタンプで週1程度に頻度を抑える（rankmirrors の遅さを回避する）
+    #   - 廃止チェックは警告のみで処理を止めない（1つ廃止されても他が使えるため）
+    #   - pacman -Syu はここでは呼ばない（関心事の分離。呼び出し側に任せる）
     # Ref:
     #     https://wiki.archlinux.org/title/Mirrors
-    #     https://wiki.archlinux.jp/index.php/%E3%83%9F%E3%83%A9%E3%83%BC
-    #     https://archlinux.org/mirrorlist/
-    #     https://ikmnjrd.github.io/blog/pacman-mirrorlist
-    local -r MIRROR_URL="https://archlinux.org/mirrorlist/?country=JP&country=AU&protocol=https&use_mirror_status=on"
-    local -r MIRROR_FILE="/etc/pacman.d/mirrorlist"
-    local -r NUM_MIRRORS=5
-    log_info "Updating pacman mirror..."
-    curl -s "$MIRROR_URL" |
-        sed -e 's/^#Server/Server/' -e '/^#/d' |
-        rankmirrors -n "$NUM_MIRRORS" - |
-        sudo tee "$MIRROR_FILE"
-    log_info "pacman mirror updated"
+    #     https://archlinux.org/mirrors/status/
 
-    sudo pacman -Syu --noconfirm
+    if ! _should_update_mirror; then
+        log_info "Mirror update skipped (last updated within 7 days)"
+        return 0
+    fi
+
+    # 廃止チェックはミラー更新と同じタイミングで行う。
+    # 毎回チェックしても警告に対応するのは人間なので、週1で十分。
+    _check_mirror_availability
+    _write_mirrorlist
+
+    # タイムスタンプの更新は最後に行う。
+    # 途中で失敗した場合に「次回の myenv apply 実行時に再試行する」ようにするため。
+    _update_mirror_timestamp
+
+    log_info "pacman mirror updated"
 }
 readonly -f update_pacman_mirror
+
+_should_update_mirror() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/mirror_last_updated"
+    local -r INTERVAL_SEC=$((7 * 24 * 60 * 60))
+
+    # スタンプファイルが存在しない = 初回実行。必ず更新する。
+    # スタンプファイルを手動で削除することで強制再実行できる。
+    if [[ ! -f "$STAMP_FILE" ]]; then
+        return 0 # 更新する
+    fi
+
+    local -r NOW=$(date +%s)
+    # date -r でファイルの更新時刻を Unix 秒で取得する（内容ではなくメタデータを使う）。
+    local -r LAST=$(date -r "$STAMP_FILE" +%s)
+
+    if ((NOW - LAST >= INTERVAL_SEC)); then
+        return 0 # 更新する
+    else
+        return 1 # スキップ
+    fi
+}
+readonly -f _should_update_mirror
+
+_check_mirror_availability() {
+    # 公式ミラーリストを取得し、ホワイトリストの各 URL が含まれているか確認する。
+    # 含まれていない = 廃止または URL 変更の可能性があるため警告を出す。
+    # 警告のみで処理は止めない。1つ廃止されても残りのミラーが使えるため。
+    local -r OFFICIAL_MIRRORLIST_URL="https://archlinux.org/mirrorlist/?country=JP&protocol=https"
+    local official_list
+    official_list=$(curl -s "$OFFICIAL_MIRRORLIST_URL")
+
+    for mirror in "${PACMAN_MIRROR_WHITELIST[@]}"; do
+        if ! echo "$official_list" | grep -qF "$mirror"; then
+            log_warn "Mirror '${mirror}' is not in the official mirror list. Consider removing it from PACMAN_MIRROR_WHITELIST."
+        fi
+    done
+}
+readonly -f _check_mirror_availability
+
+_write_mirrorlist() {
+    local -r MIRROR_FILE="/etc/pacman.d/mirrorlist"
+
+    # ホワイトリストから mirrorlist の内容を組み立てる。
+    local content=""
+    for mirror in "${PACMAN_MIRROR_WHITELIST[@]}"; do
+        content+="Server = ${mirror}\$repo/os/\$arch"$'\n'
+    done
+
+    # sudo tee で root 権限が必要なファイルに書き込む。
+    # リダイレクト（>）は sudo の権限が及ばないため tee を使う。
+    echo "$content" | sudo tee "$MIRROR_FILE" >/dev/null
+}
+readonly -f _write_mirrorlist
+
+_update_mirror_timestamp() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/mirror_last_updated"
+    mkdir -p "$(dirname "$STAMP_FILE")"
+    # ファイルの中身は使わない。更新時刻（mtime）だけを利用する。
+    touch "$STAMP_FILE"
+}
+readonly -f _update_mirror_timestamp
 
 # ======================================================
 # ======================================================
