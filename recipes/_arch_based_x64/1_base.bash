@@ -649,7 +649,7 @@ readonly -f __refresh_neovim_plugins
 
 setup_browser() {
     _setup_chromium
-    _setup_chrome
+    # _setup_chrome
     _setup_firefox
 }
 readonly -f setup_browser
