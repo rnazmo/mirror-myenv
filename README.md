@@ -47,7 +47,7 @@ git config --global user.email "rnazmo@gmail.com"
 git config --list
 ```
 
-2. GitLab, GitHub への SSH 接続設定
+1. GitLab, GitHub への SSH 接続設定
 
 See: [Git：GitHub（または GitLab）に SSH キーを登録する手順（GitHub CLI 無し）（v2024-09](f585a709-fde5-47d8-80ab-ee079d5b99ef.md)
 
@@ -104,6 +104,40 @@ myenv cd && myenv pull && myenv apply "$(hostname)"
 ```bash
 myenv push
 ```
+
+#### pacman ミラーのトラブル対応
+
+pacman ミラーに関するトラブルが発生した場合の対応手順。
+設計の背景は [ADR-003](./ADR.md#adr-003-pacman-ミラー更新処理をホワイトリストタイムスタンプ方式に刷新) を参照。
+
+##### ケース1：廃止ミラーの警告が出たとき
+
+`myenv apply` の実行ログに以下のような警告が出た場合：
+
+```
+WARN : Mirror 'https://ftp.example.ac.jp/' is not in the official mirror list. Consider removing it from PACMAN_MIRROR_WHITELIST.
+```
+
+対応手順：
+
+1. `recipes/_arch_based_x64/0_core.bash` を開く
+2. `PACMAN_MIRROR_WHITELIST` から該当 URL の行を削除する
+3. コミットする
+
+##### ケース2：`pacman -Syu` が遅い・失敗するなど、ミラーの品質劣化に気づいたとき
+
+対応手順：
+
+1. `recipes/_arch_based_x64/0_core.bash` を開く
+2. `PACMAN_MIRROR_WHITELIST` から該当 URL の行を削除する（または別のミラーに差し替える）
+3. タイムスタンプファイルを削除して、次回 `myenv apply` 時に強制再実行させる
+
+```bash
+rm ~/.cache/myenv/mirror_last_updated
+myenv apply "$(hostname)"
+```
+
+1. コミットする
 
 ## Documentation for developers
 
