@@ -223,6 +223,133 @@ cd ~/.myenv
 - typo 修正・コメント追加など自明な変更では ADR は不要。
 - ADR は逆時系列順（新しいものが上）に並べる。
 
+#### ドキュメント
+
+英語と日本語が混在していても構わない。（SHOULD）
+（このドキュメントの主な読者は将来の自分であるため。）
+
+**ドキュメント種別ごとの言語方針:**
+
+| ドキュメント種別   | 言語   | 理由                                                                   |
+| ------------------ | ------ | ---------------------------------------------------------------------- |
+| コード内コメント   | 日本語 | このプロジェクトの主な読者は自分のみであり、日本語の方が速く書けるため |
+| コミットメッセージ | 英語   | Conventional Commits の標準に合わせるため                              |
+| README.md          | 日本語 | 主な読者は自分であり、日本語の方が速く書けるため                       |
+| ADR.md             | 日本語 | 内部の意思決定記録であり、日本語の方が速く書けるため                   |
+| TODO.md            | 日本語 | 内部のタスク管理であり、日本語の方が速く書けるため                     |
+| CHANGELOG.md       | 日本語 | 内部のリリースノートであり、日本語の方が速く書けるため                 |
+
+#### コードスタイル（Bash）
+
+shellcheck・shfmt のルールに従う。（SHALL）
+
+また、それらでカバーされないルールについては
+[Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html) に従う。
+以下はこのプロジェクトで特に重要なルールを抜粋・補足したものである。
+
+**命名規則**
+
+- 関数名: `lowercase_with_underscores`（SHALL）
+- 定数・読み取り専用グローバル変数: `UPPER_SNAKE_CASE` + `readonly`（SHALL）
+- ミュータブルなグローバル変数: `UPPER_SNAKE_CASE`（readonly なし）（SHALL）
+- ローカル変数: `lowercase_with_underscores` + `local` または `local -r`（SHALL）
+
+**関数のプレフィックスルール（myenv 固有）**
+
+プレフィックスの数は、その関数の呼び出し階層の深さを表す。
+
+| プレフィックス | 意味                                         | 例                         |
+| -------------- | -------------------------------------------- | -------------------------- |
+| なし           | 外部（他ファイル）から呼ばれるパブリック関数 | `setup_shell`              |
+| `_`            | 同一ファイル内からのみ呼ばれる               | `_setup_zsh`               |
+| `__`           | `_` プレフィックスの関数からのみ呼ばれる     | `__install_zsh`            |
+| `___`          | `__` プレフィックスの関数からのみ呼ばれる    | `___install_powerlevel10k` |
+
+`_` プレフィックスの関数を別ファイルから `source` 経由で呼び出すことは禁止する。（SHALL）
+
+**`readonly -f` の使用方針（myenv 固有）**
+
+`source` で読み込まれる可能性があるファイル（`lib/`・`recipes/` 配下など）の関数には、
+定義直後に `readonly -f` をつける。（SHALL）
+
+`source` されず直接実行されるだけのファイル（`hosts/*/setup.bash` など）の
+内部関数には不要。
+
+```bash
+# 良い例（recipes/ 配下）
+_setup_zsh() {
+    # ...
+}
+readonly -f _setup_zsh
+
+# 良い例（hosts/ 配下・直接実行のみ）
+call_func_in_1_base() {
+    # readonly -f は不要
+}
+```
+
+**関数**
+
+- 関数スコープの変数は必ず `local` または `local -r` で宣言する。（SHALL）
+- 自明でない関数には定義の直前にドキュメントコメントを書く。（SHOULD）
+  フォーマットは以下の通り。
+
+```bash
+# TL;DR (What is this?):
+#   この関数が何をするかの一行説明。
+#
+# Usage:
+#   function_name <arg1> <arg2>
+#
+# Example:
+#   function_name "foo" "bar"
+#
+# NOTE:
+#   重要な注意事項・制約があれば書く。
+```
+
+**ファイルヘッダー**
+
+各スクリプトファイルの先頭にはヘッダーコメントを書く。（SHOULD）
+フォーマットは以下の通り。
+
+```bash
+# TL;DR (What is this?):
+#   このスクリプトが何をするかの一行説明。
+#
+# Usage:
+#   ./script-name.bash <args>
+#
+# NOTE:
+#   前提条件や制約があれば書く。
+```
+
+**エラーハンドリング**
+
+- 全スクリプトの先頭に必ず `set -eu` を書く。（SHALL）
+- トップレベルスクリプト（直接実行するファイル）では `exit 1` を使う。（SHALL）
+- ライブラリ関数（`lib/util.bash` など、`source` で読み込まれるファイルの関数）では
+  `return 1` を使う。（SHALL）
+  （`exit 1` を使うと、呼び出し元のシェルごと終了してしまうため。）
+- 全トップレベルスクリプトの末尾に `exit 0` を書く。（SHALL）
+  （`set -e` 環境下での予期しない非ゼロ終了を防ぐため。）
+
+**クォーティング**
+
+- 変数は必ずダブルクォートで囲む: `"$VAR"`（`$VAR` は不可）（SHALL）
+- 例外: `[[ ]]` の内側はクォートなしも許容するが、つけることを推奨する。（SHOULD）
+
+**その他**
+
+- 条件式には `[ ]` ではなく `[[ ]]` を使う。（SHALL）
+- コマンド置換にはバッククォートではなく `$(...)` を使う。（SHALL）
+
+**参考**
+
+- [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html)
+- [ShellCheck](https://github.com/koalaman/shellcheck)
+- [shfmt](https://github.com/mvdan/sh)
+
 ### Workflows
 
 #### 新規マシンのセットアップ

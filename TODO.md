@@ -199,6 +199,15 @@
 - [ ] feat: 前提条件（Bash 4.0+ など）をチェックする処理を追加する
 - [ ] feat: デバッグ用にログをファイルへ出力する機能を追加する
 - [ ] feat: ブラウザの拡張機能・ブックマークレット・ブックマークに対応を検討
+- [ ] fix: `___install_powerlevel10k` の関数プレフィックス規約違反を修正する
+    - `___install_powerlevel10k` は `cachyos_x64/1_base.bash` と
+      `_arch_based_x64/1_base.bash` の両方から呼ばれており、
+      「`__` プレフィックスの関数からのみ呼ばれる」という規約に違反している
+    - 関数の配置・命名を見直して規約に沿った構造に修正すること
+- [ ] feat/docs: `link_file` と `copy_file` の使い分け基準を決めて明文化・適用する
+    - 現状、どちらを使うかの判断基準が暗黙的で曖昧な状態
+    - 基準を決めたうえで README.md の Conventions に追記し、
+      既存コードが基準に沿っているか確認・修正すること
 
 ### テスト・CI
 
@@ -238,6 +247,7 @@
         - <https://raw.githubusercontent.com/LazyVim/lazyvim.github.io/refs/heads/main/docs/keymaps.md>
     - 分量が多すぎなので、別のファイルとしたほうが良いのでは？
 - [ ] 自作スクリプト・コマンド（~/.bin の Bash ファイルや Zsh の関数として実装）の簡易まとめを作りたい
+- [ ] README.md を英語で書き直すことを検討する
 
 ### プロジェクト管理
 
