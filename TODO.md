@@ -133,9 +133,263 @@
 
 ### 概要
 
-- 構成を抜本的に見直す。
-- ディレクトリ構成だけでなく，リポジトリ構成，技術構成から見直す
-    - nix, chezmoi など
+プロジェクト全体のアーキテクチャを抜本的に見直す。
+
+### 設計
+
+- [x] 検討その１：アーキテクチャについての検討を進める。
+    - 検討を進めた結果「3層分離設計」にたどり着いたので，その内容を書いておく
+    - （下記 `検討その１：「3層分離設計」` セクションを参照。かなり長いので注意。）
+- [ ] 検討その２：アーキテクチャについての検討をさらに進める。
+    - 「3層分離設計」についての検討がほぼ最終段階に入ってから気が付いたのだが，
+      **この構造だと Arch Linux 系の OS しか対応できないのでは？**
+      - 例えば **macOS や Ubuntu, Kali Linux などに対応できなそう。**
+      - 現状の「endeavouros, manjaro -> arch_based」，「ubuntu, kali -> debian_based」で吸収している部分。
+    - また，追加の悩み（要求）も出てきた：「マシン（hosts）ごとに，各ソフトウェアのインストールする・しないを気軽にオン・オフできるようにしたい」
+    - これらを踏まえて，もう一度検討し直す。
+
+### 検討その１：「3層分離設計」
+
+#### 現状の主な悩み
+
+2026年6月時点の悩み：
+
+- **「コードが追いにくい」**: `source` による暗黙的な関数継承と、600行超の巨大ファイルが組み合わさって
+  全体の見通しが悪い。
+- **「設定を変更するとき、どこを直せばいいかわからない」**: たとえば Neovim の設定を変えたいと思っても、
+  `host → recipe → 1_base → ネストした関数呼び出し` という階層を頭の中でトレースしなければならない。
+
+これらの根本原因は「構造が環境中心（どのOSか）になっているのに、人間は機能中心（何のセットアップか）で
+考える」というミスマッチにある。解決策として「3層分離設計」を採用する方針を検討するした。
+
+#### 根本原因の分析
+
+**現状の構造（環境中心）:**
+
+```
+host (udon)
+  └── recipe (endeavouros_x64)
+        └── _arch_based_x64/1_base.bash  ← 600行超の巨大ファイル
+              └── setup_editor()
+                    └── _setup_neovim()
+                          └── __install_neovim()
+                          └── __setup_neovim_config()
+```
+
+「Neovim の設定を変えたい」という動機で作業するとき、上記の階層を手動でトレースする必要がある。
+また `1_base.bash` にシェル・ターミナル・エディタ・IME・デスクトップがすべて混在しているため、
+読むだけでも辛い。
+
+**2軸問題:**
+
+このプロジェクトには独立した2つの軸がある。
+
+```
+         shell  editor  terminal  ime  desktop
+arch       ○      ○       ○       ○      ○
+cachyos    ○      ○       ○       ○      ○
+manjaro    ○      ○       ○       ○      ○
+```
+
+「機能 × OS」の交点をどこに書くかが設計の核心で、どちらかの軸に寄せると必ずもう一方の軸の情報が散らばる。
+
+- **機能ファイルに書く場合**: OS固有コードが各機能ファイルに散らばる。
+  「CachyOS では p10k インストール前に競合パッケージを消す必要がある」という知識が
+  `shell.bash` の中に埋まることになり、OS固有コードを探すのが大変になる。
+- **OSファイルに書く場合（現状）**: 機能コードがOSファイルに散らばる。
+  「Neovim のセットアップ内容」を知るために OS ファイルを読まなければならない。
+
+唯一きれいに解決できるのは「両軸を完全に分離し、間に抽象層を置く」設計。
+
+#### 検討した代替ツール（不採用の理由とともに）
+
+作業着手時の参考のため、過去に検討したツールの経緯を残しておく。
+結論から言うと、いずれも不採用。Bash で書き続けるが、アーキテクチャを根本から見直す。
+
+**chezmoi:**
+dotfiles 管理に特化したツール。テンプレート機能でOS差分を吸収できる。
+不採用の理由: 独自のファイル構成・記法への習熟コストが高く、ここで得た知識が他に活かしにくい。
+「ソフトのインストールや各種スクリプトの実行」を柔軟にたくさん書こうとすると設計が歪になり、
+chezmoi である利点が薄れる。複数マシン・複数アカウントの管理も辛そうだった。
+実際に検討済み。
+
+**mitamae:**
+Ruby 製の軽量プロビジョニングツール。
+不採用の理由: 学習コストが高い。ドキュメントが少なく、トラブル時の対応が困難。
+実際に試して検討済み。
+
+**Ansible:**
+冪等性を標準で保証する、定番のプロビジョニングツール。YAML で宣言的に書く。
+不採用の理由: 遅い。
+
+**Nix / Home Manager:**
+宣言的・再現性が高い・ロールバック可能。最も強力な選択肢。
+不採用の理由（当時）: 学習コストの高さと普及率の低さ（数年前時点）。
+現在の評価: 最近流行っている雰囲気を感じる。今なら再検討の余地あり。ただしどうせある程度の処理は
+Bash スクリプトが必要になるため、純粋に Bash で設計を整理する方針を先に試みることにした。
+したがって，今現在も有力な選択肢として検討中である。
+
+#### 提案する設計: 3層分離
+
+**ディレクトリ構造:**
+
+```
+myenv/
+├── lib/
+│   ├── util.bash           # 既存のユーティリティ関数（変更なし）
+│   └── platform.bash       # ★新規: フックのデフォルト実装（何もしない関数群）
+│
+├── components/             # ★新規: 「何をするか」だけを知っている（OS知識ゼロ）
+│   ├── shell.bash
+│   ├── editor.bash
+│   ├── terminal.bash
+│   ├── ime.bash
+│   ├── desktop.bash
+│   ├── util.bash
+│   └── devel.bash
+│
+├── platforms/              # ★新規: 「OSの差分だけ」を知っている（機能の中身を知らない）
+│   ├── arch.bash           # Arch系共通の差分
+│   ├── cachyos.bash        # CachyOS固有の差分のみ
+│   ├── manjaro.bash        # Manjaro固有の差分のみ
+│   └── endeavouros.bash    # EndeavourOS固有の差分のみ
+│
+├── hosts/
+│   ├── udon/setup.bash     # 変更あり: 組み合わせを宣言するだけ
+│   └── soba/setup.bash
+│
+└── recipes/                # 最終的には削除
+```
+
+**3層の役割と依存関係:**
+
+```
+hosts/setup.bash
+  ├── source lib/platform.bash      # デフォルトフック読み込み
+  ├── source platforms/cachyos.bash # OS固有フックで上書き
+  └── source components/*.bash      # 機能を読み込む
+        └── platform_*() を呼ぶ     # フック経由でOSに委譲
+```
+
+各層の責務:
+- `lib/platform.bash`: 全フックのデフォルト実装（`{ :; }` = 何もしない）。
+  どのOSでも「特別な処理がなければ何もしない」が保証される。
+- `platforms/cachyos.bash`: CachyOS固有の差分だけを書く。
+  `arch.bash` を source したうえで、異なる部分だけフック関数をオーバーライドする。
+- `components/shell.bash`: OSを一切知らない。
+  `platform_*` という名前の関数を呼ぶだけで、その実装はロードされたプラットフォームファイルが決める。
+- `hosts/udon/setup.bash`: どのプラットフォームを使うかを宣言し、コンポーネントを並べて呼ぶだけ。
+
+**各ファイルの具体的なコードイメージ:**
+
+`lib/platform.bash`（デフォルト実装）:
+```bash
+# すべてのフックのデフォルト。
+# 何も特別なことがないOSはこれが使われる。
+# 今後OS差分が見つかるたびに、ここにデフォルト定義を追加していく。
+platform_pre_install_p10k() { :; }
+```
+
+`platforms/cachyos.bash`（差分だけ書く）:
+```bash
+source "${MYENV_ROOT}/platforms/arch.bash"
+
+# CachyOS だけ: 競合パッケージを先に消す必要がある
+platform_pre_install_p10k() {
+    local -r pkgs=("cachyos-zsh-config" "zsh-theme-powerlevel10k")
+    for pkg in "${pkgs[@]}"; do
+        pacman -Qi "$pkg" &>/dev/null && yay -Rns --noconfirm "$pkg" || true
+    done
+}
+```
+
+`components/shell.bash`（OSを一切知らない）:
+```bash
+setup_shell() {
+    _install_zsh
+    _setup_zsh_config
+    _setup_zsh_theme
+    _setup_zsh_plugins
+    _setup_default_shell
+}
+
+_setup_zsh_theme() {
+    platform_pre_install_p10k  # OSに「何か準備ある?」と委譲するだけ
+    yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
+}
+```
+
+`hosts/udon/setup.bash`（組み合わせを宣言するだけ）:
+```bash
+source "${MYENV_ROOT}/lib/util.bash"
+source "${MYENV_ROOT}/lib/platform.bash"           # デフォルト読み込み
+source "${MYENV_ROOT}/platforms/endeavouros.bash"  # OS固有で上書き
+
+source "${MYENV_ROOT}/components/shell.bash"
+source "${MYENV_ROOT}/components/editor.bash"
+source "${MYENV_ROOT}/components/terminal.bash"
+source "${MYENV_ROOT}/components/ime.bash"
+source "${MYENV_ROOT}/components/desktop.bash"
+source "${MYENV_ROOT}/components/util.bash"
+source "${MYENV_ROOT}/components/devel.bash"
+
+main() {
+    setup_shell
+    setup_editor
+    setup_terminal
+    setup_ime
+    setup_desktop
+    setup_util
+    setup_devel
+}
+
+main
+```
+
+#### 着手前に決めておくべき設計上の問題
+
+以下は実装に入る前に方針を決定し、ADR に記録すること。
+
+**①フック名の命名規則:**
+現在の案は `platform_{タイミング}_{対象}` 形式（例: `platform_pre_install_p10k`）。
+別の候補として `platform_hook_{component}_{event}` 形式もある（例: `platform_hook_shell_pre_p10k`）。
+後者の方がどのコンポーネントのフックかが明確だが、冗長になりやすい。
+着手時に一方に統一してから実装を始めること。
+
+**②`platforms/` 内の継承構造:**
+現状の `recipes/` では `cachyos_x64/1_base.bash` が `_arch_based_x64/1_base.bash` を source している。
+新設計の `platforms/` でも同様に `cachyos.bash` が `arch.bash` を source する形にするか、
+それとも完全に独立させて `lib/platform.bash` のデフォルトだけを頼りにするかを決める。
+差分が少ないうちは後者の方がシンプルかもしれない。
+前者の場合、`arch.bash` に「Arch系共通だがデフォルトと違う処理」を書くことになる。
+
+**③`0_core.bash` 相当の処理をどのコンポーネントに対応させるか:**
+現状の `0_core.bash`（pacman ミラー更新、Git、AUR helper、mise、言語インストールなど）は
+「機能のセットアップ」というよりも「セットアップ全体の前提条件」に近い。
+`components/core.bash` として独立させるか、`hosts/udon/setup.bash` 内に直接書くかを決める。
+
+**④移行戦略（段階的 vs 一括置き換え）:**
+`recipes/` を残したまま `components/` と `platforms/` を新規作成して段階的に移行するか、
+一気に置き換えるかを決める。
+段階的移行は安全だが、移行期間中に新旧が混在して逆に混乱しやすい。
+コミットを機能ごとに細かく切りながら一括で置き換える方が、最終的にはシンプルかもしれない。
+
+**⑤`components/` 内のパッケージマネージャー抽象化をどこまでやるか:**
+現状はすべての対象OSが Arch 系のため `pacman`/`yay` が直書きされている。
+将来 Debian 系に対応する可能性があるなら、パッケージマネージャーの呼び出しも
+`platform_install_pkg()` のような形で抽象化すべきだが、
+対応する予定がないなら過剰設計になる。
+当面は Arch 系のみ前提で進め、必要になったときに抽象化する方針で良いと思われる。
+
+#### 実装の進め方（案）
+
+このタスクは影響範囲が広いため、**実装前に必ず ADR-004 を書いて承認を得ること**。
+ADR に書くべき内容:
+- 根本原因の分析（2軸問題）
+- 検討した代替案（ツール変更、機能ファイル内でのOS分岐など）
+- 決定した設計（3層分離）
+- 着手前に決めておくべき設計問題（上記4点）の最終決定
+- トレードオフ（移行コスト、Bash の限界、今後の拡張性）
 
 ### セキュリティ・バグ修正
 
@@ -143,15 +397,15 @@
 
 ### コード・機能
 
-無し。
+未定。
 
 ### テスト・CI
 
-無し。
+未定。
 
 ### ドキュメント
 
-無し。
+未定。
 
 ### プロジェクト管理
 
