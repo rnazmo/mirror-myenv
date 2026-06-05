@@ -417,7 +417,7 @@ ADR に書くべき内容:
 
 ### 概要
 
-- Neovim, LazyVim, Alacritty, Zsh, p10k, tmux, Git あたりの設定を見直す
+- 各種ツールの設定を見直す
 
 ### セキュリティ・バグ修正
 
@@ -425,7 +425,11 @@ ADR に書くべき内容:
 
 ### コード・機能
 
-無し。
+- [ ] tmux の設定の改善点を洗い出し，`TODO.md` に記載する
+- [ ] Alacritty の設定の改善点を洗い出し，`TODO.md` に記載する
+- [ ] Neovim, LazyVim の設定の改善点を洗い出し，`TODO.md` に記載する
+- [ ] Zsh, p10k の設定の改善点を洗い出し，`TODO.md` に記載する
+- [ ] Git, LazyGit の設定の改善点を洗い出し，`TODO.md` に記載する
 
 ### テスト・CI
 
