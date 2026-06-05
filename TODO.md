@@ -22,6 +22,10 @@
     - 分析結果は以下の各タスクにまとめた
 - [ ] 🔴【重大】`pacman -Syu` の重複呼び出しを解消する
     - **問題**: `myenv apply` を1回実行するたびに `pacman -Syu` が最低4回呼ばれている
+    - **ログで確認済み（2026-06-05）**: 実際のログで `pacman -Syu` が4回、`yay -Syu` も4回走っていることを確認した。
+      いずれも `there is nothing to do` で終わっているため、この日は実害はなかったが、
+      パッケージ更新がある日はその分だけ時間が伸びる。また `yay` は AUR の `zsh-theme-powerlevel10k-git`
+      が Flagged Out Of Date であるという警告も毎回4回出ている。
     - **呼ばれる箇所**（`_arch_based_x64/0_core.bash` と `1_base.bash` と `2_extra.bash` を読むと確認できる）:
         1. `pre_setup_core > _refresh_packages`（ミラー更新前）
         2. `pre_setup_core > _refresh_packages`（`update_pacman_mirror` の直後）
@@ -79,8 +83,13 @@
             - `config/home/.config/mise/config.toml` で `go = "1.22.0"` のように固定すれば
               ネットワークアクセスが減る可能性がある
             - デメリット: バージョンの手動更新が必要になる
-    - **実装前に計測すること**: `time mise use --global go@latest` で実際の所要時間を確認し、
-      本当にボトルネックになっているか確認してから対応を判断する
+     - **ログで確認済み（2026-06-05）**: ログ上ではスピナー（`◜`）が回っており、処理に時間がかかっている
+       ことは確認できたが、所要時間は出力されていない。実際の時間は以下で計測すること:
+       ```bash
+       time mise use --global go@latest
+       time mise use --global node@latest
+       ```
+       計測結果をこのタスクに追記してから、対応方針を決定すること。
 - [ ] 🟢【軽微】Neovim プラグイン同期の毎回実行を最適化する
     - **問題**: `__refresh_neovim_plugins` 内の以下が毎回実行される
         ```bash
@@ -96,7 +105,13 @@
         - 案B: `myenv apply` からは除外し、`myenv bump` 実行時のみ同期する
             - デメリット: 新規セットアップ時に手動で同期が必要になる
         - 案C: タイムスタンプで週1程度に制限する（`pacman -Syu` と同じ方針）
-    - **実装前に計測すること**: `time nvim --headless "+Lazy! sync" +qa` で実際の所要時間を確認する
+    - **ログで確認済み（2026-06-05）**: fetch タスクが最長約11秒（`neotest-golang` の fetch が 10897ms）かかっており、
+    全体で約11秒の同期処理が発生していた。この日は実際に複数プラグインの更新（checkout）が走っており、
+    `there is nothing to do` の日より長くなっている可能性がある。
+    更新がない日の時間も計測しておくこと:
+    ```bash
+    time nvim --headless "+Lazy! sync" +qa
+    ```
 
 ### テスト・CI
 
@@ -238,6 +253,24 @@
 ### セキュリティ・バグ修正
 
 - [ ] 自作の applypatch スクリプトが全然まともに使えないので deprecated とする，または削除する
+- [ ] `zsh-theme-powerlevel10k-git` の Flagged Out Of Date 警告への対応を検討する
+    - **問題**: `myenv apply` を実行するたびに `yay -Syu` が4回走り、その都度
+    `-> Flagged Out Of Date AUR Packages: zsh-theme-powerlevel10k-git` という警告が出る。
+    ログで確認済み（2026-06-05）。
+    - **背景**: `zsh-theme-powerlevel10k` は開発が停滞気味で、AUR パッケージが
+    Flagged Out Of Date になっている。実害（動作不良）は現時点では確認されていない。
+    - **対応方針の候補**:
+        - 案A: 警告を無視して使い続ける（現状維持）。動作している間は問題ない。
+        - 案B: 代替テーマへの移行を検討する（例: starship, oh-my-posh）。
+        移行コストは高いが、長期的にはメンテナンスが楽になる可能性がある。
+        ただし，パフォーマンスは大幅に下がる可能性が高い。
+        - 案C: `yay -Syu` の重複呼び出し解消（上のタスク）で警告の表示回数は
+        自然に4回→1回に減る。まずそちらを先に対応し、残り1回の警告は許容する。
+    - **優先度**: 低。動作には影響しないため、`pacman -Syu` 重複解消タスクより後でよい。
+    - Zsh (シェル) のテーマ自体を再選定（技術選定）し，その ADR を書くべき
+    - Ref:
+        - [AUR (en) - zsh-theme-powerlevel10k-git](https://aur.archlinux.org/packages/zsh-theme-powerlevel10k-git)
+        - [romkatv／powerlevel10k: A Zsh theme](https://github.com/romkatv/powerlevel10k#arch-linux)
 
 ### コード・機能
 
