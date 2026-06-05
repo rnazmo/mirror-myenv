@@ -18,11 +18,85 @@
 
 - [x] pacman のミラーリスト最適化・更新処理の改善
     - ホワイトリスト＋タイムスタンプ方式に刷新（ADR-003 参照）
-- [ ] `myenv apply` コマンド（スクリプト）のボトルネックを分析する
-    - pacman -Syu が複数回呼ばれている？
-    - Neovim 周りも結構重そう？
-    - など
-- [ ] `myenv apply` の中で複数回呼ばれている `pacman -Syu` への対応を検討
+- [x] `myenv apply` コマンド（スクリプト）のボトルネックを分析する
+    - 分析結果は以下の各タスクにまとめた
+- [ ] 🔴【重大】`pacman -Syu` の重複呼び出しを解消する
+    - **問題**: `myenv apply` を1回実行するたびに `pacman -Syu` が最低4回呼ばれている
+    - **呼ばれる箇所**（`_arch_based_x64/0_core.bash` と `1_base.bash` と `2_extra.bash` を読むと確認できる）:
+        1. `pre_setup_core > _refresh_packages`（ミラー更新前）
+        2. `pre_setup_core > _refresh_packages`（`update_pacman_mirror` の直後）
+        3. `pre_setup_base > _refresh_packages`
+        4. `pre_setup_extra > _refresh_packages`
+    - **なぜ重いか**: pacman はリモートのパッケージDBを毎回ダウンロードして差分チェックするため、
+      ネットワークI/Oが必ず発生する。1回あたり数秒〜数十秒かかる。
+    - **改善方針の候補**:
+        - 案A: `pacman -Syu` にもタイムスタンプ制御を入れ、1日1回までに制限する
+            - `update_pacman_mirror` の `_should_update_mirror` と同じ仕組みで実現できる
+            - スタンプファイル例: `~/.cache/myenv/pacman_last_updated`
+            - メリット: 毎日 `myenv apply` を複数回実行しても1日1回しか走らない
+            - デメリット: 「今すぐ最新にしたい」場合はスタンプファイルを手動削除する必要がある
+        - 案B: `pre_setup_core` の1回目の `_refresh_packages`（ミラー更新前）を削除する
+            - ミラー更新前に走る意味が薄い（古いミラーで更新しても無駄になる可能性がある）
+            - ただしこれだけでは3回→3回（タイムスタンプスキップ時は2回）にしか減らない
+        - 案C: `pre_setup_base` と `pre_setup_extra` の `_refresh_packages` を削除し、
+          `pre_setup_core` の末尾の1回に集約する
+            - 「core → base → extra の順に実行するので core で更新すれば十分」という考え方
+            - メリット: シンプルに重複が消える
+            - デメリット: base や extra の処理が長時間かかる場合、その間にパッケージが
+              古くなる可能性がある（現実的には問題にならないと思われる）
+        - 案A + 案B + 案C の組み合わせが最も効果が高いと思われる
+    - 要調査：
+        - そもそも，`pacman -Syu` は何を行っているのか。また，`pacman -Syu` はどのタイミングで（・どの頻度で）行うべきなのか
+    - **実装の注意点**:
+        - `update_pacman_mirror` の設計方針（ADR-003）と一貫性を持たせること
+        - タイムスタンプを強制リセットする手順を README.md の「ワークフロー」に追記すること
+- [ ] 🟡【中程度】`pre_setup_core` 内の二重 `_refresh_packages` を整理する
+    - **問題**: `pre_setup_core` の中で `_refresh_packages` が連続して2回呼ばれている
+        ```
+        _refresh_packages      # 1回目（ミラー更新前）
+        update_pacman_mirror
+        _refresh_packages      # 2回目（ミラー更新後）
+        ```
+    - **経緯**: 「新しいミラーで改めて更新する」意図で2回呼ぶ設計になっている
+    - **問題点**: `update_pacman_mirror` がタイムスタンプでスキップされる日（7日以内）でも
+      1回目は必ず走る。ミラーが変わっていない日に1回目を実行する意味はない。
+    - **改善方針**: 上の「`pacman -Syu` の重複解消」タスクと合わせて対応するのが自然。
+      単体で対応するなら「1回目を削除して2回目だけ残す」のが最もシンプル。
+    - このタスクは上の「`pacman -Syu` の重複解消」タスクを対応する際に合わせて潰すこと
+- [ ] 🟡【中程度】`mise use --global` の毎回実行を最適化する
+    - **問題**: `setup_programming_languages` 内の以下が毎回実行される
+        ```bash
+        mise use --global go@latest
+        mise use --global node@latest
+        ```
+    - **なぜ遅い可能性があるか**: `mise` はリモートのバージョン情報を確認しにいく場合があり、
+      すでに最新がインストール済みでもネットワークアクセスが発生しうる
+    - **改善方針の候補**:
+        - 案A: `mise` にもタイムスタンプ制御を入れる（`pacman -Syu` と同じ方針）
+        - 案B: `mise outdated` で更新が必要な場合のみ `mise use` を実行する
+            - `mise outdated` の終了コードや出力で判定できるか要確認
+        - 案C: `latest` ではなくバージョンを固定する
+            - `config/home/.config/mise/config.toml` で `go = "1.22.0"` のように固定すれば
+              ネットワークアクセスが減る可能性がある
+            - デメリット: バージョンの手動更新が必要になる
+    - **実装前に計測すること**: `time mise use --global go@latest` で実際の所要時間を確認し、
+      本当にボトルネックになっているか確認してから対応を判断する
+- [ ] 🟢【軽微】Neovim プラグイン同期の毎回実行を最適化する
+    - **問題**: `__refresh_neovim_plugins` 内の以下が毎回実行される
+        ```bash
+        nvim --headless "+Lazy! sync" +qa
+        ```
+    - **なぜ遅いか**: Neovim の起動 + lazy.nvim の同期チェック（リモート確認を含む）で
+      数秒〜十数秒かかる
+    - **改善方針の候補**:
+        - 案A: `lazy-lock.json` のハッシュをタイムスタンプ代わりに使い、
+          ファイルに変化がない場合はスキップする
+            - `git diff --quiet lazy-lock.json` で変化を検出できる
+            - ただし「lock ファイルは変わっていないがプラグインが壊れている」ケースは検出できない
+        - 案B: `myenv apply` からは除外し、`myenv bump` 実行時のみ同期する
+            - デメリット: 新規セットアップ時に手動で同期が必要になる
+        - 案C: タイムスタンプで週1程度に制限する（`pacman -Syu` と同じ方針）
+    - **実装前に計測すること**: `time nvim --headless "+Lazy! sync" +qa` で実際の所要時間を確認する
 
 ### テスト・CI
 
