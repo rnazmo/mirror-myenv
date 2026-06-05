@@ -361,3 +361,5 @@
 - [ ] chore: TODO.md のタスクの優先順位付けとマイルストーンへの割り当てを行う
     - このバックログへの移動が完了したら実施する
 - [ ] chore: README.md の TODO セクションをこのファイルへの誘導に差し替える
+- [ ] `.markdownlint-cli2.yaml` は不要では？
+- [ ] `.shellcheckrc` は不要では？
