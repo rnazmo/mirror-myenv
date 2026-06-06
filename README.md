@@ -418,6 +418,16 @@ myenv test
 myenv bump
 ```
 
+#### pacman アップデートの強制実行
+
+タイムスタンプ制御により `pacman -Syu` がスキップされている場合でも、
+以下の手順で強制実行できる。
+
+```bash
+rm ~/.cache/myenv/pacman_last_updated
+myenv apply "$(hostname)"
+```
+
 #### pacman ミラーのトラブル対応
 
 pacman ミラーに関するトラブルが発生した場合の対応手順。

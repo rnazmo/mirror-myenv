@@ -28,6 +28,19 @@ source "${MYENV_ROOT}/lib/util.bash"
 
 pre_setup_core() {
     _refresh_packages() {
+        # タイムスタンプ制御: 前回実行から24時間以内であればスキップする。
+        # スタンプファイルを削除すれば強制実行できる（README のワークフロー参照）。
+        local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/pacman_last_updated"
+        local -r INTERVAL_SEC=$((24 * 60 * 60))
+        if [[ -f "$STAMP_FILE" ]]; then
+            local -r NOW=$(date +%s)
+            local -r LAST=$(date -r "$STAMP_FILE" +%s)
+            if ((NOW - LAST < INTERVAL_SEC)); then
+                log_info "pacman update skipped (last updated within 24 hours)"
+                return 0
+            fi
+        fi
+
         sudo pacman -Syu --noconfirm
 
         # NOTE: yay may not be installed yet at this point.
@@ -35,7 +48,11 @@ pre_setup_core() {
         if check_if_command_exists "yay"; then
             yay -Syu --noconfirm
         fi
+
+        mkdir -p "$(dirname "$STAMP_FILE")"
+        touch "$STAMP_FILE"
     }
+
     _install_some_dependencies() {
         sudo pacman -S --needed --noconfirm base-devel curl vim
     }
