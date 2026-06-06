@@ -20,7 +20,7 @@
     - ホワイトリスト＋タイムスタンプ方式に刷新（ADR-003 参照）
 - [x] `myenv apply` コマンド（スクリプト）のボトルネックを分析する
     - 分析結果は以下の各タスクにまとめた
-- [ ] 🔴【重大】`pacman -Syu` の重複呼び出しを解消する
+- [x] 🔴【重大】`pacman -Syu` の重複呼び出しを解消する
     - **問題**: `myenv apply` を1回実行するたびに `pacman -Syu` が最低4回呼ばれている
     - **ログで確認済み（2026-06-05）**: 実際のログで `pacman -Syu` が4回、`yay -Syu` も4回走っていることを確認した。
       いずれも `there is nothing to do` で終わっているため、この日は実害はなかったが、
@@ -56,23 +56,28 @@
         - タイムスタンプを強制リセットする手順を README.md の「ワークフロー」に追記すること
 - [ ] 🟡【中程度】`pre_setup_core` 内の二重 `_refresh_packages` を整理する
     - **問題**: `pre_setup_core` の中で `_refresh_packages` が連続して2回呼ばれている
+
         ```
         _refresh_packages      # 1回目（ミラー更新前）
         update_pacman_mirror
         _refresh_packages      # 2回目（ミラー更新後）
         ```
+
     - **経緯**: 「新しいミラーで改めて更新する」意図で2回呼ぶ設計になっている
     - **問題点**: `update_pacman_mirror` がタイムスタンプでスキップされる日（7日以内）でも
       1回目は必ず走る。ミラーが変わっていない日に1回目を実行する意味はない。
     - **改善方針**: 上の「`pacman -Syu` の重複解消」タスクと合わせて対応するのが自然。
       単体で対応するなら「1回目を削除して2回目だけ残す」のが最もシンプル。
     - このタスクは上の「`pacman -Syu` の重複解消」タスクを対応する際に合わせて潰すこと
+
 - [ ] 🟡【中程度】`mise use --global` の毎回実行を最適化する
     - **問題**: `setup_programming_languages` 内の以下が毎回実行される
+
         ```bash
         mise use --global go@latest
         mise use --global node@latest
         ```
+
     - **なぜ遅い可能性があるか**: `mise` はリモートのバージョン情報を確認しにいく場合があり、
       すでに最新がインストール済みでもネットワークアクセスが発生しうる
     - **改善方針の候補**:
@@ -83,18 +88,23 @@
             - `config/home/.config/mise/config.toml` で `go = "1.22.0"` のように固定すれば
               ネットワークアクセスが減る可能性がある
             - デメリット: バージョンの手動更新が必要になる
-     - **ログで確認済み（2026-06-05）**: ログ上ではスピナー（`◜`）が回っており、処理に時間がかかっている
-       ことは確認できたが、所要時間は出力されていない。実際の時間は以下で計測すること:
-       ```bash
-       time mise use --global go@latest
-       time mise use --global node@latest
-       ```
-       計測結果をこのタスクに追記してから、対応方針を決定すること。
+    - **ログで確認済み（2026-06-05）**: ログ上ではスピナー（`◜`）が回っており、処理に時間がかかっている
+      ことは確認できたが、所要時間は出力されていない。実際の時間は以下で計測すること:
+
+        ```bash
+        time mise use --global go@latest
+        time mise use --global node@latest
+        ```
+
+        計測結果をこのタスクに追記してから、対応方針を決定すること。
+
 - [ ] 🟢【軽微】Neovim プラグイン同期の毎回実行を最適化する
     - **問題**: `__refresh_neovim_plugins` 内の以下が毎回実行される
+
         ```bash
         nvim --headless "+Lazy! sync" +qa
         ```
+
     - **なぜ遅いか**: Neovim の起動 + lazy.nvim の同期チェック（リモート確認を含む）で
       数秒〜十数秒かかる
     - **改善方針の候補**:
@@ -106,9 +116,10 @@
             - デメリット: 新規セットアップ時に手動で同期が必要になる
         - 案C: タイムスタンプで週1程度に制限する（`pacman -Syu` と同じ方針）
     - **ログで確認済み（2026-06-05）**: fetch タスクが最長約11秒（`neotest-golang` の fetch が 10897ms）かかっており、
-    全体で約11秒の同期処理が発生していた。この日は実際に複数プラグインの更新（checkout）が走っており、
-    `there is nothing to do` の日より長くなっている可能性がある。
-    更新がない日の時間も計測しておくこと:
+      全体で約11秒の同期処理が発生していた。この日は実際に複数プラグインの更新（checkout）が走っており、
+      `there is nothing to do` の日より長くなっている可能性がある。
+      更新がない日の時間も計測しておくこと:
+
     ```bash
     time nvim --headless "+Lazy! sync" +qa
     ```
@@ -143,8 +154,8 @@
 - [ ] 検討その２：アーキテクチャについての検討をさらに進める。
     - 「3層分離設計」についての検討がほぼ最終段階に入ってから気が付いたのだが，
       **この構造だと Arch Linux 系の OS しか対応できないのでは？**
-      - 例えば **macOS や Ubuntu, Kali Linux などに対応できなそう。**
-      - 現状の「endeavouros, manjaro -> arch_based」，「ubuntu, kali -> debian_based」で吸収している部分。
+        - 例えば **macOS や Ubuntu, Kali Linux などに対応できなそう。**
+        - 現状の「endeavouros, manjaro -> arch_based」，「ubuntu, kali -> debian_based」で吸収している部分。
     - また，追加の悩み（要求）も出てきた：「マシン（hosts）ごとに，各ソフトウェアのインストールする・しないを気軽にオン・オフできるようにしたい」
     - これらを踏まえて，もう一度検討し直す。
 
@@ -272,6 +283,7 @@ hosts/setup.bash
 ```
 
 各層の責務:
+
 - `lib/platform.bash`: 全フックのデフォルト実装（`{ :; }` = 何もしない）。
   どのOSでも「特別な処理がなければ何もしない」が保証される。
 - `platforms/cachyos.bash`: CachyOS固有の差分だけを書く。
@@ -283,6 +295,7 @@ hosts/setup.bash
 **各ファイルの具体的なコードイメージ:**
 
 `lib/platform.bash`（デフォルト実装）:
+
 ```bash
 # すべてのフックのデフォルト。
 # 何も特別なことがないOSはこれが使われる。
@@ -291,6 +304,7 @@ platform_pre_install_p10k() { :; }
 ```
 
 `platforms/cachyos.bash`（差分だけ書く）:
+
 ```bash
 source "${MYENV_ROOT}/platforms/arch.bash"
 
@@ -304,6 +318,7 @@ platform_pre_install_p10k() {
 ```
 
 `components/shell.bash`（OSを一切知らない）:
+
 ```bash
 setup_shell() {
     _install_zsh
@@ -320,6 +335,7 @@ _setup_zsh_theme() {
 ```
 
 `hosts/udon/setup.bash`（組み合わせを宣言するだけ）:
+
 ```bash
 source "${MYENV_ROOT}/lib/util.bash"
 source "${MYENV_ROOT}/lib/platform.bash"           # デフォルト読み込み
@@ -385,6 +401,7 @@ main
 
 このタスクは影響範囲が広いため、**実装前に必ず ADR-004 を書いて承認を得ること**。
 ADR に書くべき内容:
+
 - 根本原因の分析（2軸問題）
 - 検討した代替案（ツール変更、機能ファイル内でのOS分岐など）
 - 決定した設計（3層分離）
@@ -541,17 +558,17 @@ ADR に書くべき内容:
 - [ ] 自作の applypatch スクリプトが全然まともに使えないので deprecated とする，または削除する
 - [ ] `zsh-theme-powerlevel10k-git` の Flagged Out Of Date 警告への対応を検討する
     - **問題**: `myenv apply` を実行するたびに `yay -Syu` が4回走り、その都度
-    `-> Flagged Out Of Date AUR Packages: zsh-theme-powerlevel10k-git` という警告が出る。
-    ログで確認済み（2026-06-05）。
+      `-> Flagged Out Of Date AUR Packages: zsh-theme-powerlevel10k-git` という警告が出る。
+      ログで確認済み（2026-06-05）。
     - **背景**: `zsh-theme-powerlevel10k` は開発が停滞気味で、AUR パッケージが
-    Flagged Out Of Date になっている。実害（動作不良）は現時点では確認されていない。
+      Flagged Out Of Date になっている。実害（動作不良）は現時点では確認されていない。
     - **対応方針の候補**:
         - 案A: 警告を無視して使い続ける（現状維持）。動作している間は問題ない。
         - 案B: 代替テーマへの移行を検討する（例: starship, oh-my-posh）。
-        移行コストは高いが、長期的にはメンテナンスが楽になる可能性がある。
-        ただし，パフォーマンスは大幅に下がる可能性が高い。
+          移行コストは高いが、長期的にはメンテナンスが楽になる可能性がある。
+          ただし，パフォーマンスは大幅に下がる可能性が高い。
         - 案C: `yay -Syu` の重複呼び出し解消（上のタスク）で警告の表示回数は
-        自然に4回→1回に減る。まずそちらを先に対応し、残り1回の警告は許容する。
+          自然に4回→1回に減る。まずそちらを先に対応し、残り1回の警告は許容する。
     - **優先度**: 低。動作には影響しないため、`pacman -Syu` 重複解消タスクより後でよい。
     - Zsh (シェル) のテーマ自体を再選定（技術選定）し，その ADR を書くべき
     - Ref:
