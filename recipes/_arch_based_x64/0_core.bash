@@ -40,7 +40,6 @@ pre_setup_core() {
         sudo pacman -S --needed --noconfirm base-devel curl vim
     }
 
-    _refresh_packages
     _install_some_dependencies
 
     # ミラーリストを更新してから _refresh_packages を実行する順序にすること。
