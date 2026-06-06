@@ -18,14 +18,8 @@ ZDOTDIR="${HOME}/.config/zsh"
 # ======================================================
 
 pre_setup_base() {
-    _refresh_packages() {
-        sudo pacman -Syu --noconfirm
-        check_if_command_exists "yay" && yay -Syu --noconfirm
-    }
-
-    _refresh_packages
-
-    unset -f _refresh_packages
+    # パッケージの更新は pre_setup_core で1回だけ行う（ADR-004）。
+    :
 }
 readonly -f pre_setup_base
 
