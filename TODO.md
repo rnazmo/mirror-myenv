@@ -54,7 +54,7 @@
     - **実装の注意点**:
         - `update_pacman_mirror` の設計方針（ADR-003）と一貫性を持たせること
         - タイムスタンプを強制リセットする手順を README.md の「ワークフロー」に追記すること
-- [ ] 🟡【中程度】`pre_setup_core` 内の二重 `_refresh_packages` を整理する
+- [x] 🟡【中程度】`pre_setup_core` 内の二重 `_refresh_packages` を整理する
     - **問題**: `pre_setup_core` の中で `_refresh_packages` が連続して2回呼ばれている
 
         ```
