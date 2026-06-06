@@ -301,13 +301,40 @@ setup_programming_languages() {
 }
 readonly -f setup_programming_languages
 
+_mise_use_global_if_needed() {
+    local -r TOOL="$1"
+    local -r VERSION="$2"
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/mise/${TOOL}_last_updated"
+    local -r INTERVAL_SEC=$((24 * 60 * 60))
+
+    # タイムスタンプ制御: 前回実行から24時間以内であればスキップする。
+    # 各 install 関数で「何を入れるか」を明示するため、mise install ではなく
+    # mise use --global <tool>@<version> の呼び出しを維持する（ADR-005 参照）。
+    if [[ -f "$STAMP_FILE" ]]; then
+        local -r NOW=$(date +%s)
+        local -r LAST=$(date -r "$STAMP_FILE" +%s)
+        if ((NOW - LAST < INTERVAL_SEC)); then
+            log_info "mise ${TOOL} update skipped (last updated within 24 hours)"
+            return 0
+        fi
+    fi
+
+    mise use --global "${TOOL}@${VERSION}"
+
+    # タイムスタンプの更新は最後に行う。
+    # 途中で失敗した場合に「次回の myenv apply 実行時に再試行する」ようにするため。
+    mkdir -p "$(dirname "$STAMP_FILE")"
+    touch "$STAMP_FILE"
+}
+readonly -f _mise_use_global_if_needed
+
 _install_golang() {
-    mise use --global go@latest
+    _mise_use_global_if_needed "go" "latest"
 }
 readonly -f _install_golang
 
 _install_nodejs() {
-    mise use --global node@latest
+    _mise_use_global_if_needed "node" "latest"
 }
 readonly -f _install_nodejs
 

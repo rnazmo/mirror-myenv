@@ -2,6 +2,101 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-005 `mise use --global` の毎回実行をツール単位のタイムスタンプ制御で抑制する
+
+- **日付**: 2026-06-06
+- **ステータス**: 採用
+
+### コンテキスト
+
+`setup_programming_languages` では Go と Node.js を mise 経由で導入している。
+
+```bash
+_install_golang() {
+    mise use --global go@latest
+}
+
+_install_nodejs() {
+    mise use --global node@latest
+}
+```
+
+この実装は各 install 関数を読めば「何を入れるか」が分かるという利点がある。
+一方で、`myenv apply` を実行するたびに `mise use --global` が走るため、mise がリモートの
+バージョン情報を確認し、すでに最新がインストール済みでもネットワークアクセスが発生しうる。
+
+### 検討した案
+
+**案A: `mise use --global` を維持し、ツール単位でタイムスタンプ制御する**
+
+Go なら `go@latest`、Node.js なら `node@latest` という指定を各 install 関数に残したまま、
+実行頻度だけを `~/.cache/myenv/mise/<tool>_last_updated` で抑制する。
+
+**案B: `mise install` に寄せる**
+
+`config/home/.config/mise/config.toml` の `[tools]` を source of truth とし、
+`setup_programming_languages` からは `mise install` を呼ぶ。
+
+これは mise の config 駆動の使い方として自然な面がある。しかし、Go をインストールする処理が
+`config/home/.config/mise/config.toml` に暗黙依存し、`_install_golang` のような関数だけでは
+「何を入れるか」を読めなくなる。今後 host ごとのインストール有無やバージョン差分が増えると、
+依存関係が追いにくくなるため今回は見送る。
+
+**案C: `mise outdated` で更新が必要な場合のみ `mise use` を実行する**
+
+`latest` を本当に最新に保つには、結局リモートのバージョン情報を確認する必要がある。
+今回の主目的は「毎回のリモート確認を避ける」ことなので、相性が悪い。
+
+**案D: `latest` ではなくバージョンを固定する**
+
+再現性の観点では有力だが、今回のパフォーマンス改善とは別論点である。
+バージョン固定方針は別タスクとして検討する。
+
+### 決定
+
+案Aを採用する。
+
+- 各 install 関数は `go@latest` / `node@latest` のように「何を入れるか」を明示する
+- `mise use --global <tool>@<version>` の呼び出し自体は維持する
+- 共通 helper でツール単位のタイムスタンプ制御を行う
+- スタンプファイルは `~/.cache/myenv/mise/<tool>_last_updated` とする
+- 前回実行から24時間以内ならスキップする
+- スタンプファイルが存在しない場合（初回・強制リセット時）は必ず実行する
+- スタンプファイルを手動削除することでツール単位または mise 管理ツール全体を強制実行できる
+
+### 変更後の呼び出し構造
+
+```bash
+setup_programming_languages:
+    _install_golang
+        _mise_use_global_if_needed "go" "latest"
+            # 24時間以内ならスキップ
+            # 期限切れなら mise use --global go@latest
+
+    _install_nodejs
+        _mise_use_global_if_needed "node" "latest"
+            # 24時間以内ならスキップ
+            # 期限切れなら mise use --global node@latest
+```
+
+### トレードオフ
+
+- 24時間以内に `myenv apply` を複数回走らせた場合、2回目以降は `mise use --global` がスキップされる。
+  その間に upstream の最新バージョンが更新されても即時には反映されない。
+- ツールを手動削除したがスタンプファイルが残っている場合、次回 `myenv apply` では再インストールされない。
+  その場合は該当ツールのスタンプファイルを削除して再実行する。
+- `mise use --global` は `~/.config/mise/config.toml` を更新する可能性がある。
+  現状このファイルは repo 管理ファイルへの symlink であり、差分が出る可能性がある。
+  ただしこれは既存実装でも発生しうる挙動であり、今回は実行頻度を下げるに留める。
+  mise global config の責務は、今後のアーキテクチャ見直しで再検討する。
+
+### 今後の検討事項
+
+- host ごとに別の mise config を持たせるか
+- mise config を install 処理の source of truth にするか、補助設定・実行結果として扱うか
+- `latest` を維持するか、バージョンを固定して再現性を高めるか
+- Kali Linux, Ubuntu, macOS などで mise, apt, brew などの backend をどう切り替えるか
+
 ## ADR-004 `pacman -Syu` の重複呼び出しをタイムスタンプ制御で解消する
 
 - **日付**: 2026-06-06

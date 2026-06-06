@@ -428,6 +428,25 @@ rm ~/.cache/myenv/pacman_last_updated
 myenv apply "$(hostname)"
 ```
 
+#### mise ツール更新の強制実行
+
+タイムスタンプ制御により `mise use --global` がスキップされている場合でも、
+以下の手順で強制実行できる。
+
+特定のツールだけ強制更新する場合：
+
+```bash
+rm ~/.cache/myenv/mise/go_last_updated
+myenv apply "$(hostname)"
+```
+
+mise 管理ツールをまとめて強制更新する場合：
+
+```bash
+rm -rf ~/.cache/myenv/mise
+myenv apply "$(hostname)"
+```
+
 #### pacman ミラーのトラブル対応
 
 pacman ミラーに関するトラブルが発生した場合の対応手順。

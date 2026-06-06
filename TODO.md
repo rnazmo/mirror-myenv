@@ -70,7 +70,7 @@
       単体で対応するなら「1回目を削除して2回目だけ残す」のが最もシンプル。
     - このタスクは上の「`pacman -Syu` の重複解消」タスクを対応する際に合わせて潰すこと
 
-- [ ] 🟡【中程度】`mise use --global` の毎回実行を最適化する
+- [x] 🟡【中程度】`mise use --global` の毎回実行を最適化する
     - **問題**: `setup_programming_languages` 内の以下が毎回実行される
 
         ```bash
@@ -80,23 +80,48 @@
 
     - **なぜ遅い可能性があるか**: `mise` はリモートのバージョン情報を確認しにいく場合があり、
       すでに最新がインストール済みでもネットワークアクセスが発生しうる
-    - **改善方針の候補**:
-        - 案A: `mise` にもタイムスタンプ制御を入れる（`pacman -Syu` と同じ方針）
+    - **採用方針（ADR-005）**:
+        - 案A: `mise` にもタイムスタンプ制御を入れる（`pacman -Syu` と同じ方針）を採用した
+        - ただし `mise install` へ寄せる案は見送った
+            - 理由: `setup_programming_languages` が `config/home/.config/mise/config.toml` に暗黙依存し、
+              各 install 関数だけでは「何を入れるか」を読みにくくなるため
+        - 代わりに `mise use --global <tool>@<version>` の明示性を維持し、
+          tool ごとのタイムスタンプ制御で実行頻度を抑える
+        - スタンプファイル例: `~/.cache/myenv/mise/go_last_updated`
+        - 強制実行はスタンプファイルを削除してから `myenv apply "$(hostname)"` を実行する
+    - **見送った案**:
         - 案B: `mise outdated` で更新が必要な場合のみ `mise use` を実行する
-            - `mise outdated` の終了コードや出力で判定できるか要確認
+            - `latest` を本当に最新に保つにはリモート確認が必要であり、今回の「毎回のネットワーク確認を避ける」目的と相性が悪い
         - 案C: `latest` ではなくバージョンを固定する
-            - `config/home/.config/mise/config.toml` で `go = "1.22.0"` のように固定すれば
-              ネットワークアクセスが減る可能性がある
-            - デメリット: バージョンの手動更新が必要になる
+            - 再現性の観点では有力だが、今回のパフォーマンス改善とは別論点なので別タスクとして残す
     - **ログで確認済み（2026-06-05）**: ログ上ではスピナー（`◜`）が回っており、処理に時間がかかっている
-      ことは確認できたが、所要時間は出力されていない。実際の時間は以下で計測すること:
+      ことは確認できた。今回の対応では実測値そのものではなく、設計上の重複実行を削減する方針で対応した。
 
-        ```bash
-        time mise use --global go@latest
-        time mise use --global node@latest
-        ```
+- [ ] 🟡【中程度】mise global config の責務を再検討する
+    - **背景**: 現状 `~/.config/mise/config.toml` は repo 管理ファイルへの symlink であり、
+      `mise use --global` が config を更新すると `config/home/.config/mise/config.toml` に差分が出る可能性がある。
+    - **検討事項**:
+        - `mise use --global` の実行結果として config を更新する運用を続けるか
+        - host ごとに別の mise config を持たせるか
+        - mise config を「install 処理の source of truth」にするか、「補助設定・結果」として扱うか
+    - **注意**: これはプロジェクト全体のアーキテクチャに関わるため、v4.10.0 の構成見直しで検討する。
 
-        計測結果をこのタスクに追記してから、対応方針を決定すること。
+- [ ] 🟡【中程度】mise 管理ツールのバージョン固定方針を検討する
+    - **背景**: `go = "latest"` や `node = "latest"` は便利だが、日々の更新でランタイムが変わりうる。
+    - **検討事項**:
+        - `latest` を維持するか
+        - `go = "1.22.0"` のように固定するか
+        - host ごと・用途ごとにバージョン固定方針を変えるか
+    - **注意**: これは再現性の改善であり、今回の `mise use --global` 毎回実行のパフォーマンス改善とは別論点として扱う。
+
+- [ ] 🟡【中程度】将来の OS 増加を踏まえた言語ランタイム導入レイヤを検討する
+    - **背景**: Kali Linux, Ubuntu, macOS などを扱う場合、Go / Node.js などの導入 backend が
+      mise, apt, brew などに分かれる可能性がある。
+    - **検討事項**:
+        - `setup_golang` / `setup_nodejs` のような言語単位の入口を持つか
+        - `install_golang_with_mise` / `install_golang_with_apt` / `install_golang_with_brew` のように backend を分けるか
+        - host ごとに「インストールする・しない」「バージョンを固定する・latest にする」をどう表現するか
+    - **注意**: 今回のタスクでは変更しない。v4.10.0 の構成見直しで検討する。
 
 - [ ] 🟢【軽微】Neovim プラグイン同期の毎回実行を最適化する
     - **問題**: `__refresh_neovim_plugins` 内の以下が毎回実行される
