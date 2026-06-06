@@ -2,6 +2,90 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-004 `pacman -Syu` の重複呼び出しをタイムスタンプ制御で解消する
+
+- **日付**: 2026-06-06
+- **ステータス**: 採用
+
+### コンテキスト
+
+`myenv apply` を1回実行するたびに `pacman -Syu` が4回呼ばれていた。
+
+```
+1. pre_setup_core > _refresh_packages  （ミラー更新前）
+2. pre_setup_core > _refresh_packages  （update_pacman_mirror の直後）
+3. pre_setup_base > _refresh_packages
+4. pre_setup_extra > _refresh_packages
+```
+
+1日に複数回 `myenv apply` を走らせる運用では、そのたびに無駄なネットワークI/Oが
+発生していた。ログでも `there is nothing to do` で終わる呼び出しが複数回確認されている。
+
+### `pacman -Syu` の挙動と「複数回呼ぶ」の是非
+
+`pacman -Syu` は `-Sy`（リモートからパッケージDBをダウンロード）と
+`-u`（ローカルの古いパッケージを更新）の2フェーズからなる。
+
+Arch Linux はローリングリリースのため、パッケージのインストール前に DB を最新化して
+おかないと部分アップグレードによる依存関係の不整合が起きうる（公式 wiki でも
+`pacman -S パッケージ名` 単体での使用は非推奨とされている）。
+この理由から、インストール処理の前に1回 `-Syu` するのは正当である。
+
+一方、`core → base → extra` の各フェーズ冒頭で毎回呼ぶことは過剰である。
+フェーズ間の数十分でミラー側の依存関係が変わる確率は現実的にゼロに近く、
+2回目以降は「更新するものはない」で終わるだけのネットワークI/Oになっている。
+
+### 決定
+
+以下の3点を組み合わせて対応する。
+
+**① `pre_setup_core` 内の1回目の `_refresh_packages` を削除する**
+
+現状は「古いミラーで `-Syu`」→「ミラー更新」→「新しいミラーで `-Syu`」の順になっている。
+1回目は古いミラーで実行するため実益が薄い。また `_install_some_dependencies` で
+`curl` 等の前提パッケージは確保済みなので、依存上の問題もない。
+
+**② `pre_setup_base` と `pre_setup_extra` の `_refresh_packages` を削除し、
+`pre_setup_core` に集約する**
+
+`core → base → extra` の順に実行される設計上、`core` の末尾で1回更新すれば
+後続フェーズのインストール処理に対して整合性は保たれる。
+
+**③ `_refresh_packages` にタイムスタンプ制御を導入する（間隔: 24時間）**
+
+- スタンプファイル: `~/.cache/myenv/pacman_last_updated`
+- 前回実行から24時間以上経過していれば実行する
+- スタンプファイルが存在しない場合（初回・強制リセット時）は必ず実行する
+- スタンプファイルを手動削除することで強制実行できる
+
+間隔を24時間とする理由: 同日に複数回 `myenv apply` を走らせる運用では2回目以降を
+スキップできる。数ヶ月ぶりの実行時は必ず1回実行される。
+週1のミラー更新（ADR-003）と独立したタイムスタンプで管理することで関心事を分離する。
+
+### 変更後の呼び出し構造
+
+```
+pre_setup_core:
+    # _refresh_packages ← 削除（①）
+    update_pacman_mirror     # タイムスタンプで週1制御（ADR-003）
+    _refresh_packages        # タイムスタンプで24時間制御（③）← ここだけ残る
+
+pre_setup_base:
+    # _refresh_packages ← 削除（②）
+
+pre_setup_extra:
+    # _refresh_packages ← 削除（②）
+```
+
+### トレードオフ
+
+- 24時間以内に `myenv apply` を複数回走らせた場合、2回目以降は `pacman -Syu` がスキップされる。
+  この間に新たなパッケージをインストールする処理が走っても、部分アップグレード問題が起きる確率は
+  現実的にゼロに近い。問題が起きた場合はスタンプファイルを削除して再実行することで対処できる。
+- `pacman -Syu` のスキップを強制したい場合（例: セキュリティアップデートをすぐ当てたい）は
+  スタンプファイルを削除する必要があり、自動ではない。ただしこのユースケースは
+  `myenv apply` とは別に `sudo pacman -Syu` を手動実行する方が自然であり、実害は低い。
+
 ## ADR-003 pacman ミラー更新処理をホワイトリスト＋タイムスタンプ方式に刷新
 
 - **日付**: 2026-06-05
