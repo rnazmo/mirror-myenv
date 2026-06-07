@@ -5,7 +5,6 @@
 ### 概要
 
 - 日々使うスクリプトのパフォーマンスが悪いので，抜本的に見直す
-- pacman のミラーリスト最適化・更新処理の改善がメイン
 - 主な問題点：
     - pacman のミラーリスト最適化・更新処理が重い＆毎回走っている
     - pacman -Syu が複数回呼ばれている
@@ -16,114 +15,7 @@
 
 ### コード・機能
 
-- [x] pacman のミラーリスト最適化・更新処理の改善
-    - ホワイトリスト＋タイムスタンプ方式に刷新（ADR-003 参照）
-- [x] `myenv apply` コマンド（スクリプト）のボトルネックを分析する
-    - 分析結果は以下の各タスクにまとめた
-- [x] 🔴【重大】`pacman -Syu` の重複呼び出しを解消する
-    - **問題**: `myenv apply` を1回実行するたびに `pacman -Syu` が最低4回呼ばれている
-    - **ログで確認済み（2026-06-05）**: 実際のログで `pacman -Syu` が4回、`yay -Syu` も4回走っていることを確認した。
-      いずれも `there is nothing to do` で終わっているため、この日は実害はなかったが、
-      パッケージ更新がある日はその分だけ時間が伸びる。また `yay` は AUR の `zsh-theme-powerlevel10k-git`
-      が Flagged Out Of Date であるという警告も毎回4回出ている。
-    - **呼ばれる箇所**（`_arch_based_x64/0_core.bash` と `1_base.bash` と `2_extra.bash` を読むと確認できる）:
-        1. `pre_setup_core > _refresh_packages`（ミラー更新前）
-        2. `pre_setup_core > _refresh_packages`（`update_pacman_mirror` の直後）
-        3. `pre_setup_base > _refresh_packages`
-        4. `pre_setup_extra > _refresh_packages`
-    - **なぜ重いか**: pacman はリモートのパッケージDBを毎回ダウンロードして差分チェックするため、
-      ネットワークI/Oが必ず発生する。1回あたり数秒〜数十秒かかる。
-    - **改善方針の候補**:
-        - 案A: `pacman -Syu` にもタイムスタンプ制御を入れ、1日1回までに制限する
-            - `update_pacman_mirror` の `_should_update_mirror` と同じ仕組みで実現できる
-            - スタンプファイル例: `~/.cache/myenv/pacman_last_updated`
-            - メリット: 毎日 `myenv apply` を複数回実行しても1日1回しか走らない
-            - デメリット: 「今すぐ最新にしたい」場合はスタンプファイルを手動削除する必要がある
-        - 案B: `pre_setup_core` の1回目の `_refresh_packages`（ミラー更新前）を削除する
-            - ミラー更新前に走る意味が薄い（古いミラーで更新しても無駄になる可能性がある）
-            - ただしこれだけでは3回→3回（タイムスタンプスキップ時は2回）にしか減らない
-        - 案C: `pre_setup_base` と `pre_setup_extra` の `_refresh_packages` を削除し、
-          `pre_setup_core` の末尾の1回に集約する
-            - 「core → base → extra の順に実行するので core で更新すれば十分」という考え方
-            - メリット: シンプルに重複が消える
-            - デメリット: base や extra の処理が長時間かかる場合、その間にパッケージが
-              古くなる可能性がある（現実的には問題にならないと思われる）
-        - 案A + 案B + 案C の組み合わせが最も効果が高いと思われる
-    - 要調査：
-        - そもそも，`pacman -Syu` は何を行っているのか。また，`pacman -Syu` はどのタイミングで（・どの頻度で）行うべきなのか
-    - **実装の注意点**:
-        - `update_pacman_mirror` の設計方針（ADR-003）と一貫性を持たせること
-        - タイムスタンプを強制リセットする手順を README.md の「ワークフロー」に追記すること
-- [x] 🟡【中程度】`pre_setup_core` 内の二重 `_refresh_packages` を整理する
-    - **問題**: `pre_setup_core` の中で `_refresh_packages` が連続して2回呼ばれている
-
-        ```
-        _refresh_packages      # 1回目（ミラー更新前）
-        update_pacman_mirror
-        _refresh_packages      # 2回目（ミラー更新後）
-        ```
-
-    - **経緯**: 「新しいミラーで改めて更新する」意図で2回呼ぶ設計になっている
-    - **問題点**: `update_pacman_mirror` がタイムスタンプでスキップされる日（7日以内）でも
-      1回目は必ず走る。ミラーが変わっていない日に1回目を実行する意味はない。
-    - **改善方針**: 上の「`pacman -Syu` の重複解消」タスクと合わせて対応するのが自然。
-      単体で対応するなら「1回目を削除して2回目だけ残す」のが最もシンプル。
-    - このタスクは上の「`pacman -Syu` の重複解消」タスクを対応する際に合わせて潰すこと
-
-- [x] 🟡【中程度】`mise use --global` の毎回実行を最適化する
-    - **問題**: `setup_programming_languages` 内の以下が毎回実行される
-
-        ```bash
-        mise use --global go@latest
-        mise use --global node@latest
-        ```
-
-    - **なぜ遅い可能性があるか**: `mise` はリモートのバージョン情報を確認しにいく場合があり、
-      すでに最新がインストール済みでもネットワークアクセスが発生しうる
-    - **採用方針（ADR-005）**:
-        - 案A: `mise` にもタイムスタンプ制御を入れる（`pacman -Syu` と同じ方針）を採用した
-        - ただし `mise install` へ寄せる案は見送った
-            - 理由: `setup_programming_languages` が `config/home/.config/mise/config.toml` に暗黙依存し、
-              各 install 関数だけでは「何を入れるか」を読みにくくなるため
-        - 代わりに `mise use --global <tool>@<version>` の明示性を維持し、
-          tool ごとのタイムスタンプ制御で実行頻度を抑える
-        - スタンプファイル例: `~/.cache/myenv/mise/go_last_updated`
-        - 強制実行はスタンプファイルを削除してから `myenv apply "$(hostname)"` を実行する
-    - **見送った案**:
-        - 案B: `mise outdated` で更新が必要な場合のみ `mise use` を実行する
-            - `latest` を本当に最新に保つにはリモート確認が必要であり、今回の「毎回のネットワーク確認を避ける」目的と相性が悪い
-        - 案C: `latest` ではなくバージョンを固定する
-            - 再現性の観点では有力だが、今回のパフォーマンス改善とは別論点なので別タスクとして残す
-    - **ログで確認済み（2026-06-05）**: ログ上ではスピナー（`◜`）が回っており、処理に時間がかかっている
-      ことは確認できた。今回の対応では実測値そのものではなく、設計上の重複実行を削減する方針で対応した。
-
-- [ ] 🟡【中程度】mise global config の責務を再検討する
-    - **背景**: 現状 `~/.config/mise/config.toml` は repo 管理ファイルへの symlink であり、
-      `mise use --global` が config を更新すると `config/home/.config/mise/config.toml` に差分が出る可能性がある。
-    - **検討事項**:
-        - `mise use --global` の実行結果として config を更新する運用を続けるか
-        - host ごとに別の mise config を持たせるか
-        - mise config を「install 処理の source of truth」にするか、「補助設定・結果」として扱うか
-    - **注意**: これはプロジェクト全体のアーキテクチャに関わるため、v4.10.0 の構成見直しで検討する。
-
-- [ ] 🟡【中程度】mise 管理ツールのバージョン固定方針を検討する
-    - **背景**: `go = "latest"` や `node = "latest"` は便利だが、日々の更新でランタイムが変わりうる。
-    - **検討事項**:
-        - `latest` を維持するか
-        - `go = "1.22.0"` のように固定するか
-        - host ごと・用途ごとにバージョン固定方針を変えるか
-    - **注意**: これは再現性の改善であり、今回の `mise use --global` 毎回実行のパフォーマンス改善とは別論点として扱う。
-
-- [ ] 🟡【中程度】将来の OS 増加を踏まえた言語ランタイム導入レイヤを検討する
-    - **背景**: Kali Linux, Ubuntu, macOS などを扱う場合、Go / Node.js などの導入 backend が
-      mise, apt, brew などに分かれる可能性がある。
-    - **検討事項**:
-        - `setup_golang` / `setup_nodejs` のような言語単位の入口を持つか
-        - `install_golang_with_mise` / `install_golang_with_apt` / `install_golang_with_brew` のように backend を分けるか
-        - host ごとに「インストールする・しない」「バージョンを固定する・latest にする」をどう表現するか
-    - **注意**: 今回のタスクでは変更しない。v4.10.0 の構成見直しで検討する。
-
-- [ ] 🟢【軽微】Neovim プラグイン同期の毎回実行を最適化する
+- [ ] Neovim プラグイン同期の毎回実行を最適化する
     - **問題**: `__refresh_neovim_plugins` 内の以下が毎回実行される
 
         ```bash
@@ -173,9 +65,9 @@
 
 ### 設計
 
-- [x] 検討その１：アーキテクチャについての検討を進める。
+- [x] アーキテクチャについての検討を進める その１（構成検討その１）
     - 検討を進めた結果「3層分離設計」にたどり着いたので，その内容を書いておく
-    - （下記 `検討その１：「3層分離設計」` セクションを参照。かなり長いので注意。）
+    - （下記 `構成検討その１：「3層分離設計」` セクションを参照。かなり長いので注意。）
 - [ ] 検討その２：アーキテクチャについての検討をさらに進める。
     - 「3層分離設計」についての検討がほぼ最終段階に入ってから気が付いたのだが，
       **この構造だと Arch Linux 系の OS しか対応できないのでは？**
@@ -183,8 +75,23 @@
         - 現状の「endeavouros, manjaro -> arch_based」，「ubuntu, kali -> debian_based」で吸収している部分。
     - また，追加の悩み（要求）も出てきた：「マシン（hosts）ごとに，各ソフトウェアのインストールする・しないを気軽にオン・オフできるようにしたい」
     - これらを踏まえて，もう一度検討し直す。
+- [ ] 将来の OS 増加を踏まえた言語ランタイム導入レイヤを検討する
+    - **背景**: Kali Linux, Ubuntu, macOS などを扱う場合、Go / Node.js などの導入 backend が
+      mise, apt, brew などに分かれる可能性がある。
+    - **検討事項**:
+        - `setup_golang` / `setup_nodejs` のような言語単位の入口を持つか
+        - `install_golang_with_mise` / `install_golang_with_apt` / `install_golang_with_brew` のように backend を分けるか
+        - host ごとに「インストールする・しない」「バージョンを固定する・latest にする」をどう表現するか
+- [ ] mise global config の責務を再検討する
+    - **背景**: 現状 `~/.config/mise/config.toml` は repo 管理ファイルへの symlink であり、
+      `mise use --global` が config を更新すると `config/home/.config/mise/config.toml` に差分が出る可能性がある。
+    - **検討事項**:
+        - `mise use --global` の実行結果として config を更新する運用を続けるか
+        - host ごとに別の mise config を持たせるか
+        - mise config を「install 処理の source of truth」にするか、「補助設定・結果」として扱うか
+    - **注意**: これはプロジェクト全体のアーキテクチャに関わるため、v4.10.0 の構成見直しの際の検討事項の１つとする。
 
-### 検討その１：「3層分離設計」
+### 構成検討その１：「3層分離設計」
 
 #### 現状の主な悩み
 
@@ -605,6 +512,13 @@ ADR に書くべき内容:
 
 ### コード・機能
 
+- [ ] mise 管理ツールのバージョン固定方針を検討する
+    - **背景**: `go = "latest"` や `node = "latest"` は便利だが、日々の更新でランタイムが変わりうる。
+    - **検討事項**:
+        - `latest` を維持するか
+        - `go = "1.22.0"` のように固定するか
+        - host ごと・用途ごとにバージョン固定方針を変えるか
+    - **注意**: これは再現性の改善であり、v4.9.2 内で行った「`mise use --global` 毎回実行のパフォーマンス改善」とは別論点として扱う。
 - [ ] applypatch スクリプトに以下の機能を追加することを検討する
     - 安全・ミス予防のための機能
         - クリップボードの中身の確認
