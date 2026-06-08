@@ -65,7 +65,7 @@ myenv push
 # 静的チェック（lint）を実行
 myenv test
 
-# Neovim プラグインのバージョンをコミット＆プッシュ
+# Neovim プラグインを更新し、バージョンをコミット＆プッシュ
 myenv bump
 ```
 
@@ -412,10 +412,20 @@ myenv push
 myenv test
 ```
 
-**Neovim プラグインのバージョンをコミット＆プッシュする:**
+**Neovim プラグインを更新し、バージョンをコミット＆プッシュする:**
 
 ```bash
 myenv bump
+```
+
+#### Neovim プラグイン復元の強制実行
+
+fingerprint 制御により Neovim プラグイン復元がスキップされている場合でも、
+以下の手順で `lazy-lock.json` に基づく復元を強制実行できる。
+
+```bash
+rm ~/.cache/myenv/nvim/plugins_fingerprint
+myenv apply "$(hostname)"
 ```
 
 #### pacman アップデートの強制実行

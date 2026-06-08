@@ -610,7 +610,7 @@ readonly -f setup_editor
 _setup_neovim() {
     __install_neovim
     __setup_neovim_config
-    __refresh_neovim_plugins
+    __ensure_neovim_plugins
 }
 readonly -f _setup_neovim
 
@@ -629,11 +629,67 @@ __setup_neovim_config() {
 }
 readonly -f __setup_neovim_config
 
-__refresh_neovim_plugins() {
-    # Sync (= install & cleanup & update) plugins
-    nvim --headless "+Lazy! sync" +qa
+__ensure_neovim_plugins() {
+    # myenv apply は「repo に記録された状態へ収束させる」ための入口なので、
+    # upstream の最新化を伴う Lazy sync は行わない（ADR-006 参照）。
+    # fingerprint が変わった場合や lazy.nvim が存在しない場合だけ、lockfile に合わせて復元する。
+    local -r FINGERPRINT_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/nvim/plugins_fingerprint"
+    local -r CURRENT_FINGERPRINT="$(__calculate_neovim_plugins_fingerprint)"
+
+    if __should_skip_neovim_plugins_restore "$FINGERPRINT_FILE" "$CURRENT_FINGERPRINT"; then
+        log_info "Neovim plugin restore skipped (fingerprint unchanged)"
+        return 0
+    fi
+
+    nvim --headless "+Lazy! restore" "+Lazy! clean" +qa
+
+    # fingerprint の更新は最後に行う。
+    # 途中で失敗した場合に「次回の myenv apply 実行時に再試行する」ようにするため。
+    mkdir -p "$(dirname "$FINGERPRINT_FILE")"
+    printf '%s\n' "$CURRENT_FINGERPRINT" >"$FINGERPRINT_FILE"
 }
-readonly -f __refresh_neovim_plugins
+readonly -f __ensure_neovim_plugins
+
+__should_skip_neovim_plugins_restore() {
+    local -r FINGERPRINT_FILE="$1"
+    local -r CURRENT_FINGERPRINT="$2"
+    local -r LAZY_NVIM_DIR="${XDG_DATA_HOME:-${HOME}/.local/share}/nvim/lazy/lazy.nvim"
+
+    # 初回セットアップやプラグインディレクトリ削除後は必ず復元する。
+    if [[ ! -d "$LAZY_NVIM_DIR" ]]; then
+        return 1
+    fi
+
+    # fingerprint ファイルを削除すれば強制復元できる（README のワークフロー参照）。
+    if [[ ! -f "$FINGERPRINT_FILE" ]]; then
+        return 1
+    fi
+
+    [[ "$(<"$FINGERPRINT_FILE")" == "$CURRENT_FINGERPRINT" ]]
+}
+readonly -f __should_skip_neovim_plugins_restore
+
+__calculate_neovim_plugins_fingerprint() {
+    local -r NVIM_CONFIG_DIR="${MYENV_ROOT}/config/home/.config/nvim"
+
+    (
+        cd "$NVIM_CONFIG_DIR"
+        find \
+            init.lua \
+            lazy-lock.json \
+            lazyvim.json \
+            lua/config/lazy.lua \
+            lua/plugins \
+            -type f \
+            \( -name '*.lua' -o -name 'lazy-lock.json' -o -name 'lazyvim.json' \) \
+            -print \
+            | sort \
+            | xargs sha256sum \
+            | sha256sum \
+            | awk '{print $1}'
+    )
+}
+readonly -f __calculate_neovim_plugins_fingerprint
 
 # ======================================================
 # ======================================================

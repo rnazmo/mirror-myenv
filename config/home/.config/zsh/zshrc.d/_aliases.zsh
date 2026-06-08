@@ -55,7 +55,7 @@ alias v="nvim"
 #         push: git push
 #         TODO: sync: git pull && git push
 #         test: Run staticcheck (lint, format, unit-test, integ-test)
-#         bump: Commit and push lazy-lock.json changes
+#         bump: Update Neovim plugins, then commit and push lazy-lock.json changes
 #
 # Example:
 #     $ myenv cd
@@ -129,6 +129,13 @@ _bump_nvim_plugins() {
   local -r COMMIT_MSG="chore(nvim): bump plugin"
 
   cd "$MYENV_ROOT"
+
+  # myenv apply から追い出した upstream 更新処理の**暫定的な**入口。
+  # コマンド名を含めた全体設計は ADR-006 の今後の検討事項とする。
+  # TODO 本来ここでこのような処理を行うべきではない。Zsh の関数は、
+  # （Git の操作は例外として、）他のスクリプトの呼び出しなどの
+  # 単純で薄い処理のみにとどめるべきである。
+  nvim --headless "+Lazy! sync" +qa
 
   # Do nothing if lazy-lock.json has no changes
   if git diff --quiet "$LOCKFILE"; then

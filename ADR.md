@@ -2,6 +2,129 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-006 `myenv apply` では Neovim プラグインを更新せず、必要時だけ lockfile に復元する
+
+- **日付**: 2026-06-08
+- **ステータス**: 採用
+
+### コンテキスト
+
+`myenv apply` は日々の設定適用で頻繁に実行するコマンドである。README の日常フローでも
+`myenv cd && myenv pull && myenv apply "$(hostname)"` を案内しており、
+「たまに実行する重い更新コマンド」ではなく、普段使いの収束コマンドとして扱っている。
+
+一方、従来の `_setup_neovim` は Neovim のインストールと設定リンクに続いて、毎回以下を実行していた。
+
+```bash
+nvim --headless "+Lazy! sync" +qa
+```
+
+`Lazy sync` は install / clean / update をまとめて行うため、Neovim 起動とリモート確認により
+数秒〜十数秒かかることがある。また、upstream の新しい commit を取り込んで
+`lazy-lock.json` を更新しうるため、`apply` が「repo に書かれた desired state を適用する」だけでなく
+「desired state 自体を更新する」責務まで持ってしまっていた。
+
+### コマンド設計の方針
+
+今後の `myenv` コマンドは、少なくとも以下の責務を分けて考える。
+
+1. **apply / ensure 系**
+    - repo に記録された状態へローカル環境を収束させる
+    - 日常的に何度も実行する
+    - 速く、冪等で、予期せず repo 管理ファイルに差分を作らないことを重視する
+
+2. **update / refresh 系**
+    - upstream を見に行き、repo に記録する desired state を更新する
+    - ネットワークアクセスや時間のかかる処理を許容する
+    - 実行後に lockfile や設定ファイルの差分が出ることを前提にする
+
+この整理に従うと、Neovim プラグインについて `myenv apply` が担うべきなのは
+「lockfile に書かれた状態へ復元すること」であり、upstream への更新確認と
+`lazy-lock.json` の更新ではない。
+
+### 検討した案
+
+**案A: `lazy-lock.json` の変化だけを見て `Lazy sync` をスキップする**
+
+毎回実行よりは速くなる。ただし plugin spec や `lua/config/lazy.lua` の変更を検出できない。
+また、実行される処理が `sync` のままだと、必要時に `apply` が upstream 更新を行う問題は残る。
+
+**案B: Neovim プラグイン処理を `myenv apply` から完全に外す**
+
+`apply` は速くなるが、新規セットアップや `myenv pull` 後に Neovim が lockfile の状態へ
+自動で揃わなくなる。`apply` の ALL IN ONE 的な便利さが下がるため採用しない。
+
+**案C: タイムスタンプで週1程度に制限する**
+
+最小変更としては有効だが、Neovim プラグインの復元が必要になる主な理由は
+「時間が経ったこと」ではなく「lockfile / plugin spec が変わったこと」や
+「プラグイン実体が存在しないこと」である。したがって状態ベースの制御を優先する。
+
+**案D: fingerprint で必要時だけ `Lazy restore` / `Lazy clean` を実行する**
+
+`lazy-lock.json` だけでなく、Neovim の plugin state に影響する設定ファイル群の fingerprint を計算し、
+前回成功時と同じであれば復元をスキップする。fingerprint が変わった場合や
+`lazy.nvim` が存在しない場合は、upstream 更新ではなく lockfile への復元を行う。
+
+### 決定
+
+案Dを採用する。
+
+- `_setup_neovim` からは `__ensure_neovim_plugins` を呼ぶ
+- `myenv apply` では `Lazy sync` を実行しない
+- fingerprint が変わった場合、fingerprint が未作成の場合、または `lazy.nvim` が存在しない場合だけ
+  `nvim --headless "+Lazy! restore" "+Lazy! clean" +qa` を実行する
+- fingerprint は `~/.cache/myenv/nvim/plugins_fingerprint` に保存する
+- fingerprint 更新は Neovim の復元処理が成功した後に行う
+- fingerprint ファイルを削除すれば、次回 `myenv apply` で強制復元できる
+
+fingerprint の対象は以下とする。
+
+- `config/home/.config/nvim/init.lua`
+- `config/home/.config/nvim/lazy-lock.json`
+- `config/home/.config/nvim/lazyvim.json`
+- `config/home/.config/nvim/lua/config/lazy.lua`
+- `config/home/.config/nvim/lua/plugins/` 配下のファイル
+
+### 変更後の呼び出し構造
+
+```bash
+setup_editor
+  _setup_neovim
+    __install_neovim
+    __setup_neovim_config
+    __ensure_neovim_plugins
+      __calculate_neovim_plugins_fingerprint
+      __should_skip_neovim_plugins_restore
+      # 必要時のみ Lazy restore / Lazy clean
+```
+
+### `apply` から追い出した更新処理の扱い
+
+upstream を見に行って Neovim プラグインを更新し、`lazy-lock.json` を commit / push する処理は
+`apply` ではなく update / refresh 系コマンドの責務とする。
+
+ただしコマンド体系全体の見直しは別途検討が必要である。今回の変更では、既存の
+`myenv bump` を暫定的な互換入口として残し、`myenv bump` 実行時に `Lazy sync` を行ってから
+`lazy-lock.json` の差分を commit / push する。将来的には、Neovim に限らず pacman / mise / aqua などの
+「upstream を見に行く重い更新処理」をどのコマンドに集約するかを設計し直す。
+
+### トレードオフ
+
+- `myenv apply` を実行しても Neovim プラグインは upstream 最新にはならない。
+  最新化したい場合は update / refresh 系の明示コマンドを使う。
+- fingerprint が同じでも、プラグイン実体が部分的に壊れているケースは検出できない可能性がある。
+  その場合は `~/.cache/myenv/nvim/plugins_fingerprint` を削除して `myenv apply` を再実行する。
+- `Lazy restore` / `Lazy clean` は `Lazy sync` より `apply` の責務に近いが、Neovim 起動は依然として必要である。
+  そのため fingerprint が変わらない日常実行ではスキップする。
+
+### 今後の検討事項
+
+- `myenv bump` という名前を維持するか、`myenv update` / `myenv refresh` などに再設計するか
+- Neovim 以外の upstream 更新処理（pacman, mise, aqua など）をどの単位で明示コマンド化するか
+- `apply` / `update` / `doctor` / `repair` のような責務分割を myenv 全体に適用するか
+- force option を導入するか、stamp / fingerprint ファイル削除の運用で十分とするか
+
 ## ADR-005 `mise use --global` の毎回実行をツール単位のタイムスタンプ制御で抑制する
 
 - **日付**: 2026-06-06
