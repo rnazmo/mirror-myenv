@@ -43,13 +43,19 @@
         - 一括置き換えに決定
         - コミットを機能単位（`core` → `shell` → `editor` …）に細かく切りながら進める
         - 完了後に `recipes/` を丸ごと削除する
-- [ ] 将来の OS 増加を踏まえた言語ランタイム導入レイヤを検討する
+- [x] 将来の OS 増加を踏まえた言語ランタイム導入レイヤを検討する
     - **背景**: Kali Linux, Ubuntu, macOS などを扱う場合、Go / Node.js などの導入 backend が
-      mise, apt, brew などに分かれる可能性がある。
-    - **検討事項**:
-        - `setup_golang` / `setup_nodejs` のような言語単位の入口を持つか
-        - `install_golang_with_mise` / `install_golang_with_apt` / `install_golang_with_brew` のように backend を分けるか
-        - host ごとに「インストールする・しない」「バージョンを固定する・latest にする」をどう表現するか
+        mise, apt, brew などに分かれる可能性がある。
+    - **検討結果**（暫定。v4.10.0 のアーキテクチャ見直しと合わせて再検討する余地あり）:
+        - **言語単位の入口（`_install_golang` 等）は維持する。**
+            将来「インストール後に GOPATH を設定する」など処理を追加したいときの置き場所になる。
+        - **backend は mise 一本に絞る。OS ごとに `install_golang_with_apt` 等は作らない。**
+            mise はほぼすべての OS・環境で動作するため、言語ごとに backend を分岐させる必要がない。
+            「mise 自体のインストール方法がOS によって違う」という問題は、
+            v4.10.0 のフック機構（`platform_install_mise` 等）に委譲することで解決する。
+        - **host ごとの「インストールする・しない」は関数呼び出しの取捨選択で表現する。**
+            変数による制御や条件分岐は導入しない（暗黙の依存が増えるため）。
+        - **バージョン固定は別バックログ「mise 管理ツールのバージョン固定方針を検討する」で扱う。**
 - [ ] mise global config の責務を再検討する
     - **背景**: 現状 `~/.config/mise/config.toml` は repo 管理ファイルへの symlink であり、
       `mise use --global` が config を更新すると `config/home/.config/mise/config.toml` に差分が出る可能性がある。
