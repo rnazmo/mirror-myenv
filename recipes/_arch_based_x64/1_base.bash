@@ -210,7 +210,7 @@ _install_many_util_clis() {
         "xclip"   # clipboard util
         "unzip"   # zip util
         "ghq"     # repository manager
-        "fzf"     # fazzy finder
+        "fzf"     # fuzzy finder
         "zoxide"  # better cd
         "eza"     # better ls
         "ripgrep" # better grep

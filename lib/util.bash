@@ -4,7 +4,7 @@ set -eu
 # Prerequisites:
 #     Bash 4.0+
 
-# TDOO: Add tests
+# TODO: Add tests
 
 # What is this:
 #     Check if the command exists or not.
@@ -78,7 +78,7 @@ link_file() {
     fi
 
     if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
-        log_info "Created diractory $TARGET_PARENT_DIR"
+        log_info "Created directory $TARGET_PARENT_DIR"
         mkdir -p "$TARGET_PARENT_DIR"
     fi
     if [[ -e "$TARGET_FILE" ]]; then
@@ -138,7 +138,7 @@ link_dir() {
     fi
 
     if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
-        log_info "Created diractory $TARGET_PARENT_DIR"
+        log_info "Created directory $TARGET_PARENT_DIR"
         mkdir -p "$TARGET_PARENT_DIR"
     fi
     if [[ -e "$TARGET_DIR" ]]; then
@@ -269,7 +269,7 @@ download_file() {
         curl -v --create-dirs -o "$DEST_PATH" "$REMOTE_PATH"
         return 0
     elif [[ -f "$DEST_PATH" ]]; then
-        log_info "The file already exist. Do nothong."
+        log_info "The file already exists. Doing nothing."
         log_info "DEST_PATH  : $DEST_PATH"
         return 0
     else
@@ -318,7 +318,7 @@ clone_repo_shallow() {
         git clone --depth=1 "$REMOTE_PATH" "$DEST_PATH"
         return 0
     elif [[ -d "$DEST_PATH" ]]; then
-        log_info "The file already exist. Do nothong."
+        log_info "The repo already exists. Doing nothing."
         log_info "DEST_PATH  : $DEST_PATH"
         return 0
     else
@@ -328,7 +328,7 @@ clone_repo_shallow() {
 }
 
 # What is this:
-#     Remoev the file.
+#     Remove the file.
 #
 # Description:
 #     If the <target_file> is nothing, do nothing and return 0.
