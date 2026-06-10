@@ -2,6 +2,60 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-008 `copy_file` / `copy_file_as_root` / `remove_file` / `remove_file_as_root` の重複を許容する
+
+- **日付**: 2026-06-11
+- **ステータス**: 採用
+
+### コンテキスト
+
+`lib/util.bash` には以下の4関数があり、copy 系2関数、remove 系2関数の間で validation ロジックが重複している。
+
+- `copy_file`: source の存在・symlink・regular file 確認 + 宛先の非存在確認 + `mkdir` + `cp`
+- `copy_file_as_root`: 同上 + `sudo`
+- `remove_file`: ファイル存在確認 → `rm`
+- `remove_file_as_root`: 同上 + `sudo`
+
+また、`copy_file_as_root` と `remove_file_as_root` にはそれぞれ `# TODO: Refactor!!!` のコメントが付いている。
+
+### 検討した案
+
+**案A: 4関数を1つの内部 helper に統合する**
+
+`_copy_with_sudo_if_needed` と `_remove_with_sudo_if_needed` の2つではなく、1つの helper で copy/remove の両方を扱う。
+
+- Pros: 重複の完全排除
+- Cons: helper 内で copy/remove の分岐が混在し、可読性が低下する。節約できるコード量は約10%と小さく、抽象化のコストに見合わない
+
+**案B: copy 系 / remove 系をそれぞれ共通化する**
+
+`_copy_with_sudo_if_needed` と `_remove_with_sudo_if_needed` の2つの内部 helper に抽出する。
+
+- Pros: 責務が明確に分離され、全4関数の重複が排除できる
+- Cons: `"true"` / `"false"` のマジックワードが呼び出し側に出現する。節約できるコード量が限られており、抽象化のコストに見合わない
+
+**案C: リファクタリングせず、`# TODO: Refactor!!!` のみ削除する**
+
+コードは変更しない。
+
+- Pros: コード変更が最小限
+- Cons: 重複したまま。ただしコード量が少なく、メンテナンス負荷は低い
+
+### 決定
+
+案Cを採用する。`# TODO: Refactor!!!` コメントを削除し、代わりに ADR-008 への参照コメントを残す。
+
+### 理由
+
+- 重複量が小さく（関数あたり ~15行）、抽象化のコストに比べてメリットが薄い
+- 当該 validation ロジックは安定しており、今後も頻繁に変更される見込みが低い
+- README や TODO.md で計画されている将来のアーキテクチャ見直しの中で、必要なら改めてリファクタリングすればよい
+
+### トレードオフ
+
+- 重複コードは残る。将来 validation ロジックに変更が入った場合、同一の修正を4関数に反映する必要がある
+- ただし同種の変更が入る頻度は低く、変更時も grep で漏れなく検出できる範囲の規模である
+
 ## ADR-007 `remove_unused_config` のバックアップ方式を維持する
 
 - **日付**: 2026-06-11

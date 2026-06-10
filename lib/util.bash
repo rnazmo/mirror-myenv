@@ -207,9 +207,6 @@ copy_file() {
 #
 # Example:
 #     copy_file "~/.myenv/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
-#
-# TODO:
-#     Refactor!!!
 copy_file_as_root() {
     local -r SRC_PATH=$1
     local -r DEST_PATH=$2
@@ -365,9 +362,6 @@ remove_file() {
 #
 # Example:
 #     remove_file_as_root "/etc/profile.d/fcitx.sh"
-#
-# TODO:
-#     Refactor!!!
 remove_file_as_root() {
     local -r TARGET_PATH="$1"
     if [[ ! -e "$TARGET_PATH" ]]; then
