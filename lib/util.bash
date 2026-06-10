@@ -35,6 +35,10 @@ check_if_command_exists() {
 #     unlink_symlink <PATH>
 unlink_symlink() {
     local -r TARGET_PATH=$1
+    if [[ ! -L "$TARGET_PATH" ]]; then
+        log_err "'$TARGET_PATH' is not a symbolic link."
+        return 1
+    fi
     unlink "$TARGET_PATH"
 }
 
