@@ -385,15 +385,27 @@ ADR に書くべき内容:
 
 ### コード・機能
 
-- [ ] tmux の設定の改善点を洗い出し，`TODO.md` に記載する
 - [ ] Alacritty の設定の改善点を洗い出し，`TODO.md` に記載する
 - [ ] Neovim, LazyVim の設定の改善点を洗い出し，`TODO.md` に記載する
 - [ ] Zsh, p10k の設定の改善点を洗い出し，`TODO.md` に記載する
+    - Ref:
+        - [あなたのzshは何ms？zsh-benchで測ってから起動高速化 | eiji.page](https://eiji.page/blog/zsh-fast-start/)
 - [ ] Git, LazyGit の設定の改善点を洗い出し，`TODO.md` に記載する
 - [ ] Zsh のエイリアスを整えたい
     - `l` で `ls` できないのが不便なので、それっぽいコマンドを l に割り振る
     - エイリアスの一覧と簡易解説のドキュメントも欲しい。 `docs/commands.md` などにまとめるのが良さそう。
 - [ ] いくつかのツールを追加する＆ワークフローに組み込む（yazi, ...）
+- [ ] tmux の設定の改善点を洗い出し，`TODO.md` に記載する
+    - Ref:
+        - [tmuxのPane/Window移動を少し便利にする – Portablecode.info](https://portablecode.info/2026/02/14/tmux-pane-window-move/)
+- [ ] tmux のクリップボード周りの設定を整える
+    - Ref:
+        - [tmuxのコピーモードを解説！チュートリアルとおすすめ設定 | eiji.page](https://eiji.page/blog/tmux-conf-copy-mode/)
+        - [Clipboard · tmux／tmux Wiki](https://github.com/tmux/tmux/wiki/Clipboard)
+- [ ] 開発ワークフロー自体の見直し
+    - Ref:
+        - [tmuxマルチセッション運用——AI時代を1キーバインドで乗り切る | eiji.page](https://eiji.page/blog/tmux-multi-sessions/)
+        - [AI時代のブランチ操作を最適化した――2026年5月 | eiji.page](https://eiji.page/blog/git-my-flow-2026-05/)
 
 ### テスト・CI
 
