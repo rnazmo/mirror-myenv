@@ -66,6 +66,7 @@ link_file() {
     fi
     if [[ -L "$SOURCE_FILE" ]]; then
         log_err "Source file '$SOURCE_FILE' is symbolic link. Must be a regular file."
+        return 1
     fi
     if [[ ! -f "$SOURCE_FILE" ]]; then
         log_err "Source file '$SOURCE_FILE' must be a regular file."
@@ -125,6 +126,7 @@ link_dir() {
     fi
     if [[ -L "$SOURCE_DIR" ]]; then
         log_err "Source directory '$SOURCE_DIR' is symbolic link. Must be a regular directory."
+        return 1
     fi
     if [[ ! -d "$SOURCE_DIR" ]]; then
         log_err "Source directory '$SOURCE_DIR' must be a regular directory."
