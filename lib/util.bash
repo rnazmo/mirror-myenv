@@ -347,7 +347,7 @@ remove_file() {
         : # do nothing
     elif [[ -f "$TARGET_PATH" ]]; then
         # the path is regular file
-        rm -f "$TARGET_PATH" "${TARGET_PATH}.old"
+        rm -f "$TARGET_PATH"
     else
         log_err "$TARGET_PATH is not regular file"
         return 1
