@@ -178,14 +178,19 @@ copy_file() {
     fi
     if [[ -L "$SRC_PATH" ]]; then
         log_err "Source file '$SRC_PATH' is symbolic link. Must be a regular file."
+        return 1
     fi
     if [[ ! -f "$SRC_PATH" ]]; then
         log_err "Source file '$SRC_PATH' must be a regular file."
         return 1
     fi
+    if [[ -e "$DEST_PATH" ]]; then
+        log_err "A file already exists at '$DEST_PATH'."
+        return 1
+    fi
 
     if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
-        log_info "Created diractory $TARGET_PARENT_DIR"
+        log_info "Created directory $TARGET_PARENT_DIR"
         mkdir -p "$TARGET_PARENT_DIR"
     fi
 
