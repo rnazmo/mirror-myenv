@@ -221,6 +221,7 @@ copy_file_as_root() {
     fi
     if [[ -L "$SRC_PATH" ]]; then
         log_err "Source file '$SRC_PATH' is symbolic link. Must be a regular file."
+        return 1
     fi
     if [[ ! -f "$SRC_PATH" ]]; then
         log_err "Source file '$SRC_PATH' must be a regular file."
