@@ -22,7 +22,7 @@ readonly -f pre_setup_extra
 # ======================================================
 
 setup_docker() {
-    sudo pacman -S docker docker-compose
+    sudo pacman -S --needed --noconfirm docker docker-compose
 }
 readonly -f setup_docker
 
