@@ -388,8 +388,14 @@ remove_file_as_root() {
 # Description:
 #     If the <target_path> is a symbolic link, remove it.
 #     If the <target_path> is a regular file or directory,
-#     move it to "<target_path>.old". (Note that "<target_path>.old"
-#     will be overwritten if it already exists.)
+#     move it to "<target_path>.old".
+#
+#     Purpose and behavior of .old files:
+#     - On the first run of myenv apply, existing user configs are
+#       backed up as .old as a safety net.
+#     - On subsequent runs, the target is already a symlink to myenv,
+#       so no .old file is created (overwrite risk is negligible).
+#     - See ADR-007 for details.
 #
 # Usage:
 #     remove_unused_config <target_path>
