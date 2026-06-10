@@ -154,3 +154,6 @@ zsh-defer source "${ZSH_PLUGINS_LOCAL_DIR}/zsh-history-substring-search/zsh-hist
 
 # zoxide
 eval "$(zoxide init zsh)"
+
+# opencode
+export PATH=/home/toor/.opencode/bin:$PATH
