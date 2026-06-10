@@ -224,8 +224,8 @@ copy_file_as_root() {
     fi
 
     if [[ ! -d "$TARGET_PARENT_DIR" ]]; then
-        log_info "Created diractory $TARGET_PARENT_DIR"
-        mkdir -p "$TARGET_PARENT_DIR"
+        log_info "Created directory $TARGET_PARENT_DIR"
+        sudo mkdir -p "$TARGET_PARENT_DIR"
     fi
 
     sudo cp "$SRC_PATH" "$DEST_PATH"
