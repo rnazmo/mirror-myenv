@@ -43,7 +43,7 @@ _setup_zsh_on_manjaro() {
 readonly -f _setup_zsh_on_manjaro
 
 setup_shell_on_manjaro() {
-    _setup_zsh
+    _setup_zsh_on_manjaro
     _setup_default_shell
 }
 readonly -f setup_shell_on_manjaro
