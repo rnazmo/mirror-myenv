@@ -31,6 +31,7 @@ parse_args() {
     HOST_NAME="$1"
     readonly HOST_NAME
 }
+readonly -f parse_args
 
 check_prerequisites() {
     if [ ! -d "$MYENV_ROOT" ]; then
@@ -38,6 +39,7 @@ check_prerequisites() {
         exit 1
     fi
 }
+readonly -f check_prerequisites
 
 main() {
     parse_args "$@"
@@ -49,5 +51,6 @@ main() {
 
     log_info "======== Completed all process successfully ========"
 }
+readonly -f main
 
 main "$@"
