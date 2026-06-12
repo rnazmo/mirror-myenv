@@ -2,6 +2,246 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-009 3層分離アーキテクチャへの移行
+
+- **日付**: 2026-06-12
+- **ステータス**: ドラフト（実装着手前に最終決定する）
+
+### コンテキスト
+
+プロジェクト myenv は OS ごとに設定環境をプロビジョニングする Bash スクリプト群である。v4.9.x 時点のアーキテクチャには以下の問題があった。
+
+**問題1: 環境中心の構造と人間の思考のミスマッチ**
+
+コードの構成単位が OS（`recipes/endeavouros_x64/`）中心になっている。しかし人間は「Neovim の設定を変えたい」のように機能中心で考える。機能のコードにたどり着くには `host → recipe → 1_base → setup_editor → _setup_neovim` という階層を頭の中でトレースする必要があった。
+
+**問題2: 1_base.bash の肥大化**
+
+`recipes/_arch_based_x64/1_base.bash` は 881 行に達し、シェル・端末・エディタ・IME・ブラウザ・デスクトップ設定がすべて混在していた。
+
+**問題3: source による暗黙の継承**
+
+`cachyos_x64/1_base.bash` が `_arch_based_x64/1_base.bash` を `source` し、一部の関数だけを上書きする構造。何が上書きされているかを追跡するのに全ファイルを読む必要があった。
+
+**問題4: 2軸問題の未解決**
+
+```
+         shell  editor  terminal  ime  desktop
+arch       ○      ○       ○       ○      ○
+cachyos    ○      ○       ○       ○      ○
+manjaro    ○      ○       ○       ○      ○
+```
+
+「機能 × OS」の 2 軸があり、どちらかの軸に寄せると必ずもう一方の軸の情報が散らばる。唯一の解決は両軸を完全に分離し、間に抽象層を置く設計である。
+
+**問題5: OS 差分の扱いがアドホック**
+
+CachyOS では p10k インストール前に `cachyos-zsh-config` を削除する必要がある。現在は `setup_shell_on_cachyos` という特殊関数名を作り、ホスト側で `setup_shell` の代わりに呼び出すことで対応している。この方法は OS が増えるたびに特殊関数名が増殖し、スケールしない。
+
+### 検討した代替案
+
+**ツールレベルの代替案（不採用）:**
+
+- **chezmoi**: dotfiles 管理に特化。独自フォーマットの習得コストと、インストール処理を多量に書く用途とのミスマッチ
+- **mitamae**: Ruby 製。ドキュメント不足
+- **Ansible**: 遅い
+- **Nix / Home Manager**: 学習コストが高い。現在も有力な候補だが、先に Bash で設計を整理する方を選んだ
+
+**設計レベルの代替案:**
+
+- **機能ファイル内でOS分岐**: `if [ "$OS" = "cachyos" ]; then ...` の羅列になる。OS追加時に全ファイルを修正する必要がある（不採用）
+- **現状維持**: OSファイルに機能コードが散らばったまま（不採用）
+
+### 決定した設計: 3層分離
+
+#### ディレクトリ構造
+
+```
+myenv/
+├── lib/
+│   ├── util.bash               # ユーティリティ関数（変更なし）
+│   └── platform.bash           # ★新規: 全フックのデフォルト実装（no-op）
+│
+├── components/                 # ★新規: 「何をするか」だけを知る。OS知識ゼロ
+│   ├── core.bash               # Git, yay, mise, aqua, ミラー更新, 各種言語
+│   ├── shell.bash
+│   ├── editor.bash
+│   ├── terminal.bash
+│   ├── ime.bash
+│   ├── desktop.bash
+│   ├── util.bash
+│   └── devel.bash
+│
+├── platforms/                  # ★新規: 「OSの差分」だけを知る。機能の中身は知らない
+│   ├── arch.bash               # Arch 系共通の差分（差分がない関数はデフォルトのまま）
+│   ├── cachyos.bash            # CachyOS 固有の差分（arch.bash を source）
+│   ├── manjaro.bash
+│   ├── endeavouros.bash
+│   ├── debian.bash             # Debian 系（今後の対応）
+│   └── darwin.bash             # macOS（今後の対応）
+│
+├── hosts/
+│   ├── udon/setup.bash         # 組み合わせを宣言するだけ
+│   └── soba/setup.bash
+│
+└── recipes/                    # 移行完了後に削除
+```
+
+#### 3層の役割と依存関係
+
+```
+hosts/udon/setup.bash
+  ├── source lib/platform.bash       # デフォルト（no-op）を読み込み
+  ├── source platforms/arch.bash     # OS固有フックで上書き
+  ├── source platforms/endeavouros.bash  # さらに差分を上書き（必要な場合）
+  └── source components/*.bash       # 機能を読み込む
+        └── platform_*() を呼ぶ      # フック経由で OS に委譲
+```
+
+各層の責務:
+
+- **`lib/platform.bash`**: 全フックのデフォルト実装（`{ :; }` = 何もしない）。「特別な処理がなければ何もしない」が保証される
+- **`platforms/*.bash`**: OS 固有の差分だけを書く。継承元（例: `arch.bash`）を source したうえで、異なる部分だけフック関数をオーバーライドする
+- **`components/*.bash`**: OS を一切知らない。`platform_*` 関数を呼ぶだけで、実装はロードされた platform ファイルが決める
+- **`hosts/*/setup.bash`**: どの platform を使うかを宣言し、コンポーネントを並べて呼ぶだけ
+
+#### フック命名規則
+
+`platform_{タイミング}_{対象}` 形式を採用する。
+
+| フック | 例 | 説明 |
+|---|---|---|
+| インストール | `platform_install_p10k` | 対象ソフトウェアのインストール全体 |
+| インストール前 | `platform_pre_install_p10k` | インストール前に必要な処理（競合パッケージ削除など） |
+| インストール後 | `platform_post_install_p10k` | インストール後に必要な処理 |
+| 更新 | `platform_refresh_packages` | パッケージデータベースの更新（pacman -Syu / apt upgrade / brew upgrade） |
+
+#### パッケージインストールの抽象化方針: A案（ソフトウェアレベルフック）
+
+- **採用: A案（ソフトウェアレベルフック）**
+- **却下・バックログ入り: C案（プリミティブ＋ソフトウェアレベルフックの併用）**
+
+A案では、すべてのパッケージインストールに対して個別の `platform_install_{対象}` フックを定義する。これにより、OS 間でインストール手順が大きく異なるソフトウェア（p10k は Arch→AUR, Debian→git clone）にも柔軟に対応できる。
+
+```bash
+# components/shell.bash（OSを知らない）
+_setup_zsh_theme() {
+    platform_pre_install_p10k      # OSに「準備ある？」と委譲
+    platform_install_p10k          # OSに「インストールして」と委譲
+    platform_post_install_p10k     # OSに「後処理ある？」と委譲
+}
+```
+
+```bash
+# platforms/arch.bash（Arch 系の実装）
+# platform_pre_install_p10k → デフォルト（no-op）のまま
+platform_install_p10k() {
+    yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
+}
+# platform_post_install_p10k → デフォルト（no-op）のまま
+```
+
+```bash
+# platforms/cachyos.bash（cachyos の差分）
+source "${MYENV_ROOT}/platforms/arch.bash"
+
+platform_pre_install_p10k() {
+    local -r pkgs=("cachyos-zsh-config" "zsh-theme-powerlevel10k")
+    for pkg in "${pkgs[@]}"; do
+        pacman -Qi "$pkg" &>/dev/null && yay -Rns --noconfirm "$pkg" || true
+    done
+}
+# platform_install_p10k → arch.bash の実装が使われる（継承）
+# platform_post_install_p10k → デフォルト（no-op）のまま
+```
+
+```bash
+# platforms/debian.bash（将来の Debian 対応）
+platform_install_zsh() { sudo apt install -y zsh; }
+platform_install_p10k() {
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+        "${HOME}/.config/zsh/plugins.local/powerlevel10k"
+}
+# platform_pre_install_p10k, platform_post_install_p10k → デフォルト（no-op）のまま
+```
+
+**A案を選んだ理由:**
+1. シンプルなメンタルモデル: すべてのインストールが `platform_install_xxx` で統一される
+2. 移行の容易さ: 現状のインストール関数（`__install_zsh` など）をそのまま `platform_install_zsh` にリネームするだけで移行できる
+3. OS 間のインストール手順の差異（パッケージ名の不一致、パッケージマネージャーの違い、ビルド手順の有無）を個別に吸収できる
+4. `platform_install_pkg` のようなプリミティブと個別フックの併用（C案）は「なぜこれは個別フックなのか」という認知負荷が常に伴うため、メンテナンスに不向き
+
+**C案を却下した理由（バックログに保持）:**
+- platform ファイルの記述量削減というメリットはあるが、新規 OS 追加時に関数が2〜3個で済むか30個になるかの差でしかなく、絶対的な作業量の差は小さい
+- A案から C案への移行（単純ラッパーの削除）は機械的に可能だが、C案から A案への移行は困難。リスクの低い A案を先に選ぶ
+
+#### platforms/ 内の継承構造
+
+`platforms/` 内で継承構造を持つ。`cachyos.bash` が `arch.bash` を source し、差分だけを上書きする。上位層は `lib/platform.bash`（全プラットフォーム共通のデフォルト）とする。
+
+```
+lib/platform.bash（デフォルトno-op）
+  └── platforms/arch.bash（Arch 系共通）
+        ├── platforms/cachyos.bash（CachyOS 固有）
+        ├── platforms/manjaro.bash
+        └── platforms/endeavouros.bash
+  └── platforms/debian.bash（Debian 系共通。独立した階層）
+  └── platforms/darwin.bash（macOS。独立した階層）
+```
+
+`_base` 的な中間層は設けない。`lib/platform.bash` が全プラットフォームの唯一の基点となる。
+
+#### ホストごとのオン・オフ
+
+ホストごとに「どの機能をセットアップするか」の選択は、`hosts/*/setup.bash` 内で呼ぶ関数を取捨選択することで実現する。変数による制御や関数の動的上書きは採用しない（暗黙の依存が増え、読みにくくなるため）。
+
+```bash
+# hosts/soba/setup.bash
+main() {
+    setup_shell      # 呼ぶ
+    setup_editor     # 呼ぶ
+    # setup_ime     ← コメントアウト = このホストではスキップ
+    setup_terminal   # 呼ぶ
+    setup_desktop    # 呼ぶ
+}
+```
+
+#### core 相当の処理
+
+現状の `0_core.bash`（ミラー更新、Git、AUR helper、mise、言語インストールなど）は `components/core.bash` として独立させる。OS 固有部分（ミラー更新・AUR helper）はフック機構で吸収し、OS 横断の処理（Git・mise・言語インストールなど）は `components/core.bash` に直接書く。
+
+#### 複数 OS 対応の射程
+
+v4.10.0 のアーキテクチャ見直しは以下を想定範囲とする:
+- **Arch 系**: Arch Linux, EndeavourOS, CachyOS, Manjaro
+- **Debian 系**: Kali Linux, Ubuntu
+- **Darwin 系**: macOS
+
+言語ランタイム（Go, Node.js など）の導入は `_install_golang` などの言語単位の入口を維持し、backend は mise に一本化する。mise 自体のインストール方法の OS 差分はフック（`platform_install_mise` など）で吸収する。
+
+#### 移行戦略
+
+**一括置き換え**を採用する。`recipes/` を残したまま `components/` と `platforms/` を新規作成する段階的移行は、移行期間中に新旧が混在して混乱するため採用しない。
+
+コミットは機能単位に細かく切りながら進める（例: `core` → `shell` → `editor` → `terminal` → …）。全ての機能の移行が完了したら `recipes/` ディレクトリを丸ごと削除する。
+
+### トレードオフ
+
+- **移行コスト**: ファイル数・行数ともに大幅な変更になる。現状の動作を壊さないよう慎重なテストが必要
+- **Bash の限界**: 型安全でない、IDEサポートが貧弱、などの Bash 自体の制約は解消されない
+- **platform ファイルの単調さ**: A案では単純な `pacman -S` ラッパーが多数含まれる。ただし各関数の実装は1行で自明
+- **新規 OS 追加時のコスト**: A案では各パッケージに対応する `platform_install_xxx` をすべて実装する必要がある。大半は単純なラッパーだが、数は増える
+- **Nix への移行可能性**: 今後の有力な選択肢として残る。本設計は Bash の整理に留まっており、Nix への置き換えを妨げない
+
+### 今後の検討事項
+
+- **C案への移行**: platform ファイルの単調さが許容できなくなった場合、単純ラッパーを削除し `platform_install_pkg` プリミティブに統合する C案への移行を検討する（A→Cは機械的に可能）
+- **システム更新プリミティブ**: `platform_refresh_packages`（pacman -Syu / apt upgrade / brew upgrade）のような OS 横断のシステム更新フックの追加
+- **mise global config の責務**: 現在は現状維持。v4.10.0 の移行完了後に改めて検討
+- **mise 管理ツールのバージョン固定方針**: 現在は `latest` を使用。固定する場合は config.toml の管理方法と合わせて検討
+- **myenv コマンド再設計**: `myenv apply` / `myenv bump` の責務整理（v4.X.0 別マイルストーン）
+- **テストの導入**: `lib/util.bash` のユニットテストから段階的に導入
+
 ## ADR-008 `copy_file` / `copy_file_as_root` / `remove_file` / `remove_file_as_root` の重複を許容する
 
 - **日付**: 2026-06-11
