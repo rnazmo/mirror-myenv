@@ -206,6 +206,20 @@ main() {
 }
 ```
 
+#### エントリポイントと readonly のルール
+
+プロジェクト内の Bash ファイルは、その使われ方に応じて以下の3種類に分類する。
+
+| カテゴリ | 例 | `main` を持つか | `readonly -f` すべきか |
+|---|---|---|---|
+| **純ライブラリ** | `lib/`, `components/*.bash`, `platforms/*.bash` | 持たない | 全関数を readonly（誤上書き防止） |
+| **スタンドアロンスクリプト** | `init.bash`, `devel-tools/script/*.bash` | 持つ | `main` を readonly にしてもよい（誰も source しないため） |
+| **source 連鎖するエントリポイント** | `setup.bash` → `hosts/*/setup.bash` | 両方とも持つ | `main` は readonly にしない（source 先でも同名関数を定義するため） |
+
+`main` はプロジェクト全体で統一されたエントリポイント名とする。ただし source 連鎖が発生するファイル間では `readonly -f main` を付与しない。これにより「ファイルの実行は必ず `main` で行われる」という命名規則と「base 実装は readonly で保護する」というルールの両立を図る。
+
+`readonly -f` は純ライブラリカテゴリのファイルで積極的に使い、定義した関数が利用側で誤って上書きされるのを防ぐ。エントリポイントカテゴリでも `main` 以外の内部関数（`parse_args`, `check_prerequisites` など）は readonly にしてよい。
+
 #### core 相当の処理
 
 現状の `0_core.bash`（ミラー更新、Git、AUR helper、mise、言語インストールなど）は `components/core.bash` として独立させる。OS 固有部分（ミラー更新・AUR helper）はフック機構で吸収し、OS 横断の処理（Git・mise・言語インストールなど）は `components/core.bash` に直接書く。

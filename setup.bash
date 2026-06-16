@@ -51,6 +51,5 @@ main() {
 
     log_info "======== Completed all process successfully ========"
 }
-readonly -f main
 
 main "$@"
