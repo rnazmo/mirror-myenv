@@ -113,7 +113,7 @@ hosts/soba/setup.bash
 - **`platforms/1_families/*.bash`**: OS ファミリ（Arch 系 / Debian 系 / Darwin 系）共通の差分だけを書く
 - **`platforms/2_distros/*.bash`**: ディストロ固有の差分だけを書く。親ファイルは source せず、host 側が明示的に chain を構成する
 - **`components/*.bash`**: OS を一切知らない。`platform_*` 関数を呼ぶだけで、実装はロードされた platform ファイルが決める
-- **`hosts/*/setup.bash`**: どの platform を使うかを宣言し、明示的な source 順で chain を構成する。コンポーネントを並べて呼ぶだけ
+- **`hosts/*/setup_new.bash`**: どの platform を使うかを宣言し、明示的な source 順で chain を構成する。ソフトウェア単位の `setup_*` 関数を並べて呼ぶだけ。`core` に限り便利関数 `setup_core` も利用可能
 
 #### フック命名規則
 
@@ -221,11 +221,20 @@ platform_install_p10k() {
 ```bash
 # hosts/soba/setup.bash
 main() {
-    setup_shell      # 呼ぶ
-    setup_editor     # 呼ぶ
-    # setup_ime     ← コメントアウト = このホストではスキップ
-    setup_terminal   # 呼ぶ
-    setup_desktop    # 呼ぶ
+    setup_core           # 便利関数: git + aur + mise + aqua + languages + directories
+
+    setup_zsh            # 呼ぶ
+    setup_p10k           # 呼ぶ
+    setup_default_shell  # 呼ぶ
+
+    setup_alacritty      # 呼ぶ
+    # setup_wezterm     ← コメントアウト = このホストではスキップ
+    setup_tmux           # 呼ぶ
+
+    setup_neovim         # 呼ぶ
+
+    # setup_fcitx5_mozc ← コメントアウト = このホストではスキップ
+    # setup_xfce4       ← コメントアウト = このホストではスキップ
 }
 ```
 
@@ -265,20 +274,22 @@ v4.10.0 のアーキテクチャ見直しは以下を想定範囲とする:
 #### コンポーネント分割
 
 既存の `recipes/_arch_based_x64/{0_core,1_base,2_extra}.bash` を以下のコンポーネントに分割する。
+各コンポーネントはソフトウェア単位の公開関数（`setup_<software>`）を提供し、ホスト側でそれらを明示的に組み合わせる。
+`core` に限りソフトウェア単位の関数に加えて `setup_core` を便利関数として提供する（依存関係が強く順序ミスを防ぐため）。
 
-| コンポーネント | 内容 | 元のファイル | 概算行数 |
+| コンポーネント | 公開関数 | 元のファイル | 概算行数 |
 |---|---|---|---|
-| `core` | ミラー更新, Git, yay, mise, aqua, 言語, ディレクトリ | `0_core.bash` | ~400 |
-| `shell` | zsh, p10k, 補完, キーバインド, プラグイン | `1_base.bash` の Shell 節 | ~130 |
-| `terminal` | Alacritty, WezTerm | `1_base.bash` の Terminal 節 | ~50 |
-| `multiplexer` | tmux | `1_base.bash` の Multiplexer 節 | ~75 |
-| `editor` | Neovim, editorconfig | `1_base.bash` の Editor 節 | ~90 |
-| `devel` | 各種 linter/formatter, lazygit | `1_base.bash` の Devel 節 | ~50 |
-| `ime` | fcitx5/mozc, fcitx4/mozc | `1_base.bash` の IME 節 | ~110 |
-| `util` | tree/fzf/eza 等 CLI, yazi, fastfetch, proper7y | `1_base.bash` の Util 節 | ~60 |
-| `desktop` | Xfce4 panel, キーバインド, screensaver, thunar | `1_base.bash` の Desktop 節 | ~80 |
-| `browser` | Chromium, Firefox | `1_base.bash` の Browser 節 | ~80 |
-| `extra` | Docker, VirtualBox, VSCode, Obsidian | `2_extra.bash` | ~90 |
+| `core` | `setup_git`, `setup_aur_helper`, `setup_mise`, `setup_aqua`, `setup_golang`, `setup_nodejs`, `setup_directories`, `setup_core`（便利関数） | `0_core.bash` | ~400 |
+| `shell` | `setup_zsh`, `setup_p10k`, `setup_default_shell` | `1_base.bash` の Shell 節 | ~130 |
+| `terminal` | `setup_alacritty`, `setup_wezterm` | `1_base.bash` の Terminal 節 | ~50 |
+| `multiplexer` | `setup_tmux` | `1_base.bash` の Multiplexer 節 | ~75 |
+| `editor` | `setup_neovim`, `setup_editorconfig` | `1_base.bash` の Editor 節 | ~90 |
+| `devel` | `setup_devel_tools`, `setup_lazygit` | `1_base.bash` の Devel 節 | ~50 |
+| `ime` | `setup_fcitx5_mozc` | `1_base.bash` の IME 節 | ~110 |
+| `util` | `setup_util_clis`, `setup_fastfetch`, `setup_yazi`, `setup_proper7y` | `1_base.bash` の Util 節 | ~60 |
+| `desktop` | `setup_xfce4` | `1_base.bash` の Desktop 節 | ~80 |
+| `browser` | `setup_chromium`, `setup_chrome`, `setup_firefox` | `1_base.bash` の Browser 節 | ~80 |
+| `extra` | `setup_docker`, `setup_virtualbox`, `setup_virtualbox_guest`, `setup_vscode`, `setup_obsidian` | `2_extra.bash` | ~90 |
 
 #### platform hook 一覧
 

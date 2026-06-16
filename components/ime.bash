@@ -3,6 +3,6 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-setup_ime() {
-    : # Phase 2: fcitx5/mozc
+setup_fcitx5_mozc() {
+    : # Phase 2: platform_install_fcitx5_mozc + config + /etc/profile.d
 }

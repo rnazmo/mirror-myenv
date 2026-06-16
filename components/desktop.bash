@@ -3,6 +3,6 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-setup_desktop() {
-    : # Phase 2: Xfce4 panel, キーバインド, screensaver, thunar
+setup_xfce4() {
+    : # Phase 2: panel + keybindings + screensaver + thunar
 }

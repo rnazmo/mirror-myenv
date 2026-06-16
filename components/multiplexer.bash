@@ -3,6 +3,6 @@ set -eu
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-setup_multiplexer() {
-    : # Phase 2: tmux
+setup_tmux() {
+    : # Phase 2: platform_install_tmux + config + theme
 }
