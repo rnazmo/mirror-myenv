@@ -15,8 +15,9 @@
 ブランチ `feat/3-layer-architecture` で実施。main へのマージは全フェーズ完了後。
 
 - **Phase 1: 骨格**
-  - [ ] `lib/platform.bash` の作成（全hook の no-op 実装）
-  - [ ] `platforms/{arch,cachyos,endeavouros,manjaro}.bash` の作成（空の上書き）
+  - [ ] `platforms/0_common/default.bash` の作成（全hook の no-op 実装）
+  - [ ] `platforms/1_families/{arch_based,debian_based,darwin_based}.bash` の作成（空の上書き）
+  - [ ] `platforms/2_distros/{arch_linux,cachyos,endeavouros,manjaro,debian,ubuntu,kali,macos}.bash` の作成（空の上書き）
   - [ ] `components/{core,shell,util,terminal,multiplexer,editor,devel,ime,desktop,browser,extra}.bash` の作成（setup_* スタブ）
   - [ ] `hosts/{udon,soba}/setup_new.bash` の作成
   - [ ] `setup_new.bash` の作成
