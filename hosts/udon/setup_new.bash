@@ -39,3 +39,5 @@ main() {
 
     log_info "Completed setup for udon (EndeavourOS)"
 }
+
+main
