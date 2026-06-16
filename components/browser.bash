@@ -4,13 +4,22 @@ set -eu
 source "${MYENV_ROOT}/lib/util.bash"
 
 setup_chromium() {
-    : # Phase 2: platform_install_chromium
+    platform_install_chromium
 }
+readonly -f setup_chromium
 
 setup_chrome() {
-    : # Phase 2: yay -S google-chrome
+    platform_install_chrome
 }
+readonly -f setup_chrome
 
 setup_firefox() {
-    : # Phase 2: platform_install_firefox
+    platform_install_firefox
+    _setup_firefox_extensions
 }
+readonly -f setup_firefox
+
+_setup_firefox_extensions() {
+    sudo pacman -S --needed --noconfirm firefox-ublock-origin
+}
+readonly -f _setup_firefox_extensions

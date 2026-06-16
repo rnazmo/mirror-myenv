@@ -251,3 +251,82 @@ readonly -f platform_install_typos
 
 platform_install_lazygit()             { sudo pacman -S --needed --noconfirm lazygit; }
 readonly -f platform_install_lazygit
+
+# ======================================================
+# ===== terminal ========================================
+# ======================================================
+
+platform_install_alacritty()   { sudo pacman -S --needed --noconfirm alacritty; }
+readonly -f platform_install_alacritty
+
+platform_install_wezterm()     { sudo pacman -S --needed --noconfirm wezterm; }
+readonly -f platform_install_wezterm
+
+# ======================================================
+# ===== multiplexer =====================================
+# ======================================================
+
+platform_install_tmux()        { sudo pacman -S --needed --noconfirm tmux; }
+readonly -f platform_install_tmux
+
+# ======================================================
+# ===== editor ==========================================
+# ======================================================
+
+platform_install_neovim()      { sudo pacman -S --needed --noconfirm neovim; }
+readonly -f platform_install_neovim
+
+# ======================================================
+# ===== ime =============================================
+# ======================================================
+
+platform_install_fcitx5_mozc() {
+    local PKGS=("fcitx-mozc" "fcitx-configtool" "fcitx-qt5" "fcitx")
+    for PKG in "${PKGS[@]}"; do
+        if pacman -Qi "$PKG" &>/dev/null; then
+            sudo pacman -Rns --noconfirm "$PKG"
+        fi
+    done
+    unset PKGS
+
+    sudo pacman -S --needed --noconfirm fcitx5-mozc fcitx5-im
+}
+readonly -f platform_install_fcitx5_mozc
+
+# ======================================================
+# ===== desktop =========================================
+# ======================================================
+
+platform_install_xfce4_systemload() { sudo pacman -S --needed --noconfirm xfce4-systemload-plugin; }
+readonly -f platform_install_xfce4_systemload
+
+# ======================================================
+# ===== browser =========================================
+# ======================================================
+
+platform_install_chromium()    { sudo pacman -S --needed --noconfirm chromium; }
+readonly -f platform_install_chromium
+
+platform_install_firefox()     { sudo pacman -S --needed --noconfirm firefox; }
+readonly -f platform_install_firefox
+
+# ======================================================
+# ===== extra ===========================================
+# ======================================================
+
+platform_install_docker()             { sudo pacman -S --needed --noconfirm docker docker-compose; }
+readonly -f platform_install_docker
+
+platform_install_virtualbox()         { sudo pacman -S --needed virtualbox virtualbox-host-modules-arch virtualbox-guest-iso; }
+readonly -f platform_install_virtualbox
+
+platform_install_virtualbox_guest()   { sudo pacman -S --needed virtualbox-guest-utils; }
+readonly -f platform_install_virtualbox_guest
+
+platform_install_vscode() {
+    yay -S --needed --noconfirm visual-studio-code-bin
+}
+readonly -f platform_install_vscode
+
+platform_install_obsidian()           { sudo pacman -S --needed obsidian; }
+readonly -f platform_install_obsidian
