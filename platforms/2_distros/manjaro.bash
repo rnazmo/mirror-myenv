@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 set -eu
 
-# Manjaro 固有の platform hook 実装。
-
 source "${MYENV_ROOT}/lib/util.bash"
 
 platform_pre_install_p10k() {
-    : # Phase 2: manjaro-zsh-config の削除
+    local -r MANJARO_ZSH_CONFIG_PKG="manjaro-zsh-config"
+    if yay -Qi "$MANJARO_ZSH_CONFIG_PKG" &>/dev/null; then
+        yay -Rns --noconfirm "$MANJARO_ZSH_CONFIG_PKG"
+    fi
 }
+readonly -f platform_pre_install_p10k

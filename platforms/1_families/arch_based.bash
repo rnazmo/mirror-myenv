@@ -151,6 +151,25 @@ platform_install_mise() {
 readonly -f platform_install_mise
 
 # ======================================================
+# ===== shell ===========================================
+# ======================================================
+
+platform_install_zsh() {
+    sudo pacman -S --needed --noconfirm zsh
+}
+readonly -f platform_install_zsh
+
+platform_install_p10k() {
+    if pacman -Qi zsh-theme-powerlevel10k-git &>/dev/null; then
+        log_info "powerlevel10k is already installed. Skipping."
+        return 0
+    fi
+
+    yay -S --needed --noconfirm zsh-theme-powerlevel10k-git
+}
+readonly -f platform_install_p10k
+
+# ======================================================
 # ===== util ============================================
 # ======================================================
 
