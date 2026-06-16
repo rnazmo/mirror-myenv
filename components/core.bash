@@ -72,17 +72,35 @@ setup_aqua() {
 readonly -f setup_aqua
 
 _install_aqua() {
-    if ! check_if_command_exists "aqua"; then
-        local -r ORIGINAL_DIR="$(pwd)"
-        cd "$(mktemp -d)"
-
-        curl -sSfL -O https://raw.githubusercontent.com/aquaproj/aqua-installer/v3.0.1/aqua-installer
-        echo "fb4b3b7d026e5aba1fc478c268e8fbd653e01404c8a8c6284fdba88ae62eda6a  aqua-installer" | sha256sum -c
-        chmod +x aqua-installer
-        ./aqua-installer
-
-        cd "$ORIGINAL_DIR"
+    if check_if_command_exists "aqua"; then
+        link_file "${MYENV_ROOT}/config/home/.config/aquaproj-aqua/aqua.yaml" "${HOME}/.config/aquaproj-aqua/aqua.yaml"
+        return 0
     fi
+
+    local -r AQUA_VERSION="v2.27.4"
+    local -r OS="linux"
+    local -r ARCH="amd64"
+    local -r FILENAME="aqua_${OS}_${ARCH}.tar.gz"
+    local -r URL="https://github.com/aquaproj/aqua/releases/download/${AQUA_VERSION}/${FILENAME}"
+
+    local -r CHECKSUMS_LINUX_AMD64="0e6be7a87a5466fe3b236e1909904b0407a5d8b5ce3035f1f5a108ff8f3869e8"
+    local -r AQUA_BIN_DIR="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-${HOME}/.local/share}/aquaproj-aqua}/bin"
+
+    local -r TMP_DIR="$(mktemp -d)"
+    (
+        cd "$TMP_DIR"
+
+        curl -sSfL -O "$URL"
+        echo "${CHECKSUMS_LINUX_AMD64}  ${FILENAME}" | sha256sum -c
+
+        tar xzf "$FILENAME"
+        chmod a+x aqua
+
+        mkdir -p "$AQUA_BIN_DIR"
+        mv aqua "$AQUA_BIN_DIR/"
+    )
+    rm -rf "$TMP_DIR"
+
     link_file "${MYENV_ROOT}/config/home/.config/aquaproj-aqua/aqua.yaml" "${HOME}/.config/aquaproj-aqua/aqua.yaml"
 }
 readonly -f _install_aqua
