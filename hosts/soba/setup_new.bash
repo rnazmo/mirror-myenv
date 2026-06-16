@@ -22,8 +22,10 @@ source "${MYENV_ROOT}/components/desktop.bash"
 source "${MYENV_ROOT}/components/browser.bash"
 source "${MYENV_ROOT}/components/extra.bash"
 
+readonly HOST_LABEL="soba (CachyOS)"
+
 main() {
-    log_info "Starting setup for soba (CachyOS)"
+    log_info "Starting setup for ${HOST_LABEL}"
 
     setup_core
 
@@ -53,7 +55,7 @@ main() {
     setup_chromium
     setup_firefox
 
-    log_info "Completed setup for soba (CachyOS)"
+    log_info "Completed setup for ${HOST_LABEL}"
 }
 
 main

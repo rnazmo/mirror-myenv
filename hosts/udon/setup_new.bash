@@ -22,8 +22,10 @@ source "${MYENV_ROOT}/components/desktop.bash"
 source "${MYENV_ROOT}/components/browser.bash"
 source "${MYENV_ROOT}/components/extra.bash"
 
+readonly HOST_LABEL="udon (EndeavourOS)"
+
 main() {
-    log_info "Starting setup for udon (EndeavourOS)"
+    log_info "Starting setup for ${HOST_LABEL}"
 
     setup_core
 
@@ -55,7 +57,7 @@ main() {
 
     setup_virtualbox_guest
 
-    log_info "Completed setup for udon (EndeavourOS)"
+    log_info "Completed setup for ${HOST_LABEL}"
 }
 
 main
