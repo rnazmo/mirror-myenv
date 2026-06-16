@@ -2,6 +2,76 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-010 言語・ツール選定の理由
+
+- **日付**: 2026-06-17（記録作成日。決定自体はプロジェクト開始時）
+- **ステータス**: 記録（過去の技術選定の理由を事後的に文書化したもの）
+
+### コンテキスト
+
+プロジェクト myenv は Bash で書かれている。Bash は汎用プログラミング言語（Go など）や宣言的環境管理（Nix など）と比較すると、型安全性・IDE サポート・エラーハンドリング・テスタビリティの面で見劣りする。それにもかかわらずこのプロジェクトが Bash を採用しているのには、言語機能の優劣とは別の理由がある。その理由を明文化し、将来の技術選定の判断材料として記録する。
+
+### 検討した代替案（暗黙的）
+
+以下の選択肢はプロジェクトの歴史上、常に「ありうる選択肢」として存在していたが、これまで意識的な検討は行われてこなかった。
+本 ADR はその検討を事後的に記録する。
+
+**案A: Bash 継続（現状）**
+
+プロジェクトを Bash で書き続ける。OS のパッケージ管理や設定ファイルの操作を、シェルスクリプトの形で直接記述する。
+
+**案B: Go への書き換え**
+
+バイナリ1つで動く高速なプロビジョニングツールに書き換える。型安全・クロスコンパイル・テストの書きやすさなどの恩恵が得られる。
+私も Go には慣れており、書き換えの障壁は低い。
+ただし「処理の記述」が Go の言語仕様（変数宣言・エラーハンドリング・ビルド手順など）のノイズを伴う。
+
+**案C: Nix / Home Manager への移行**
+
+宣言的な環境管理を導入する。再現性・ロールバック・依存関係管理は最も優れている。
+ただし学習コストが高く、ファイル構成や記法が独特であり、プロジェクトの精神である「だいたい動けば十分」と相反する。
+
+### 決定
+
+案A（Bash 継続）を採る。これはプロジェクト開始時からの暗黙の選択であり、本 ADR はその理由を明文化するものである。
+
+### 理由
+
+Bash の最大の強みは、**「処理の記述がコマンドラインから叩く生の操作に近い」** ことにある。
+
+```bash
+# Bash: ほぼそのままコマンドラインで打つ操作
+pacman -S --needed --noconfirm neovim
+ln -sf "${MYENV_ROOT}/config/home/.config/nvim" "${HOME}/.config/nvim"
+```
+
+このコードを読むことは、**自分がターミナルで打つ操作をシミュレートすること**とほぼ等しい。
+スクリプトの実行フローを頭で追うときに、「ああ、これは pacman で neovim を入れて、設定を symlink してるんだな」と、
+コマンドの意味がそのまま理解できる。
+
+この性質がもたらすもの:
+
+1. **可読性 = 操作の追跡可能性**: コードを読むことが「何が起きるか」の予測と一致する。余計な抽象化レイヤを通過する必要がない
+2. **デバッグの容易さ**: スクリプトが失敗したとき、問題の箇所をそのままコマンドラインにコピーして単体実行できる。「スクリプトの中のこの行がおかしい」が「このコマンドがおかしい」に直結する
+3. **段階的な記述が可能**: コマンドラインで試して通った操作を、そのままスクリプトにコピー&ペーストできる。試行錯誤のサイクルが短い
+
+Go や Nix と比較する:
+
+- **Go**: 型安全で IDE サポートは充実しているが、`exec.Command("pacman", "-S", "--noconfirm", "neovim")` のような記述は、コマンドラインの操作との間に乖離がある。コードを読むときに「この exec は何を実行するのか」を脳内でデコードする必要が生じる
+- **Nix**: 宣言的な記述は再現性に優れるが、Nix 言語の記法と実際の OS 操作の間に大きな隔たりがある。`environment.systemPackages = [ pkgs.neovim ]` が具体的にどのような OS 操作に対応するかは、Nix のビルド機構の知識なしには理解できない
+
+### トレードオフ
+
+- Bash の言語的限界（型安全・IDE サポート・テスト容易性など）は受け入れる。これらは Go や Nix と比較して明らかな弱点である
+- 複雑なロジック（バリデーション、制御フローの深い分岐、データ変換など）が必要な処理は、Bash で書かずに外部ツール（Go 製 CLI や専門の言語）に委ねる方針と組み合わせる
+- Bash の可読性が最大限発揮されるのは「コマンドライン操作の自動化」というスコープに限定される。このスコープを超えた処理ではむしろ可読性が急激に下がる
+
+### 今後の検討事項
+
+- **スコープの拡大**: Bash で書くのが明らかに不適切な粒度の処理（複雑なバリデーション、状態管理など）が出てきた場合、Go や Ruby など別言語での実装を一部導入する可能性を検討する
+- **Nix への移行**: ADR-009 でも触れた通り、Nix/Home Manager は今後の有力な選択肢として残る。Bash の可読性のメリットより再現性・宣言性のメリットが上回ると判断した時点で、移行を改めて検討する
+- **本 ADR の更新**: 言語選定の理由に変化があった場合は本 ADR を更新する
+
 ## ADR-009 3層分離アーキテクチャへの移行
 
 - **日付**: 2026-06-12
@@ -131,12 +201,12 @@ setup.bash
 
 `platform_{タイミング}_{対象}` 形式を採用する。
 
-| フック | 例 | 説明 |
-|---|---|---|
-| インストール | `platform_install_p10k` | 対象ソフトウェアのインストール全体 |
-| インストール前 | `platform_pre_install_p10k` | インストール前に必要な処理（競合パッケージ削除など） |
-| インストール後 | `platform_post_install_p10k` | インストール後に必要な処理 |
-| 更新 | `platform_refresh_packages` | パッケージデータベースの更新（pacman -Syu / apt upgrade / brew upgrade） |
+| フック         | 例                           | 説明                                                                     |
+| -------------- | ---------------------------- | ------------------------------------------------------------------------ |
+| インストール   | `platform_install_p10k`      | 対象ソフトウェアのインストール全体                                       |
+| インストール前 | `platform_pre_install_p10k`  | インストール前に必要な処理（競合パッケージ削除など）                     |
+| インストール後 | `platform_post_install_p10k` | インストール後に必要な処理                                               |
+| 更新           | `platform_refresh_packages`  | パッケージデータベースの更新（pacman -Syu / apt upgrade / brew upgrade） |
 
 #### パッケージインストールの抽象化方針: A案（ソフトウェアレベルフック）
 
@@ -188,12 +258,14 @@ platform_install_p10k() {
 ```
 
 **A案を選んだ理由:**
+
 1. シンプルなメンタルモデル: すべてのインストールが `platform_install_xxx` で統一される
 2. 移行の容易さ: 現状のインストール関数（`__install_zsh` など）をそのまま `platform_install_zsh` にリネームするだけで移行できる
 3. OS 間のインストール手順の差異（パッケージ名の不一致、パッケージマネージャーの違い、ビルド手順の有無）を個別に吸収できる
 4. `platform_install_pkg` のようなプリミティブと個別フックの併用（C案）は「なぜこれは個別フックなのか」という認知負荷が常に伴うため、メンテナンスに不向き
 
 **C案を却下した理由（バックログに保持）:**
+
 - platform ファイルの記述量削減というメリットはあるが、新規 OS 追加時に関数が2〜3個で済むか30個になるかの差でしかなく、絶対的な作業量の差は小さい
 - A案から C案への移行（単純ラッパーの削除）は機械的に可能だが、C案から A案への移行は困難。リスクの低い A案を先に選ぶ
 
@@ -218,11 +290,11 @@ platform_install_p10k() {
 
 各階層の意味:
 
-| 階層 | ディレクトリ | 役割 |
-|---|---|---|
-| 共通 | `0_common/` | 全プラットフォームの共通デフォルト。`default.bash` のみ配置 |
-| ファミリ | `1_families/` | 同一パッケージマネージャ系統の OS で共通する差分（例: Arch 系の `pacman` + `yay`） |
-| ディストロ | `2_distros/` | 単一ディストリビューション固有の差分（例: CachyOS の `cachyos-zsh-config` 削除） |
+| 階層       | ディレクトリ  | 役割                                                                               |
+| ---------- | ------------- | ---------------------------------------------------------------------------------- |
+| 共通       | `0_common/`   | 全プラットフォームの共通デフォルト。`default.bash` のみ配置                        |
+| ファミリ   | `1_families/` | 同一パッケージマネージャ系統の OS で共通する差分（例: Arch 系の `pacman` + `yay`） |
+| ディストロ | `2_distros/`  | 単一ディストリビューション固有の差分（例: CachyOS の `cachyos-zsh-config` 削除）   |
 
 各ファイルは自分の親を source しない。host ファイルが source 順を明示的に制御する。
 
@@ -253,11 +325,11 @@ main() {
 
 プロジェクト内の Bash ファイルは、その使われ方に応じて以下の3種類に分類する。
 
-| カテゴリ | 例 | `main` を持つか | `readonly -f` すべきか |
-|---|---|---|---|
-| **純ライブラリ** | `lib/`, `components/*.bash`, `platforms/*.bash` | 持たない | 全関数を readonly（誤上書き防止） |
-| **スタンドアロンスクリプト** | `init.bash`, `devel-tools/script/*.bash` | 持つ | `main` を readonly にしてもよい（誰も source しないため） |
-| **source 連鎖するエントリポイント** | `setup.bash` → `hosts/*/setup.bash` | 両方とも持つ | `main` は readonly にしない（source 先でも同名関数を定義するため）。host 側では `readonly HOST_LABEL` でホスト名を宣言 |
+| カテゴリ                            | 例                                              | `main` を持つか | `readonly -f` すべきか                                                                                                 |
+| ----------------------------------- | ----------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **純ライブラリ**                    | `lib/`, `components/*.bash`, `platforms/*.bash` | 持たない        | 全関数を readonly（誤上書き防止）                                                                                      |
+| **スタンドアロンスクリプト**        | `init.bash`, `devel-tools/script/*.bash`        | 持つ            | `main` を readonly にしてもよい（誰も source しないため）                                                              |
+| **source 連鎖するエントリポイント** | `setup.bash` → `hosts/*/setup.bash`             | 両方とも持つ    | `main` は readonly にしない（source 先でも同名関数を定義するため）。host 側では `readonly HOST_LABEL` でホスト名を宣言 |
 
 `main` はプロジェクト全体で統一されたエントリポイント名とする。ただし source 連鎖が発生するファイル間では `readonly -f main` を付与しない。これにより「ファイルの実行は必ず `main` で行われる」という命名規則と「base 実装は readonly で保護する」というルールの両立を図る。
 
@@ -270,6 +342,7 @@ main() {
 #### 複数 OS 対応の射程
 
 v4.10.0 のアーキテクチャ見直しは以下を想定範囲とする:
+
 - **Arch 系**: Arch Linux, EndeavourOS, CachyOS, Manjaro
 - **Debian 系**: Kali Linux, Ubuntu
 - **Darwin 系**: macOS
@@ -288,19 +361,19 @@ v4.10.0 のアーキテクチャ見直しは以下を想定範囲とする:
 各コンポーネントはソフトウェア単位の公開関数（`setup_<software>`）を提供し、ホスト側でそれらを明示的に組み合わせる。
 `core` に限りソフトウェア単位の関数に加えて `setup_core` を便利関数として提供する（依存関係が強く順序ミスを防ぐため）。
 
-| コンポーネント | 公開関数 | 元のファイル | 概算行数 |
-|---|---|---|---|
-| `core` | `setup_git`, `setup_aur_helper`, `setup_mise`, `setup_aqua`, `setup_golang`, `setup_nodejs`, `setup_directories`, `setup_core`（便利関数） | `0_core.bash` | ~400 |
-| `shell` | `setup_zsh`（p10k含む）, `setup_default_shell` | `1_base.bash` の Shell 節 | ~130 |
-| `terminal` | `setup_alacritty`, `setup_wezterm` | `1_base.bash` の Terminal 節 | ~50 |
-| `multiplexer` | `setup_tmux` | `1_base.bash` の Multiplexer 節 | ~75 |
-| `editor` | `setup_neovim`, `setup_editorconfig` | `1_base.bash` の Editor 節 | ~90 |
-| `devel` | `setup_devel_tools`, `setup_lazygit` | `1_base.bash` の Devel 節 | ~50 |
-| `ime` | `setup_fcitx5_mozc` | `1_base.bash` の IME 節 | ~110 |
-| `util` | `setup_util_clis`, `setup_fastfetch`, `setup_yazi`, `setup_proper7y` | `1_base.bash` の Util 節 | ~60 |
-| `desktop` | `setup_xfce4` | `1_base.bash` の Desktop 節 | ~80 |
-| `browser` | `setup_chromium`, `setup_chrome`, `setup_firefox` | `1_base.bash` の Browser 節 | ~80 |
-| `extra` | `setup_docker`, `setup_virtualbox`, `setup_virtualbox_guest`, `setup_vscode`, `setup_obsidian` | `2_extra.bash` | ~90 |
+| コンポーネント | 公開関数                                                                                                                                   | 元のファイル                    | 概算行数 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | -------- |
+| `core`         | `setup_git`, `setup_aur_helper`, `setup_mise`, `setup_aqua`, `setup_golang`, `setup_nodejs`, `setup_directories`, `setup_core`（便利関数） | `0_core.bash`                   | ~400     |
+| `shell`        | `setup_zsh`（p10k含む）, `setup_default_shell`                                                                                             | `1_base.bash` の Shell 節       | ~130     |
+| `terminal`     | `setup_alacritty`, `setup_wezterm`                                                                                                         | `1_base.bash` の Terminal 節    | ~50      |
+| `multiplexer`  | `setup_tmux`                                                                                                                               | `1_base.bash` の Multiplexer 節 | ~75      |
+| `editor`       | `setup_neovim`, `setup_editorconfig`                                                                                                       | `1_base.bash` の Editor 節      | ~90      |
+| `devel`        | `setup_devel_tools`, `setup_lazygit`                                                                                                       | `1_base.bash` の Devel 節       | ~50      |
+| `ime`          | `setup_fcitx5_mozc`                                                                                                                        | `1_base.bash` の IME 節         | ~110     |
+| `util`         | `setup_util_clis`, `setup_fastfetch`, `setup_yazi`, `setup_proper7y`                                                                       | `1_base.bash` の Util 節        | ~60      |
+| `desktop`      | `setup_xfce4`                                                                                                                              | `1_base.bash` の Desktop 節     | ~80      |
+| `browser`      | `setup_chromium`, `setup_chrome`, `setup_firefox`                                                                                          | `1_base.bash` の Browser 節     | ~80      |
+| `extra`        | `setup_docker`, `setup_virtualbox`, `setup_virtualbox_guest`, `setup_vscode`, `setup_obsidian`                                             | `2_extra.bash`                  | ~90      |
 
 #### platform hook 一覧
 
@@ -388,6 +461,7 @@ platform_install_obsidian()
 3. **Phase 3（後始末）**: `recipes/` 削除、旧 `hosts/*/setup.bash` 削除、`setup_new.bash` → `setup.bash` リネーム
 
 新旧のコードが同時にアクティブになることはない。作業中は旧システム（`setup.bash` → `recipes/`）と新システム（`setup_new.bash` → `components/`）が別ファイルとして共存するが、呼び出し側（`setup.bash` vs `setup_new.bash`）で完全に分離されていた。
+
 - **Bash の限界**: 型安全でない、IDEサポートが貧弱、などの Bash 自体の制約は解消されない
 - **platform ファイルの単調さ**: A案では単純な `pacman -S` ラッパーが多数含まれる。ただし各関数の実装は1行で自明
 - **新規 OS 追加時のコスト**: A案では各パッケージに対応する `platform_install_xxx` をすべて実装する必要がある。大半は単純なラッパーだが、数は増える
