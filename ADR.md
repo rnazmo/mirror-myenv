@@ -280,7 +280,7 @@ v4.10.0 のアーキテクチャ見直しは以下を想定範囲とする:
 | コンポーネント | 公開関数 | 元のファイル | 概算行数 |
 |---|---|---|---|
 | `core` | `setup_git`, `setup_aur_helper`, `setup_mise`, `setup_aqua`, `setup_golang`, `setup_nodejs`, `setup_directories`, `setup_core`（便利関数） | `0_core.bash` | ~400 |
-| `shell` | `setup_zsh`, `setup_p10k`, `setup_default_shell` | `1_base.bash` の Shell 節 | ~130 |
+| `shell` | `setup_zsh`（p10k含む）, `setup_default_shell` | `1_base.bash` の Shell 節 | ~130 |
 | `terminal` | `setup_alacritty`, `setup_wezterm` | `1_base.bash` の Terminal 節 | ~50 |
 | `multiplexer` | `setup_tmux` | `1_base.bash` の Multiplexer 節 | ~75 |
 | `editor` | `setup_neovim`, `setup_editorconfig` | `1_base.bash` の Editor 節 | ~90 |

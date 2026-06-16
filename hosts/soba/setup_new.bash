@@ -20,7 +20,6 @@ main() {
     setup_core
 
     setup_zsh
-    setup_p10k
     setup_default_shell
 
     setup_util_clis
