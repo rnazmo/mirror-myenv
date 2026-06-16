@@ -5,7 +5,7 @@
 ## ADR-009 3層分離アーキテクチャへの移行
 
 - **日付**: 2026-06-12
-- **更新日**: 2026-06-16
+- **更新日**: 2026-06-17
 - **ステータス**: 最終決定
 
 ### コンテキスト
@@ -62,17 +62,22 @@ myenv/
 ├── lib/
 │   └── util.bash               # ユーティリティ関数（変更なし）
 │
-├── components/                 # ★新規: 「何をするか」だけを知る。OS知識ゼロ
+├── components/                 # 「何をするか」だけを知る。OS知識ゼロ
+│   ├── _init.bash              # 全 component を機械的に読み込み
 │   ├── core.bash               # Git, yay, mise, aqua, ミラー更新, 各種言語
-│   ├── shell.bash
-│   ├── editor.bash
-│   ├── terminal.bash
-│   ├── ime.bash
-│   ├── desktop.bash
-│   ├── util.bash
-│   └── devel.bash
+│   ├── shell.bash              # Zsh + p10k（setup_p10k は統合済み）
+│   ├── terminal.bash           # Alacritty, WezTerm
+│   ├── multiplexer.bash        # tmux
+│   ├── editor.bash             # Neovim, editorconfig
+│   ├── devel.bash              # リンター/フォーマッター, lazygit
+│   ├── ime.bash                # Fcitx5 + Mozc
+│   ├── desktop.bash            # Xfce4
+│   ├── util.bash               # CLI ツール群, fastfetch, yazi, proper7y
+│   ├── browser.bash            # Chromium, Chrome, Firefox
+│   └── extra.bash              # Docker, VirtualBox, VSCode, Obsidian
 │
-├── platforms/                  # ★新規: 「OSの差分」だけを知る。機能の中身は知らない
+├── platforms/                  # 「OSの差分」だけを知る。機能の中身は知らない
+│   ├── _init.bash              # platform ファイルを階層順に機械的に読み込み
 │   ├── 0_common/
 │   │   └── default.bash        # 全フックのデフォルト実装（no-op）
 │   ├── 1_families/
@@ -81,9 +86,9 @@ myenv/
 │   │   └── darwin_based.bash   # Darwin 系共通の差分
 │   └── 2_distros/
 │       ├── arch_linux.bash     # ディストロ固有の差分
-│       ├── cachyos.bash
+│       ├── cachyos.bash        # cachyos-zsh-config 削除
 │       ├── endeavouros.bash
-│       ├── manjaro.bash
+│       ├── manjaro.bash        # manjaro-zsh-config 削除
 │       ├── debian.bash
 │       ├── ubuntu.bash
 │       ├── kali.bash
@@ -93,18 +98,26 @@ myenv/
 │   ├── udon/setup.bash         # 組み合わせを宣言するだけ
 │   └── soba/setup.bash
 │
-└── recipes/                    # 移行完了後に削除
+├── setup.bash                  # エントリポイント
+│
+└── config/                     # dotfiles（変更なし）
 ```
 
 #### 3層の役割と依存関係
 
 ```
-hosts/soba/setup.bash
-  ├── source platforms/0_common/default.bash       # デフォルト（no-op）を読み込み
-  ├── source platforms/1_families/arch_based.bash  # Arch 系共通フックで上書き
-  ├── source platforms/2_distros/cachyos.bash      # CachyOS 固有フックで上書き
-  └── source components/*.bash                     # 機能を読み込む
-        └── platform_*() を呼ぶ                     # フック経由で OS に委譲
+setup.bash
+  └── source hosts/soba/setup.bash                     # エントリポイントが host を起動
+        ├── source platforms/_init.bash                # platform ファイルを一括で機械的読み込み
+        │     ├── source platforms/0_common/default.bash
+        │     ├── source platforms/1_families/arch_based.bash
+        │     └── source platforms/2_distros/cachyos.bash
+        └── source components/_init.bash               # 全 component を一括で機械的読み込み
+              ├── source components/core.bash
+              ├── source components/shell.bash
+              ├── source components/terminal.bash
+              └── ...
+                    └── platform_*() を呼ぶ             # フック経由で OS に委譲
 ```
 
 各層の責務:
@@ -112,8 +125,10 @@ hosts/soba/setup.bash
 - **`platforms/0_common/default.bash`**: 全フックのデフォルト実装（`{ :; }` = 何もしない）。「特別な処理がなければ何もしない」が保証される
 - **`platforms/1_families/*.bash`**: OS ファミリ（Arch 系 / Debian 系 / Darwin 系）共通の差分だけを書く
 - **`platforms/2_distros/*.bash`**: ディストロ固有の差分だけを書く。親ファイルは source せず、host 側が明示的に chain を構成する
+- **`platforms/_init.bash`**: `platforms/` 配下を階層順に機械的に読み込む。host 側の `source` はこの1行のみ
 - **`components/*.bash`**: OS を一切知らない。`platform_*` 関数を呼ぶだけで、実装はロードされた platform ファイルが決める
-- **`hosts/*/setup_new.bash`**: どの platform を使うかを宣言し、明示的な source 順で chain を構成する。ソフトウェア単位の `setup_*` 関数を並べて呼ぶだけ。`core` に限り便利関数 `setup_core` も利用可能
+- **`components/_init.bash`**: `components/` 配下の全 `.bash` ファイルを機械的に読み込む。host 側の `source` はこの1行のみ
+- **`hosts/*/setup.bash`**: どの platform を使うかを宣言し、`_init.bash` を介して chain を構成する。ソフトウェア単位の `setup_*` 関数を並べて呼ぶだけ。`core` に限り便利関数 `setup_core` も利用可能
 
 #### フック命名規則
 
@@ -223,9 +238,8 @@ platform_install_p10k() {
 main() {
     setup_core           # 便利関数: git + aur + mise + aqua + languages + directories
 
-    setup_zsh            # 呼ぶ
-    setup_p10k           # 呼ぶ
-    setup_default_shell  # 呼ぶ
+    setup_zsh            # 内部で p10k もセットアップ（setup_p10k は統合済み）
+    setup_default_shell  # chsh
 
     setup_alacritty      # 呼ぶ
     # setup_wezterm     ← コメントアウト = このホストではスキップ
@@ -246,7 +260,7 @@ main() {
 |---|---|---|---|
 | **純ライブラリ** | `lib/`, `components/*.bash`, `platforms/*.bash` | 持たない | 全関数を readonly（誤上書き防止） |
 | **スタンドアロンスクリプト** | `init.bash`, `devel-tools/script/*.bash` | 持つ | `main` を readonly にしてもよい（誰も source しないため） |
-| **source 連鎖するエントリポイント** | `setup.bash` → `hosts/*/setup.bash` | 両方とも持つ | `main` は readonly にしない（source 先でも同名関数を定義するため） |
+| **source 連鎖するエントリポイント** | `setup.bash` → `hosts/*/setup.bash` | 両方とも持つ | `main` は readonly にしない（source 先でも同名関数を定義するため）。host 側では `readonly HOST_LABEL` でホスト名を宣言 |
 
 `main` はプロジェクト全体で統一されたエントリポイント名とする。ただし source 連鎖が発生するファイル間では `readonly -f main` を付与しない。これにより「ファイルの実行は必ず `main` で行われる」という命名規則と「base 実装は readonly で保護する」というルールの両立を図る。
 
@@ -267,9 +281,9 @@ v4.10.0 のアーキテクチャ見直しは以下を想定範囲とする:
 
 #### 移行戦略
 
-**一括置き換え**を採用する。`recipes/` を残したまま `components/` と `platforms/` を新規作成する段階的移行は、移行期間中に新旧が混在して混乱するため採用しない。
+**一括置き換え**を採用する。`recipes/` と `components/` + `platforms/` を別エントリポイントとして共存させ、全機能の移行完了後に `recipes/` を削除する。
 
-コミットは機能単位に細かく切りながら進める（例: `core` → `shell` → `editor` → `terminal` → …）。全ての機能の移行が完了したら `recipes/` ディレクトリを丸ごと削除する。
+コミットは機能単位に細かく切りながら進める。全機能の移行完了後に `recipes/` を削除し、`setup_new.bash` を `setup.bash` にリネームする。
 
 #### コンポーネント分割
 
@@ -357,6 +371,7 @@ platform_install_xfce4_systemload()
 
 # ===== browser コンポーネント用 =====
 platform_install_chromium()
+platform_install_chrome()
 platform_install_firefox()
 
 # ===== extra コンポーネント用 =====
@@ -367,15 +382,15 @@ platform_install_vscode()
 platform_install_obsidian()
 ```
 
-#### 移行フェーズ計画
+#### 実行された移行フェーズ
 
-ブランチ `feat/3-layer-architecture` で全作業を行い、完了後に `main` にマージする。
+ブランチ `feat/3-layer-architecture` で全作業を行い、完了後に `main` にマージした。
 
-1. **Phase 1（骨格）**: `platforms/0_common/default.bash`, `platforms/1_families/*.bash`, `platforms/2_distros/*.bash`, `components/*.bash` の空実装を作成。`setup_new.bash` のエントリポイントを用意。`bash setup_new.bash {host}` がエラーなく終了することを確認（何もしない）
-2. **Phase 2（肉付け）**: コンポーネント単位で実装を追加。各コミットで関数存在確認 + `bash -n` を検証
-3. **Phase 3（後始末）**: `recipes/` 削除, 旧 `hosts/*/setup.bash` 削除, `setup_new.bash` → `setup.bash` にリネーム
+1. **Phase 1（骨格）**: `platforms/` と `components/` の空実装を作成。`setup_new.bash` のエントリポイントを用意。Phase 3 で `setup.bash` にリネーム
+2. **Phase 2（肉付け）**: 全 10 コンポーネント（`core`, `shell`, `util`, `devel`, `terminal`, `multiplexer`, `editor`, `ime`, `desktop`, `browser`, `extra`）を実装。各コミットで関数存在確認 + `bash -n` を検証
+3. **Phase 3（後始末）**: `recipes/` 削除、旧 `hosts/*/setup.bash` 削除、`setup_new.bash` → `setup.bash` リネーム
 
-新旧のコードが同時にアクティブになることはない。作業中は旧システム（`setup.bash` → `recipes/`）と新システム（`setup_new.bash` → `components/`）が別ファイルとして共存するが、呼び出し側（`setup.bash` vs `setup_new.bash`）で完全に分離されている。
+新旧のコードが同時にアクティブになることはない。作業中は旧システム（`setup.bash` → `recipes/`）と新システム（`setup_new.bash` → `components/`）が別ファイルとして共存するが、呼び出し側（`setup.bash` vs `setup_new.bash`）で完全に分離されていた。
 - **Bash の限界**: 型安全でない、IDEサポートが貧弱、などの Bash 自体の制約は解消されない
 - **platform ファイルの単調さ**: A案では単純な `pacman -S` ラッパーが多数含まれる。ただし各関数の実装は1行で自明
 - **新規 OS 追加時のコスト**: A案では各パッケージに対応する `platform_install_xxx` をすべて実装する必要がある。大半は単純なラッパーだが、数は増える
@@ -389,6 +404,12 @@ platform_install_obsidian()
 - **mise 管理ツールのバージョン固定方針**: 現在は `latest` を使用。固定する場合は config.toml の管理方法と合わせて検討
 - **myenv コマンド再設計**: `myenv apply` / `myenv bump` の責務整理（v4.X.0 別マイルストーン）
 - **テストの導入**: `lib/util.bash` のユニットテストから段階的に導入
+
+### 実装決定の補足（v4.10.0 完了時点）
+
+- **aqua インストール方式**: 当初は `aqua-installer` スクリプトを使用する予定だったが、`./aqua update-aqua` の SLSA 検証がネットワーク環境によってリトライループに陥る問題が判明。直接 GitHub Releases からバイナリをダウンロードする方式に変更した。`setup_aqua` の API は変わらない
+- **`setup_p10k` の統合**: 当初の設計では `setup_zsh` と `setup_p10k` は別関数だったが、Powerlevel10k は Zsh のテーマに過ぎず単独で呼び出すユースケースが存在しないため、`setup_zsh` に統合した。hook の呼び出し構造（`platform_pre_install_p10k` → `platform_install_p10k`）は `_setup_zsh_theme` 内部で維持されている
+- **`HOST_LABEL`**: host ファイルで `readonly HOST_LABEL="udon"` のように宣言することで、platform ファイル内の `$HOST_LABEL` から参照可能。新 host 追加時のコピーが1行の修正で済む
 
 ## ADR-008 `copy_file` / `copy_file_as_root` / `remove_file` / `remove_file_as_root` の重複を許容する
 
