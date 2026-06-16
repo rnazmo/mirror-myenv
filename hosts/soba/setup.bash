@@ -1,48 +1,50 @@
 #!/usr/bin/env bash
 set -eu
 
+# Soba (CachyOS) のセットアップ。
+# 3層アーキテクチャ版: 明示的な source 順で platform chain を構成する。
+
 source "${MYENV_ROOT}/lib/util.bash"
 
-source "${MYENV_ROOT}/recipes/cachyos_x64/0_core.bash"
-source "${MYENV_ROOT}/recipes/cachyos_x64/1_base.bash"
-source "${MYENV_ROOT}/recipes/cachyos_x64/2_extra.bash"
+source "${MYENV_ROOT}/platforms/0_common/default.bash"
+source "${MYENV_ROOT}/platforms/1_families/arch_based.bash"
+source "${MYENV_ROOT}/platforms/2_distros/cachyos.bash"
+
+source "${MYENV_ROOT}/components/_init.bash"
+
+readonly HOST_LABEL="soba (CachyOS)"
 
 main() {
-    call_func_in_0_core() {
-        pre_setup_core
-        update_pacman_mirror
-        setup_git
-        setup_aur_helper
-        setup_runtime_version_manager
-        setup_programming_languages
-        setup_some_directories
-        post_setup_core
-    }
-    call_func_in_1_base() {
-        pre_setup_base
-        setup_font
-        setup_ime
-        setup_util
-        log_debug "BEFORE /hosts/soba/setup.bash > call_func_in_1_base > call setup_shell_on_cachyos"
-        setup_shell_on_cachyos
-        log_debug "AFTER  /hosts/soba/setup.bash > call_func_in_1_base > call setup_shell_on_cachyos"
-        setup_terminal
-        setup_multiplexer
-        setup_devel
-        setup_editor
-        setup_browser
-        setup_desktop
-        post_setup_base
-    }
-    call_func_in_2_extra() {
-        pre_setup_extra
-        # something here
-        post_setup_extra
-    }
+    log_info "Starting setup for ${HOST_LABEL}"
 
-    call_func_in_0_core
-    call_func_in_1_base
-    call_func_in_2_extra
+    setup_core
+
+    setup_zsh
+    setup_default_shell
+
+    setup_util_clis
+    setup_fastfetch
+    setup_yazi
+    setup_proper7y
+
+    setup_alacritty
+    # setup_wezterm  # not needed on soba
+    setup_tmux
+
+    setup_devel_tools
+    setup_lazygit
+
+    setup_neovim
+    setup_editorconfig
+
+    # setup_fcitx5_mozc  # not needed on soba
+
+    # setup_xfce4  # not needed on soba (headless/server)
+
+    setup_chromium
+    setup_firefox
+
+    log_info "Completed setup for ${HOST_LABEL}"
 }
 
 main

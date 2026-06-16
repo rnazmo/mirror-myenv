@@ -2,16 +2,18 @@
 set -eu
 
 # What is this:
-#     Provision the machine.
+#     Provision the machine with the 3-layer architecture.
+#     This is the new entry point during the migration period.
+#     After Phase 3, this file will be renamed to setup.bash.
 #
 # Prerequisites:
 #     myenv repository (~/.myenv)
 #
 # Usage:
-#     foo/bar/myenv/setup.bash "<host_name>"
+#     ~/myenv/setup_new.bash "<host_name>"
 #
 # Example:
-#     ~/myenv/setup.bash "soba"
+#     ~/myenv/setup_new.bash "soba"
 
 export MYENV_ROOT="${HOME}/.myenv"
 
@@ -47,7 +49,7 @@ main() {
     check_prerequisites
 
     # shellcheck source=/dev/null
-    source "${MYENV_ROOT}/hosts/${HOST_NAME}/setup.bash"
+    source "${MYENV_ROOT}/hosts/${HOST_NAME}/setup_new.bash"
 
     log_info "======== Completed all process successfully ========"
 }

@@ -1,47 +1,52 @@
 #!/usr/bin/env bash
 set -eu
 
+# Udon (EndeavourOS) のセットアップ。
+# 3層アーキテクチャ版: 明示的な source 順で platform chain を構成する。
+
 source "${MYENV_ROOT}/lib/util.bash"
 
-source "${MYENV_ROOT}/recipes/endeavouros_x64/0_core.bash"
-source "${MYENV_ROOT}/recipes/endeavouros_x64/1_base.bash"
-source "${MYENV_ROOT}/recipes/endeavouros_x64/2_extra.bash"
+source "${MYENV_ROOT}/platforms/0_common/default.bash"
+source "${MYENV_ROOT}/platforms/1_families/arch_based.bash"
+source "${MYENV_ROOT}/platforms/2_distros/endeavouros.bash"
+
+source "${MYENV_ROOT}/components/_init.bash"
+
+readonly HOST_LABEL="udon (EndeavourOS)"
 
 main() {
-    call_func_in_0_core() {
-        pre_setup_core
-        update_pacman_mirror
-        setup_git
-        setup_aur_helper
-        setup_runtime_version_manager
-        setup_programming_languages
-        setup_some_directories
-        post_setup_core
-    }
-    call_func_in_1_base() {
-        pre_setup_base
-        setup_font
-        setup_ime
-        setup_util
-        setup_shell
-        setup_terminal
-        setup_multiplexer
-        setup_devel
-        setup_editor
-        setup_browser
-        setup_desktop
-        post_setup_base
-    }
-    call_func_in_2_extra() {
-        pre_setup_extra
-        setup_virtualbox_guest
-        # something here
-        post_setup_extra
-    }
+    log_info "Starting setup for ${HOST_LABEL}"
 
-    call_func_in_0_core
-    call_func_in_1_base
-    call_func_in_2_extra
+    setup_core
+
+    setup_zsh
+    setup_default_shell
+
+    setup_util_clis
+    setup_fastfetch
+    setup_yazi
+    setup_proper7y
+
+    setup_alacritty
+    setup_wezterm
+    setup_tmux
+
+    setup_devel_tools
+    setup_lazygit
+
+    setup_neovim
+    setup_editorconfig
+
+    setup_fcitx5_mozc
+
+    setup_xfce4
+
+    setup_chromium
+    setup_firefox
+
+    setup_virtualbox_guest
+
+    log_info "Completed setup for ${HOST_LABEL}"
 }
 
 main
