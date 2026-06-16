@@ -149,3 +149,86 @@ platform_install_mise() {
     fi
 }
 readonly -f platform_install_mise
+
+# ======================================================
+# ===== util ============================================
+# ======================================================
+
+platform_install_tree()        { sudo pacman -S --needed --noconfirm tree; }
+readonly -f platform_install_tree
+
+platform_install_xclip()       { sudo pacman -S --needed --noconfirm xclip; }
+readonly -f platform_install_xclip
+
+platform_install_unzip()       { sudo pacman -S --needed --noconfirm unzip; }
+readonly -f platform_install_unzip
+
+platform_install_ghq()         { sudo pacman -S --needed --noconfirm ghq; }
+readonly -f platform_install_ghq
+
+platform_install_fzf()         { sudo pacman -S --needed --noconfirm fzf; }
+readonly -f platform_install_fzf
+
+platform_install_zoxide()      { sudo pacman -S --needed --noconfirm zoxide; }
+readonly -f platform_install_zoxide
+
+platform_install_eza()         { sudo pacman -S --needed --noconfirm eza; }
+readonly -f platform_install_eza
+
+platform_install_ripgrep()     { sudo pacman -S --needed --noconfirm ripgrep; }
+readonly -f platform_install_ripgrep
+
+platform_install_bat()         { sudo pacman -S --needed --noconfirm bat; }
+readonly -f platform_install_bat
+
+platform_install_fd()          { sudo pacman -S --needed --noconfirm fd; }
+readonly -f platform_install_fd
+
+platform_install_bottom()      { sudo pacman -S --needed --noconfirm bottom; }
+readonly -f platform_install_bottom
+
+platform_install_jq()          { sudo pacman -S --needed --noconfirm jq; }
+readonly -f platform_install_jq
+
+platform_install_fastfetch()   { sudo pacman -S --needed --noconfirm fastfetch; }
+readonly -f platform_install_fastfetch
+
+platform_install_yazi()        { sudo pacman -S --needed --noconfirm yazi; }
+readonly -f platform_install_yazi
+
+# ======================================================
+# ===== devel ===========================================
+# ======================================================
+
+platform_install_shellcheck()          { sudo pacman -S --needed --noconfirm shellcheck; }
+readonly -f platform_install_shellcheck
+
+platform_install_shfmt()               { sudo pacman -S --needed --noconfirm shfmt; }
+readonly -f platform_install_shfmt
+
+platform_install_selene()              { sudo pacman -S --needed --noconfirm selene; }
+readonly -f platform_install_selene
+
+platform_install_stylua()              { sudo pacman -S --needed --noconfirm stylua; }
+readonly -f platform_install_stylua
+
+platform_install_staticcheck()         { sudo pacman -S --needed --noconfirm staticcheck; }
+readonly -f platform_install_staticcheck
+
+platform_install_eslint_d()            { sudo pacman -S --needed --noconfirm eslint_d; }
+readonly -f platform_install_eslint_d
+
+platform_install_prettier()            { sudo pacman -S --needed --noconfirm prettier; }
+readonly -f platform_install_prettier
+
+platform_install_markdownlint_cli2()   { sudo pacman -S --needed --noconfirm markdownlint-cli2; }
+readonly -f platform_install_markdownlint_cli2
+
+platform_install_actionlint()          { sudo pacman -S --needed --noconfirm actionlint; }
+readonly -f platform_install_actionlint
+
+platform_install_typos()               { sudo pacman -S --needed --noconfirm typos; }
+readonly -f platform_install_typos
+
+platform_install_lazygit()             { sudo pacman -S --needed --noconfirm lazygit; }
+readonly -f platform_install_lazygit
