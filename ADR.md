@@ -5,7 +5,8 @@
 ## ADR-009 3層分離アーキテクチャへの移行
 
 - **日付**: 2026-06-12
-- **ステータス**: ドラフト（実装着手前に最終決定する）
+- **更新日**: 2026-06-16
+- **ステータス**: 最終決定
 
 ### コンテキスト
 
@@ -239,9 +240,109 @@ v4.10.0 のアーキテクチャ見直しは以下を想定範囲とする:
 
 コミットは機能単位に細かく切りながら進める（例: `core` → `shell` → `editor` → `terminal` → …）。全ての機能の移行が完了したら `recipes/` ディレクトリを丸ごと削除する。
 
-### トレードオフ
+#### コンポーネント分割
 
-- **移行コスト**: ファイル数・行数ともに大幅な変更になる。現状の動作を壊さないよう慎重なテストが必要
+既存の `recipes/_arch_based_x64/{0_core,1_base,2_extra}.bash` を以下のコンポーネントに分割する。
+
+| コンポーネント | 内容 | 元のファイル | 概算行数 |
+|---|---|---|---|
+| `core` | ミラー更新, Git, yay, mise, aqua, 言語, ディレクトリ | `0_core.bash` | ~400 |
+| `shell` | zsh, p10k, 補完, キーバインド, プラグイン | `1_base.bash` の Shell 節 | ~130 |
+| `terminal` | Alacritty, WezTerm | `1_base.bash` の Terminal 節 | ~50 |
+| `multiplexer` | tmux | `1_base.bash` の Multiplexer 節 | ~75 |
+| `editor` | Neovim, editorconfig | `1_base.bash` の Editor 節 | ~90 |
+| `devel` | 各種 linter/formatter, lazygit | `1_base.bash` の Devel 節 | ~50 |
+| `ime` | fcitx5/mozc, fcitx4/mozc | `1_base.bash` の IME 節 | ~110 |
+| `util` | tree/fzf/eza 等 CLI, yazi, fastfetch, proper7y | `1_base.bash` の Util 節 | ~60 |
+| `desktop` | Xfce4 panel, キーバインド, screensaver, thunar | `1_base.bash` の Desktop 節 | ~80 |
+| `browser` | Chromium, Firefox | `1_base.bash` の Browser 節 | ~80 |
+| `extra` | Docker, VirtualBox, VSCode, Obsidian | `2_extra.bash` | ~90 |
+
+#### platform hook 一覧
+
+`lib/platform.bash` に定義する全フック関数。各 platform ファイルが必要に応じて上書きする。
+
+```bash
+# ===== core コンポーネント用 =====
+platform_refresh_packages()    # pacman -Syu / apt upgrade / brew upgrade
+platform_update_mirrorlist()   # ミラーリスト更新（Arch 系のみ実装）
+platform_ensure_build_deps()   # base-devel, curl, vim 等のビルド依存
+platform_install_git()         # git
+platform_install_delta()       # git-delta
+platform_install_yay()         # AUR helper（Arch 系のみ）
+platform_install_mise()        # ランタイムバージョン管理
+
+# ===== util コンポーネント用 =====
+platform_install_tree()
+platform_install_xclip()
+platform_install_unzip()
+platform_install_ghq()
+platform_install_fzf()
+platform_install_zoxide()
+platform_install_eza()
+platform_install_ripgrep()
+platform_install_bat()
+platform_install_fd()
+platform_install_bottom()
+platform_install_jq()
+platform_install_fastfetch()
+platform_install_yazi()
+
+# ===== shell コンポーネント用 =====
+platform_install_zsh()
+platform_install_p10k()
+platform_pre_install_p10k()    # 競合パッケージ削除（CachyOS/Manjaro 用）
+
+# ===== terminal コンポーネント用 =====
+platform_install_alacritty()
+platform_install_wezterm()
+
+# ===== multiplexer コンポーネント用 =====
+platform_install_tmux()
+
+# ===== devel コンポーネント用 =====
+platform_install_shellcheck()
+platform_install_shfmt()
+platform_install_selene()
+platform_install_stylua()
+platform_install_staticcheck()
+platform_install_eslint_d()
+platform_install_prettier()
+platform_install_markdownlint_cli2()
+platform_install_actionlint()
+platform_install_typos()
+platform_install_lazygit()
+
+# ===== editor コンポーネント用 =====
+platform_install_neovim()
+
+# ===== ime コンポーネント用 =====
+platform_install_fcitx5_mozc()
+
+# ===== desktop コンポーネント用 =====
+platform_install_xfce4_systemload()
+
+# ===== browser コンポーネント用 =====
+platform_install_chromium()
+platform_install_firefox()
+
+# ===== extra コンポーネント用 =====
+platform_install_docker()
+platform_install_virtualbox()
+platform_install_virtualbox_guest()
+platform_install_vscode()
+platform_install_obsidian()
+```
+
+#### 移行フェーズ計画
+
+ブランチ `feat/3-layer-architecture` で全作業を行い、完了後に `main` にマージする。
+
+1. **Phase 1（骨格）**: `lib/platform.bash`, `platforms/*.bash`, `components/*.bash` の空実装を作成。`setup_new.bash` のエントリポイントを用意。`bash setup_new.bash {host}` がエラーなく終了することを確認（何もしない）
+2. **Phase 2（肉付け）**: コンポーネント単位で実装を追加。各コミットで関数存在確認 + `bash -n` を検証
+3. **Phase 3（後始末）**: `recipes/` 削除, 旧 `hosts/*/setup.bash` 削除, `setup_new.bash` → `setup.bash` にリネーム
+
+新旧のコードが同時にアクティブになることはない。作業中は旧システム（`setup.bash` → `recipes/`）と新システム（`setup_new.bash` → `components/`）が別ファイルとして共存するが、呼び出し側（`setup.bash` vs `setup_new.bash`）で完全に分離されている。
 - **Bash の限界**: 型安全でない、IDEサポートが貧弱、などの Bash 自体の制約は解消されない
 - **platform ファイルの単調さ**: A案では単純な `pacman -S` ラッパーが多数含まれる。ただし各関数の実装は1行で自明
 - **新規 OS 追加時のコスト**: A案では各パッケージに対応する `platform_install_xxx` をすべて実装する必要がある。大半は単純なラッパーだが、数は増える

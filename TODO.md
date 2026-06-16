@@ -2,37 +2,51 @@
 
 ## Milestone: v4.10.0 - 3層分離アーキテクチャへの移行
 
-設計判断の詳細は ADR-009（ドラフト）を参照。
+設計判断の詳細は ADR-009 を参照。
 
 ### 設計
 
-- [x] ADR-009: 3層分離アーキテクチャの設計判断を記録（ドラフト）
-- [ ] 詳細設計: components/ 各ファイルの責任範囲・platform に必要なフックの洗い出し
-- [ ] ADR-009 をドラフトから最終決定に変更（詳細設計の反映後）
+- [x] ADR-009: 3層分離アーキテクチャの設計判断を記録（最終決定）
+- [x] 全 `platform_*` hook の洗い出し完了
+- [x] hook 粒度の決定: ソフトウェアレベルフック（A案）を採用
 
 ### 実装
 
-移行順序（機能単位のコミット）:
+ブランチ `feat/3-layer-architecture` で実施。main へのマージは全フェーズ完了後。
 
-- [ ] 1. `lib/platform.bash` の作成 + `components/core.bash` への移行（旧 0_core.bash）
-- [ ] 2. `platforms/arch.bash` の作成（Arch 系共通差分）
-- [ ] 3. `platforms/cachyos.bash` / `platforms/endeavouros.bash` / `platforms/manjaro.bash` の作成
-- [ ] 4. `components/shell.bash` への移行
-- [ ] 5. `components/editor.bash` への移行
-- [ ] 6. `components/terminal.bash` への移行
-- [ ] 7. `components/ime.bash` への移行
-- [ ] 8. `components/desktop.bash` への移行
-- [ ] 9. `components/util.bash` / `components/devel.bash` への移行
-- [ ] 10. `hosts/udon/setup.bash` / `hosts/soba/setup.bash` の書き換え
-- [ ] 11. `recipes/` ディレクトリの削除
+- **Phase 1: 骨格**
+  - [ ] `lib/platform.bash` の作成（全hook の no-op 実装）
+  - [ ] `platforms/{arch,cachyos,endeavouros,manjaro}.bash` の作成（空の上書き）
+  - [ ] `components/{core,shell,util,terminal,multiplexer,editor,devel,ime,desktop,browser,extra}.bash` の作成（setup_* スタブ）
+  - [ ] `hosts/{udon,soba}/setup_new.bash` の作成
+  - [ ] `setup_new.bash` の作成
+  - [ ] 検証: `bash setup_new.bash {udon,soba}` がエラーなく終了
+
+- **Phase 2: 肉付け（コンポーネント単位のコミット）**
+  - [ ] `core` コンポーネントの実装 + platform 実装
+  - [ ] `util` / `devel` コンポーネントの実装 + platform 実装
+  - [ ] `shell` コンポーネントの実装 + platform 実装（cachyos/manjaro の `platform_pre_install_p10k` 含む）
+  - [ ] `terminal` / `multiplexer` コンポーネントの実装 + platform 実装
+  - [ ] `editor` コンポーネントの実装 + platform 実装
+  - [ ] `ime` コンポーネントの実装 + platform 実装
+  - [ ] `desktop` コンポーネントの実装 + platform 実装
+  - [ ] `browser` / `extra` コンポーネントの実装 + platform 実装
+
+- **Phase 3: 後始末**
+  - [ ] `recipes/` ディレクトリの削除
+  - [ ] `hosts/*/setup.bash` の削除 → `setup_new.bash` に統一
+  - [ ] `setup_new.bash` → `setup.bash` にリネーム
+  - [ ] `tmp/demo/` の後始末（残す or 削除）
 
 ### テスト
 
-- [ ] 移行後、実際の `myenv apply` で動作確認（udon / soba）
+- [ ] Phase 1 完了時: `bash -n` 全ファイル
+- [ ] Phase 2 各コンポーネント完了時: 関数存在確認テスト
+- [ ] Phase 3 完了後: 実機 `myenv apply` で動作確認（udon / soba）
 
 ### プロジェクト管理
 
-- [ ] `tmp/demo/` のデモコードは必要に応じて残すか削除する
+- [ ] ブランチ `feat/3-layer-architecture` を `main` にマージ
 
 ---
 
