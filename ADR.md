@@ -77,7 +77,6 @@ myenv/
 │   └── extra.bash              # Docker, VirtualBox, VSCode, Obsidian
 │
 ├── platforms/                  # 「OSの差分」だけを知る。機能の中身は知らない
-│   ├── _init.bash              # platform ファイルを階層順に機械的に読み込み
 │   ├── 0_common/
 │   │   └── default.bash        # 全フックのデフォルト実装（no-op）
 │   ├── 1_families/
@@ -108,10 +107,9 @@ myenv/
 ```
 setup.bash
   └── source hosts/soba/setup.bash                     # エントリポイントが host を起動
-        ├── source platforms/_init.bash                # platform ファイルを一括で機械的読み込み
-        │     ├── source platforms/0_common/default.bash
-        │     ├── source platforms/1_families/arch_based.bash
-        │     └── source platforms/2_distros/cachyos.bash
+        ├── source platforms/0_common/default.bash     # デフォルト（no-op）を読み込み
+        ├── source platforms/1_families/arch_based.bash# Arch 系共通フックで上書き
+        ├── source platforms/2_distros/cachyos.bash    # CachyOS 固有フックで上書き
         └── source components/_init.bash               # 全 component を一括で機械的読み込み
               ├── source components/core.bash
               ├── source components/shell.bash
@@ -125,10 +123,9 @@ setup.bash
 - **`platforms/0_common/default.bash`**: 全フックのデフォルト実装（`{ :; }` = 何もしない）。「特別な処理がなければ何もしない」が保証される
 - **`platforms/1_families/*.bash`**: OS ファミリ（Arch 系 / Debian 系 / Darwin 系）共通の差分だけを書く
 - **`platforms/2_distros/*.bash`**: ディストロ固有の差分だけを書く。親ファイルは source せず、host 側が明示的に chain を構成する
-- **`platforms/_init.bash`**: `platforms/` 配下を階層順に機械的に読み込む。host 側の `source` はこの1行のみ
 - **`components/*.bash`**: OS を一切知らない。`platform_*` 関数を呼ぶだけで、実装はロードされた platform ファイルが決める
 - **`components/_init.bash`**: `components/` 配下の全 `.bash` ファイルを機械的に読み込む。host 側の `source` はこの1行のみ
-- **`hosts/*/setup.bash`**: どの platform を使うかを宣言し、`_init.bash` を介して chain を構成する。ソフトウェア単位の `setup_*` 関数を並べて呼ぶだけ。`core` に限り便利関数 `setup_core` も利用可能
+- **`hosts/*/setup.bash`**: どの platform を使うかを宣言し、`components/_init.bash` を介して chain を構成する。ソフトウェア単位の `setup_*` 関数を並べて呼ぶだけ。`core` に限り便利関数 `setup_core` も利用可能
 
 #### フック命名規則
 
