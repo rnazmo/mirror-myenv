@@ -255,6 +255,15 @@
     - 現状、どちらを使うかの判断基準が暗黙的で曖昧な状態
     - 基準を決めたうえで README.md の Conventions に追記し、
       既存コードが基準に沿っているか確認・修正すること
+- [ ] feat: `platforms/_init.bash` の導入を検討する
+    - **背景**: 現在は host 側が platform ファイルを直接 source しているが、OS 追加時に host ファイルの修正が増える。
+      `components/_init.bash` と同様の仕組みを `platforms/` にも導入すれば、host 側の記述を1行に減らせる。
+    - **課題**: platform は階層構造（common → families → distros）があり、単純な機械的読み込みでは source 順が制御できない。
+      明示的な順序制御の仕組みと組み合わせる必要がある。
+    - **検討事項**:
+        - host 側で source 順を宣言し、`platforms/_init.bash` がその順に従って読み込む方式
+        - または host は相変わらず明示的に source し、`platforms/_init.bash` は作らない（現状維持）
+    - Ref: ADR-009 のディレクトリ構造・依存関係図
 
 ### テスト・CI
 
