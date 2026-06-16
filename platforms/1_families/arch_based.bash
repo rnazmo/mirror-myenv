@@ -2,77 +2,150 @@
 set -eu
 
 # Arch 系ディストリビューション共通の platform hook 実装。
-# デフォルト（no-op）を上書きして pacman / yay を用いた実装を提供する。
-# Phase 2 で実装を追加すること。
 
 source "${MYENV_ROOT}/lib/util.bash"
 
-# ===== core =====
-platform_refresh_packages()    { :; }  # Phase 2: sudo pacman -Syu ...
-platform_update_mirrorlist()   { :; }  # Phase 2: ホワイトリストベースのミラー更新
-platform_ensure_build_deps()   { :; }  # Phase 2: sudo pacman -S base-devel curl vim
-platform_install_git()         { :; }  # Phase 2: sudo pacman -S git
-platform_install_delta()       { :; }  # Phase 2: sudo pacman -S git-delta
-platform_install_yay()         { :; }  # Phase 2: AUR helper のインストール
-platform_install_mise()        { :; }  # Phase 2: yay -S mise
+# ======================================================
+# ===== pacman ミラーのホワイトリスト                  ===
+# ======================================================
+# 個人運営は廃止リスクが高いため除外し、法人・研究機関・公式コミュニティのみ。
+# 選定の詳細は ADR-003 を参照。
+readonly PACMAN_MIRROR_WHITELIST=(
+    "https://ftp.jaist.ac.jp/pub/Linux/ArchLinux/"
+    "https://mirrors.cat.net/archlinux/"
+    "https://ftp.yz.yamagata-u.ac.jp/pub/linux/archlinux/"
+)
 
-# ===== util =====
-platform_install_tree()        { :; }  # Phase 2: sudo pacman -S tree
-platform_install_xclip()       { :; }  # Phase 2: sudo pacman -S xclip
-platform_install_unzip()       { :; }  # Phase 2: sudo pacman -S unzip
-platform_install_ghq()         { :; }  # Phase 2: sudo pacman -S ghq
-platform_install_fzf()         { :; }  # Phase 2: sudo pacman -S fzf
-platform_install_zoxide()      { :; }  # Phase 2: sudo pacman -S zoxide
-platform_install_eza()         { :; }  # Phase 2: sudo pacman -S eza
-platform_install_ripgrep()     { :; }  # Phase 2: sudo pacman -S ripgrep
-platform_install_bat()         { :; }  # Phase 2: sudo pacman -S bat
-platform_install_fd()          { :; }  # Phase 2: sudo pacman -S fd
-platform_install_bottom()      { :; }  # Phase 2: sudo pacman -S bottom
-platform_install_jq()          { :; }  # Phase 2: sudo pacman -S jq
-platform_install_fastfetch()   { :; }  # Phase 2: sudo pacman -S fastfetch
-platform_install_yazi()        { :; }  # Phase 2: sudo pacman -S yazi
+# ======================================================
+# ===== core ===========================================
+# ======================================================
 
-# ===== shell =====
-platform_install_zsh()         { :; }  # Phase 2: sudo pacman -S zsh
-platform_install_p10k()        { :; }  # Phase 2: yay -S zsh-theme-powerlevel10k-git
-platform_pre_install_p10k()    { :; }  # Phase 2: no-op (必要なら distro が上書き)
+platform_refresh_packages() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/pacman_last_updated"
+    local -r INTERVAL_SEC=$((24 * 60 * 60))
+    if [[ -f "$STAMP_FILE" ]]; then
+        local -r NOW=$(date +%s)
+        local -r LAST=$(date -r "$STAMP_FILE" +%s)
+        if ((NOW - LAST < INTERVAL_SEC)); then
+            log_info "pacman update skipped (last updated within 24 hours)"
+            return 0
+        fi
+    fi
 
-# ===== terminal =====
-platform_install_alacritty()   { :; }  # Phase 2: sudo pacman -S alacritty
-platform_install_wezterm()     { :; }  # Phase 2: sudo pacman -S wezterm
+    sudo pacman -Syu --noconfirm
 
-# ===== multiplexer =====
-platform_install_tmux()        { :; }  # Phase 2: sudo pacman -S tmux
+    if check_if_command_exists "yay"; then
+        yay -Syu --noconfirm
+    fi
 
-# ===== devel =====
-platform_install_shellcheck()          { :; }  # Phase 2: sudo pacman -S shellcheck
-platform_install_shfmt()               { :; }  # Phase 2: sudo pacman -S shfmt
-platform_install_selene()              { :; }  # Phase 2: sudo pacman -S selene
-platform_install_stylua()              { :; }  # Phase 2: sudo pacman -S stylua
-platform_install_staticcheck()         { :; }  # Phase 2: sudo pacman -S staticcheck
-platform_install_eslint_d()            { :; }  # Phase 2: sudo pacman -S eslint_d
-platform_install_prettier()            { :; }  # Phase 2: sudo pacman -S prettier
-platform_install_markdownlint_cli2()   { :; }  # Phase 2: sudo pacman -S markdownlint-cli2
-platform_install_actionlint()          { :; }  # Phase 2: sudo pacman -S actionlint
-platform_install_typos()               { :; }  # Phase 2: sudo pacman -S typos
-platform_install_lazygit()             { :; }  # Phase 2: sudo pacman -S lazygit
+    mkdir -p "$(dirname "$STAMP_FILE")"
+    touch "$STAMP_FILE"
+}
+readonly -f platform_refresh_packages
 
-# ===== editor =====
-platform_install_neovim()      { :; }  # Phase 2: sudo pacman -S neovim
+platform_update_mirrorlist() {
+    if ! _should_update_mirror; then
+        log_info "Mirror update skipped (last updated within 7 days)"
+        return 0
+    fi
 
-# ===== ime =====
-platform_install_fcitx5_mozc() { :; }  # Phase 2: sudo pacman -S fcitx5-mozc fcitx5-im
+    _check_mirror_availability
+    _write_mirrorlist
+    _update_mirror_timestamp
 
-# ===== desktop =====
-platform_install_xfce4_systemload() { :; }  # Phase 2: sudo pacman -S xfce4-systemload-plugin
+    log_info "pacman mirror updated"
+}
+readonly -f platform_update_mirrorlist
 
-# ===== browser =====
-platform_install_chromium()    { :; }  # Phase 2: sudo pacman -S chromium
-platform_install_firefox()     { :; }  # Phase 2: sudo pacman -S firefox
+_should_update_mirror() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/mirror_last_updated"
+    local -r INTERVAL_SEC=$((7 * 24 * 60 * 60))
 
-# ===== extra =====
-platform_install_docker()             { :; }  # Phase 2: sudo pacman -S docker docker-compose
-platform_install_virtualbox()         { :; }  # Phase 2: sudo pacman -S virtualbox ...
-platform_install_virtualbox_guest()   { :; }  # Phase 2: sudo pacman -S virtualbox-guest-utils
-platform_install_vscode()             { :; }  # Phase 2: yay -S visual-studio-code-bin
-platform_install_obsidian()           { :; }  # Phase 2: sudo pacman -S obsidian
+    if [[ ! -f "$STAMP_FILE" ]]; then
+        return 0
+    fi
+
+    local -r NOW=$(date +%s)
+    local -r LAST=$(date -r "$STAMP_FILE" +%s)
+
+    if ((NOW - LAST >= INTERVAL_SEC)); then
+        return 0
+    else
+        return 1
+    fi
+}
+readonly -f _should_update_mirror
+
+_check_mirror_availability() {
+    local -r OFFICIAL_MIRRORLIST_URL="https://archlinux.org/mirrorlist/?country=JP&protocol=https"
+    local official_list
+    official_list=$(curl -s "$OFFICIAL_MIRRORLIST_URL")
+
+    for mirror in "${PACMAN_MIRROR_WHITELIST[@]}"; do
+        if ! echo "$official_list" | grep -qF "$mirror"; then
+            log_warn "Mirror '${mirror}' is not in the official mirror list. Consider removing it from PACMAN_MIRROR_WHITELIST."
+        fi
+    done
+}
+readonly -f _check_mirror_availability
+
+_write_mirrorlist() {
+    local -r MIRROR_FILE="/etc/pacman.d/mirrorlist"
+
+    local content=""
+    for mirror in "${PACMAN_MIRROR_WHITELIST[@]}"; do
+        content+="Server = ${mirror}\$repo/os/\$arch"$'\n'
+    done
+
+    echo "$content" | sudo tee "$MIRROR_FILE" >/dev/null
+}
+readonly -f _write_mirrorlist
+
+_update_mirror_timestamp() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/mirror_last_updated"
+    mkdir -p "$(dirname "$STAMP_FILE")"
+    touch "$STAMP_FILE"
+}
+readonly -f _update_mirror_timestamp
+
+platform_ensure_build_deps() {
+    sudo pacman -S --needed --noconfirm base-devel curl vim
+}
+readonly -f platform_ensure_build_deps
+
+platform_install_git() {
+    sudo pacman -S --needed --noconfirm git
+}
+readonly -f platform_install_git
+
+platform_install_delta() {
+    sudo pacman -S --needed --noconfirm git-delta
+}
+readonly -f platform_install_delta
+
+platform_install_yay() {
+    if ! check_if_command_exists "yay"; then
+        local -r ORIGINAL_DIR="$(pwd)"
+        cd "$(mktemp -d)"
+
+        sudo pacman -S --needed git base-devel
+
+        git clone https://aur.archlinux.org/yay-bin.git
+        cd "./yay-bin"
+        makepkg -si --noconfirm
+
+        cd "$ORIGINAL_DIR"
+    fi
+}
+readonly -f platform_install_yay
+
+platform_install_mise() {
+    if ! check_if_command_exists "mise"; then
+        if ! check_if_command_exists "yay"; then
+            log_err "yay is required to install mise"
+            return 1
+        fi
+        yay -S --needed --noconfirm mise
+    fi
+}
+readonly -f platform_install_mise
