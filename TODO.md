@@ -4,7 +4,7 @@
 
 ### 概要
 
-- 各種ツールの設定を見直す
+- 各種ツールの設定を見直し、各設定ファイルに記載された TODO に対応する
 
 ### セキュリティ・バグ修正
 
@@ -12,23 +12,75 @@
 
 ### コード・機能
 
-- [ ] Alacritty の設定の改善点を洗い出し，`TODO.md` に記載する
-- [ ] Neovim, LazyVim の設定の改善点を洗い出し，`TODO.md` に記載する
-- [ ] Zsh, p10k の設定の改善点を洗い出し，`TODO.md` に記載する
-    - Ref:
-        - [あなたのzshは何ms？zsh-benchで測ってから起動高速化 | eiji.page](https://eiji.page/blog/zsh-fast-start/)
-- [ ] Git, LazyGit の設定の改善点を洗い出し，`TODO.md` に記載する
-- [ ] Zsh のエイリアスを整えたい
-    - `l` で `ls` できないのが不便なので、それっぽいコマンドを l に割り振る
+#### Alacritty
+
+- [ ] Alacritty の設定を確認する（現状ミニマル設定で課題なし → 現状維持で問題なければ close）
+    - Ref: `config/home/.config/alacritty/alacritty.toml`
+
+#### Neovim / LazyVim
+
+- [ ] `lua/plugins/lsp.lua` の未対応フォーマッタ・リンターを追加する
+    - 不足: scss, toml, cpp, sql, jsx の formatter/linter 設定
+- [ ] `lua/config/keymaps.lua` のキーバインド TODO に対応する（ペイン/タブ移動など 6件）
+- [ ] `lua/plugins/editor.lua` に dial の `g<C-a>` / `g<C-x>` を追加する
+- [ ] `lua/plugins/coding.lua` の nvim-cmp 残骸を掃除する（blink.cmp 移行後のクリーンアップ）
+- [ ] `lua/plugins/ui.lua` のステータスライン（lualine）を改善する
+- Ref:
+    - `lua/plugins/lsp.lua`
+    - `lua/config/keymaps.lua`
+    - `lua/plugins/editor.lua`
+    - `lua/plugins/coding.lua`
+    - `lua/plugins/ui.lua`
+
+#### Zsh / p10k
+
+- [ ] `_aliases.zsh` の TODO に対応する
+    - `myenv sync` サブコマンドの追加
+    - 引数バリデーションの改善
+    - `_bump_nvim_plugins` のロジックを適切な場所に移動
+- [ ] `_completions.zsh` の TODO に対応する（補完追加、zcompdump キャッシュ）
+- [ ] Zsh のエイリアスを整える
+    - `l` で `ls` できない問題の解決
     - エイリアスの一覧と簡易解説のドキュメントも欲しい。 `docs/commands.md` などにまとめるのが良さそう。
-- [ ] いくつかのツールを追加する＆ワークフローに組み込む（yazi, ...）
-- [ ] tmux の設定の改善点を洗い出し，`TODO.md` に記載する
-    - Ref:
-        - [tmuxのPane/Window移動を少し便利にする – Portablecode.info](https://portablecode.info/2026/02/14/tmux-pane-window-move/)
-- [ ] tmux のクリップボード周りの設定を整える
-    - Ref:
-        - [tmuxのコピーモードを解説！チュートリアルとおすすめ設定 | eiji.page](https://eiji.page/blog/tmux-conf-copy-mode/)
-        - [Clipboard · tmux／tmux Wiki](https://github.com/tmux/tmux/wiki/Clipboard)
+- Ref:
+    - `zshrc.d/_aliases.zsh`
+    - `zshrc.d/_completions.zsh`
+    - [あなたのzshは何ms？zsh-benchで測ってから起動高速化 | eiji.page](https://eiji.page/blog/zsh-fast-start/)
+
+#### Git / LazyGit
+
+- [ ] Git 設定を見直す（discard alias の動作確認・修正など）
+- [ ] LazyGit の設定を確認する（現状課題なし → 現状維持で問題なければ close）
+- Ref:
+    - `config/home/.config/git/config`
+    - `config/home/.config/lazygit/config.yml`
+
+#### tmux
+
+- [ ] tmux の設定を見直し、`tmux.conf` の TODO に対応する
+    - コピーモード設定（クリップボード周りと統合）
+    - セッション番号の振り直し設定
+    - キーバインドの TODO（フォーカス移動、swap など）
+    - tpm プラグインの導入を検討
+- Ref:
+    - `config/home/.config/tmux/tmux.conf`
+    - [tmuxのPane/Window移動を少し便利にする – Portablecode.info](https://portablecode.info/2026/02/14/tmux-pane-window-move/)
+    - [tmuxのコピーモードを解説！チュートリアルとおすすめ設定 | eiji.page](https://eiji.page/blog/tmux-conf-copy-mode/)
+    - [Clipboard · tmux／tmux Wiki](https://github.com/tmux/tmux/wiki/Clipboard)
+
+#### ツール追加・設定拡充
+
+- [ ] bat の設定ファイルを追加する（Backlog #241 から昇格）
+- [ ] yazi の設定を充実させる（カスタマイズ TODO 対応）
+    - Ref: `config/home/.config/yazi/yazi.toml`
+- [ ] VS Code の設定を全面的に見直す（settings.json, keybindings.json）
+    - Ref: `config/home/.config/Code/User/settings.json`
+    - Ref: `config/home/.config/Code/User/keybindings.json`
+- [ ] aqua に管理対象パッケージを追加する（現状 packages が空）
+    - Ref: `config/home/.config/aquaproj-aqua/aqua.yaml`
+
+#### 開発ワークフロー
+
 - [ ] 開発ワークフロー自体の見直し
     - Ref:
         - [tmuxマルチセッション運用——AI時代を1キーバインドで乗り切る | eiji.page](https://eiji.page/blog/tmux-multi-sessions/)
@@ -40,12 +92,12 @@
 
 ### ドキュメント
 
-- [ ] Neovim(LazyNvim) のメンテナンスとして日々行うべきことをドキュメント化する
+- [ ] Neovim（LazyVim）のメンテナンスとして日々行うべきことをドキュメント化する
     - README.md のワークフローに追加する
     - プラグインの更新とかそういったこと
     - どのタイミング、どの頻度で？
-    - LazyVim の管理画面から行える操作で大体簡潔するようだ
-        - 管理画面の開き方は、Neovim を起動して、 :Lazy コマンドを入力するまたは`Space -> L`
+    - LazyVim の管理画面から行える操作で大体完結するようだ
+        - 管理画面の開き方は、Neovim を起動して、`:Lazy` コマンドを入力するまたは `<Space>l`
     - Ref: [🚀 Usage | lazy.nvim](https://lazy.folke.io/usage)
 
 ### プロジェクト管理
