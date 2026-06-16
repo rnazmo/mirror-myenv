@@ -2,13 +2,13 @@
 set -eu
 
 # What is this:
-#     Provision the machine.
+#     Provision the machine with the 3-layer architecture.
 #
 # Prerequisites:
 #     myenv repository (~/.myenv)
 #
 # Usage:
-#     foo/bar/myenv/setup.bash "<host_name>"
+#     ~/myenv/setup.bash "<host_name>"
 #
 # Example:
 #     ~/myenv/setup.bash "soba"
