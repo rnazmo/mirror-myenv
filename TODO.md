@@ -1,100 +1,6 @@
 # TODO (myenv)
 
-## Milestone: v4.10.0 - 3層分離アーキテクチャへの移行
-
-設計判断の詳細は ADR-009 を参照。
-
-### 設計
-
-- [x] ADR-009: 3層分離アーキテクチャの設計判断を記録（最終決定）
-- [x] 全 `platform_*` hook の洗い出し完了
-- [x] hook 粒度の決定: ソフトウェアレベルフック（A案）を採用
-
-### 実装
-
-ブランチ `feat/3-layer-architecture` で実施。main へのマージは全フェーズ完了後。
-
-- **Phase 1: 骨格**
-  - [ ] `platforms/0_common/default.bash` の作成（全hook の no-op 実装）
-  - [ ] `platforms/1_families/{arch_based,debian_based,darwin_based}.bash` の作成（空の上書き）
-  - [ ] `platforms/2_distros/{arch_linux,cachyos,endeavouros,manjaro,debian,ubuntu,kali,macos}.bash` の作成（空の上書き）
-  - [ ] `components/{core,shell,util,terminal,multiplexer,editor,devel,ime,desktop,browser,extra}.bash` の作成（setup_* スタブ）
-  - [ ] `hosts/{udon,soba}/setup_new.bash` の作成
-  - [ ] `setup_new.bash` の作成
-  - [ ] 検証: `bash setup_new.bash {udon,soba}` がエラーなく終了
-
-- **Phase 2: 肉付け（コンポーネント単位のコミット）**
-  - [ ] `core` コンポーネントの実装 + platform 実装
-  - [ ] `util` / `devel` コンポーネントの実装 + platform 実装
-  - [ ] `shell` コンポーネントの実装 + platform 実装（cachyos/manjaro の `platform_pre_install_p10k` 含む）
-  - [ ] `terminal` / `multiplexer` コンポーネントの実装 + platform 実装
-  - [ ] `editor` コンポーネントの実装 + platform 実装
-  - [ ] `ime` コンポーネントの実装 + platform 実装
-  - [ ] `desktop` コンポーネントの実装 + platform 実装
-  - [ ] `browser` / `extra` コンポーネントの実装 + platform 実装
-
-- **Phase 3: 後始末**
-  - [ ] `recipes/` ディレクトリの削除
-  - [ ] `hosts/*/setup.bash` の削除 → `setup_new.bash` に統一
-  - [ ] `setup_new.bash` → `setup.bash` にリネーム
-  - [ ] `tmp/demo/` の後始末（残す or 削除）
-
-### テスト
-
-- [ ] Phase 1 完了時: `bash -n` 全ファイル
-- [ ] Phase 2 各コンポーネント完了時: 関数存在確認テスト
-- [ ] Phase 3 完了後: 実機 `myenv apply` で動作確認（udon / soba）
-
-### プロジェクト管理
-
-- [ ] ブランチ `feat/3-layer-architecture` を `main` にマージ
-
----
-
-## Milestone: v4.X.0 - `myenv` コマンドの再設計
-
-### 概要
-
-- ADR-006 で整理した `myenv apply` を日常コマンドとして位置付ける方針を踏まえ、コマンド全体の設計を見直す
-- 特に、ADR-006 では暫定的な対処をした `myenv bump` を含む update / refresh 系コマンドの設計については、
-  抜本的に見直す必要がある
-
-### セキュリティ・バグ修正
-
-無し。
-
-### コード・機能
-
-- [ ] `myenv` コマンドのサブコマンド全体の設計を見直す
-    - ADR-006 も参照。
-    - 各コマンドの責務とか使い分けは？
-- [ ] `myenv bump` を含む update / refresh 系コマンド全体の再設計
-    - **背景**: ADR-006 にて、`myenv apply` は repo に記録された状態へ収束させる日常コマンドとして整理した。
-      一方、upstream を見に行く重い更新処理をどこへ集約するかは未整理。
-    - **検討事項**:
-        - `myenv bump` という名前を維持するか、`myenv update` / `myenv refresh` などに変えるか
-        - Neovim に限らず pacman / mise / aqua などの更新処理をどう分けるか
-        - commit / push まで自動化する処理と、更新だけ行う処理を分けるか
-        - 実装方法をどうするか。Zsh の関数には、スクリプトの呼び出し（や、例外的に Git の操作）などの
-          薄い操作しか書きたくない。一方で現状において、コマンドの１つ下のレイヤにおいて、このプロジェクト
-          の主たる処理のエントリーポイントとなっていたのは `/setup.bash` だけであった。これを崩すことになる？
-          その場合、`/myenv/cmd/apply.bash` のような感じに再構成した方が良いのか？
-
-### テスト・CI
-
-無し。
-
-### ドキュメント
-
-無し。
-
-### プロジェクト管理
-
-無し。
-
----
-
-## Milestone: v4.X.0 - 各ツールの設定を見直す
+## Milestone: v4.11.0 - 各ツールの設定を見直す
 
 ### 概要
 
@@ -141,6 +47,49 @@
     - LazyVim の管理画面から行える操作で大体簡潔するようだ
         - 管理画面の開き方は、Neovim を起動して、 :Lazy コマンドを入力するまたは`Space -> L`
     - Ref: [🚀 Usage | lazy.nvim](https://lazy.folke.io/usage)
+
+### プロジェクト管理
+
+無し。
+
+---
+
+## Milestone: v4.X.0 - `myenv` コマンドの再設計
+
+### 概要
+
+- ADR-006 で整理した `myenv apply` を日常コマンドとして位置付ける方針を踏まえ、コマンド全体の設計を見直す
+- 特に、ADR-006 では暫定的な対処をした `myenv bump` を含む update / refresh 系コマンドの設計については、
+  抜本的に見直す必要がある
+
+### セキュリティ・バグ修正
+
+無し。
+
+### コード・機能
+
+- [ ] `myenv` コマンドのサブコマンド全体の設計を見直す
+    - ADR-006 も参照。
+    - 各コマンドの責務とか使い分けは？
+- [ ] `myenv bump` を含む update / refresh 系コマンド全体の再設計
+    - **背景**: ADR-006 にて、`myenv apply` は repo に記録された状態へ収束させる日常コマンドとして整理した。
+      一方、upstream を見に行く重い更新処理をどこへ集約するかは未整理。
+    - **検討事項**:
+        - `myenv bump` という名前を維持するか、`myenv update` / `myenv refresh` などに変えるか
+        - Neovim に限らず pacman / mise / aqua などの更新処理をどう分けるか
+        - commit / push まで自動化する処理と、更新だけ行う処理を分けるか
+        - 実装方法をどうするか。Zsh の関数には、スクリプトの呼び出し（や、例外的に Git の操作）などの
+          薄い操作しか書きたくない。一方で現状において、コマンドの１つ下のレイヤにおいて、このプロジェクト
+          の主たる処理のエントリーポイントとなっていたのは `/setup.bash` だけであった。これを崩すことになる？
+          その場合、`/myenv/cmd/apply.bash` のような感じに再構成した方が良いのか？
+
+### テスト・CI
+
+無し。
+
+### ドキュメント
+
+無し。
 
 ### プロジェクト管理
 
