@@ -10,17 +10,7 @@ source "${MYENV_ROOT}/platforms/0_common/default.bash"
 source "${MYENV_ROOT}/platforms/1_families/arch_based.bash"
 source "${MYENV_ROOT}/platforms/2_distros/cachyos.bash"
 
-source "${MYENV_ROOT}/components/core.bash"
-source "${MYENV_ROOT}/components/shell.bash"
-source "${MYENV_ROOT}/components/util.bash"
-source "${MYENV_ROOT}/components/terminal.bash"
-source "${MYENV_ROOT}/components/multiplexer.bash"
-source "${MYENV_ROOT}/components/editor.bash"
-source "${MYENV_ROOT}/components/devel.bash"
-source "${MYENV_ROOT}/components/ime.bash"
-source "${MYENV_ROOT}/components/desktop.bash"
-source "${MYENV_ROOT}/components/browser.bash"
-source "${MYENV_ROOT}/components/extra.bash"
+source "${MYENV_ROOT}/components/_init.bash"
 
 readonly HOST_LABEL="soba (CachyOS)"
 
