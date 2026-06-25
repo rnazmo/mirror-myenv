@@ -20,10 +20,10 @@ set -eu
 check_if_command_exists() {
     local -r COMMAND="$1"
     if command -v "$COMMAND" &>/dev/null; then
-        log_info "Command '$1' exists"
+        log_info "Command '$COMMAND' exists"
         return 0
     else
-        log_info "Command '$1' does not exist."
+        log_info "Command '$COMMAND' does not exist."
         return 1
     fi
 }
