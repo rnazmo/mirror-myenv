@@ -13,7 +13,8 @@ set -eu
 # Example:
 #     ~/myenv/setup.bash "soba"
 
-export MYENV_ROOT="${HOME}/.myenv"
+readonly MYENV_ROOT="${HOME}/.myenv"
+export MYENV_ROOT
 
 source "${MYENV_ROOT}/lib/util.bash"
 
