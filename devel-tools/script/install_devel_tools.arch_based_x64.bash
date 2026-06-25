@@ -43,12 +43,15 @@ _install_shellcheck() {
 }
 
 _install_shfmt() {
+    local -r ORIGINAL_DIR="$(pwd)"
     cd "$DEVEL_TOOLS_BIN_DIR"
     curl -L "$SHFMT_DL_URL" -o shfmt
     chmod +x ./shfmt
 
     # check
     "$SHFMT_CMD_PATH" --version
+
+    cd "$ORIGINAL_DIR"
 }
 
 _install_bats() {
