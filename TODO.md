@@ -83,6 +83,10 @@
 - [ ] VS Code の設定を全面的に見直す（settings.json, keybindings.json）
     - Ref: `config/home/.config/Code/User/settings.json`
     - Ref: `config/home/.config/Code/User/keybindings.json`
+- [ ] aqua のインストーラがアーキテクチャ/バージョンをハードコードしているのを直す
+    - `components/core.bash` の `_install_aqua`: `AQUA_VERSION`, `OS`, `ARCH`, `CHECKSUMS` がすべて固定値
+    - ARM 環境で動かす際に `uname -s`/`uname -m` の動的取得とチェックサムの分岐が必要
+    - 現状 aqua は使っていないため優先度低
 - [ ] aqua に管理対象パッケージを追加する（現状 packages が空）
     - Ref: `config/home/.config/aquaproj-aqua/aqua.yaml`
 
