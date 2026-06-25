@@ -19,7 +19,6 @@ readonly TARGETSS=(
     "${MYENV_ROOT}"/devel-tools/script/*.bash
     "${MYENV_ROOT}"/hosts/*/*.bash
     "${MYENV_ROOT}"/lib/*.bash
-    "${MYENV_ROOT}"/recipes/*/*.bash
 )
 
 main() {
