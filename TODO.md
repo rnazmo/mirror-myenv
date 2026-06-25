@@ -68,6 +68,13 @@
     - [tmuxのコピーモードを解説！チュートリアルとおすすめ設定 | eiji.page](https://eiji.page/blog/tmux-conf-copy-mode/)
     - [Clipboard · tmux／tmux Wiki](https://github.com/tmux/tmux/wiki/Clipboard)
 
+#### Browser
+
+- [ ] Chrome のインストール方法を調査・実装する
+    - `components/browser.bash` の `setup_chrome` → `platform_install_chrome` が未実装
+    - `platforms/0_common/default.bash` に no-op のデフォルトが必要
+    - `platforms/1_families/arch_based.bash` に AUR/google-chrome 経由の実装が必要
+
 #### ツール追加・設定拡充
 
 - [ ] bat の設定ファイルを追加する（Backlog #241 から昇格）
