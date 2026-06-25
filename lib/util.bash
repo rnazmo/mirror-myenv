@@ -440,13 +440,7 @@ is_virtualbox_guest() {
 #     仮想化環境の場合 0,
 #     そうでない場合 1
 is_virtualized_environment() {
-    if systemd-detect-virt -q; then
-        echo "この環境は仮想化環境またはコンテナです。"
-        return 0 # Running in a vm guest
-    else
-        echo "この環境は仮想化環境ではありません。"
-        return 1 # Not running in a vm guest (= host machine)
-    fi
+    systemd-detect-virt -q
 }
 
 log_debug() {

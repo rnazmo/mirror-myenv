@@ -2,6 +2,49 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-011 真偽値関数は副作用を持たせない
+
+- **日付**: 2026-06-26
+- **ステータス**: 採用
+
+### コンテキスト
+
+`lib/util.bash` の `is_virtualized_environment` は、`systemd-detect-virt -q` の判定結果に加えて
+日本語メッセージの `echo` を副作用として持っていた。
+
+一方、同ファイルの `is_virtualbox_guest` は副作用を持たない静かな判定関数であり、同じレイヤで
+一貫性がなかった。
+
+### 決定
+
+1. `is_virtualized_environment` から `echo` を削除し、副作用のない関数とする
+2. 本プロジェクトで今後 `is_*` / `has_*` / `check_*` など真偽値を返す関数を書くときは、
+   ログ出力・画面表示などの副作用を含めない
+
+```bash
+# is_valid_*, check_*, has_*, などの真偽値関数:
+#   ✅ return 0 / 1 のみ
+#   ❌ echo / log_info / log_err を中に書かない
+
+# 呼び出し側で必要なら明示的にログを出す
+if ! is_virtualized_environment; then
+    log_info "Not in a VM — skipping guest setup"
+fi
+```
+
+### 理由
+
+- **Command-Query Separation (CQS)**: 問い合わせ (query) は値を返し、副作用を持たない。
+  真偽値関数は問い合わせであり、`echo` や `log_info` は副作用にあたる
+- **一貫性**: `is_virtualbox_guest` がすでに副作用なしで書かれている
+- **構成可能性**: 副作用があると `$(is_xxx)` や `if is_xxx && is_yyy` のような
+  コンテキストで予期せぬ出力が混入する
+
+### トレードオフ
+
+- 真偽値関数内でデバッグログを出力したい場合、呼び出し元で明示的に書く必要がある
+- ただし関数が短く責務が明確になるため、むしろ可読性は向上する
+
 ## ADR-010 言語・ツール選定の理由
 
 - **日付**: 2026-06-17（記録作成日。決定自体はプロジェクト開始時）
