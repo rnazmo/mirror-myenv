@@ -34,7 +34,7 @@ check_if_command_exists() {
 # Usage:
 #     unlink_symlink <PATH>
 unlink_symlink() {
-    local -r TARGET_PATH=$1
+    local -r TARGET_PATH="$1"
     if [[ ! -L "$TARGET_PATH" ]]; then
         log_err "'$TARGET_PATH' is not a symbolic link."
         return 1
@@ -59,8 +59,8 @@ unlink_symlink() {
 #     link_file "${HOME}/.myenv/config/home/.zshrc" "${HOME}/.zshrc"
 link_file() {
     # 引数の受け取り
-    local -r SOURCE_FILE=$1
-    local -r TARGET_FILE=$2
+    local -r SOURCE_FILE="$1"
+    local -r TARGET_FILE="$2"
     local -r TARGET_PARENT_DIR="$(dirname "$TARGET_FILE")"
 
     # バリデーション
@@ -119,8 +119,8 @@ link_file() {
 #             [シンボリックリンクの向き先変更（ln -nfs TARGET LINK_NAME） - Qiita](https://qiita.com/takeoverjp/items/bb1576e90a8a495db4b3)
 link_dir() {
     # 引数の受け取り
-    local -r SOURCE_DIR=$1
-    local -r TARGET_DIR=$2
+    local -r SOURCE_DIR="$1"
+    local -r TARGET_DIR="$2"
     local -r TARGET_PARENT_DIR="$(dirname "$TARGET_DIR")"
 
     # バリデーション
@@ -171,8 +171,8 @@ link_dir() {
 #     copy_file "~/.myenv/config/home/.config/alacritty/my-theme.toml" "~/.config/alacritty/my-theme.toml"
 copy_file() {
     # 引数の受け取り
-    local -r SRC_PATH=$1
-    local -r DEST_PATH=$2
+    local -r SRC_PATH="$1"
+    local -r DEST_PATH="$2"
     local -r TARGET_PARENT_DIR="$(dirname "$DEST_PATH")"
 
     # バリデーション
@@ -208,8 +208,8 @@ copy_file() {
 # Example:
 #     copy_file "~/.myenv/config/etc/profile.d/fcitx.sh" "/etc/profile.d/fcitx.sh"
 copy_file_as_root() {
-    local -r SRC_PATH=$1
-    local -r DEST_PATH=$2
+    local -r SRC_PATH="$1"
+    local -r DEST_PATH="$2"
     local -r TARGET_PARENT_DIR="$(dirname "$DEST_PATH")"
 
     if [[ ! -e "$SRC_PATH" ]]; then
