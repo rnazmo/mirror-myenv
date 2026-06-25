@@ -317,7 +317,7 @@ readonly -f platform_install_firefox
 platform_install_docker()             { sudo pacman -S --needed --noconfirm docker docker-compose; }
 readonly -f platform_install_docker
 
-platform_install_virtualbox()         { sudo pacman -S --needed virtualbox virtualbox-host-modules-arch virtualbox-guest-iso; }
+platform_install_virtualbox()         {     sudo pacman -S --needed --noconfirm virtualbox virtualbox-host-modules-arch virtualbox-guest-iso; }
 readonly -f platform_install_virtualbox
 
 platform_install_virtualbox_guest()   { sudo pacman -S --needed virtualbox-guest-utils; }
