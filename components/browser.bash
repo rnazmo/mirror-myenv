@@ -20,6 +20,6 @@ setup_firefox() {
 readonly -f setup_firefox
 
 _setup_firefox_extensions() {
-    sudo pacman -S --needed --noconfirm firefox-ublock-origin
+    platform_install_firefox_ublock_origin
 }
 readonly -f _setup_firefox_extensions

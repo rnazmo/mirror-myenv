@@ -72,8 +72,9 @@ platform_install_fcitx5_mozc() { :; }
 platform_install_xfce4_systemload() { :; }
 
 # ===== browser コンポーネント用 =====
-platform_install_chromium()    { :; }
-platform_install_firefox()     { :; }
+platform_install_chromium()                 { :; }
+platform_install_firefox()                  { :; }
+platform_install_firefox_ublock_origin()    { :; }
 
 # ===== extra コンポーネント用 =====
 platform_install_docker()             { :; }

@@ -310,6 +310,9 @@ readonly -f platform_install_chromium
 platform_install_firefox()     { sudo pacman -S --needed --noconfirm firefox; }
 readonly -f platform_install_firefox
 
+platform_install_firefox_ublock_origin() { sudo pacman -S --needed --noconfirm firefox-ublock-origin; }
+readonly -f platform_install_firefox_ublock_origin
+
 # ======================================================
 # ===== extra ===========================================
 # ======================================================
