@@ -94,8 +94,11 @@ _post_setup_zsh() {
 readonly -f _post_setup_zsh
 
 setup_default_shell() {
-    if check_if_command_exists "zsh" && [ "$SHELL" != "$(which zsh)" ]; then
-        chsh -s "$(which zsh)"
+    local -r ZSH_PATH
+    ZSH_PATH="$(command -v zsh)"
+
+    if check_if_command_exists "zsh" && [ "$SHELL" != "$ZSH_PATH" ]; then
+        chsh -s "$ZSH_PATH"
         log_info "Changed your default login shell to Zsh"
     fi
 }
