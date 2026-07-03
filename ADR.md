@@ -2,6 +2,102 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-012 メンテナンスサブシステムの設計
+
+- **日付**: 2026-07-04
+- **ステータス**: 採用
+
+### コンテキスト
+
+2026-07-04、ディスク容量が 30GB 中 100% 使用（空き 20KB）となる事態が発生した。原因は
+`/var/cache/pacman/pkg/` に 12GB ものキャッシュが蓄積していたことであり、myenv には
+キャッシュを削除する仕組みが一切存在しなかった。
+
+### 検討した代替案
+
+**案A: `platform_refresh_packages` に pacman cache cleanup を1行追加する**
+
+最小変更だが、「パッケージ更新」と「キャッシュ削除」という異なる責務が混ざる。
+また pacman 以外のキャッシュ（yay, npm, Go, journald, ブラウザ等）の削除はカバーできない。
+
+**案B: 単一の `setup_maintenance` 関数で全タスクを固定実行する**
+
+シンプルだが、ホストによって「ブラウザキャッシュは削除したくない」などの
+選択ができない。
+
+**案C（採用）: 個別の `maintain_*` 関数 + platform hook の分割**
+
+OS 固有の処理は platform hook に委譲し、OS 横断の処理は component に直接書く。
+ホスト側で個別の `maintain_*` 関数を呼び分けることで、マシンの用途に応じた
+メンテナンス範囲を選択可能にする。
+
+### 決定
+
+1. 新規コンポーネント `components/maintenance.bash` を作成する
+2. `maintain_package_cache`, `maintain_system_logs`, `maintain_build_caches`,
+   `maintain_browser_caches` の 4 つの公開関数を提供する
+3. これらを全て呼ぶ `setup_maintenance()` 便利関数も提供する
+4. 各タスクは `~/.cache/myenv/maintenance/` 配下の stamp ファイルで頻度制御する
+5. OS 固有の処理は 4 つの platform hook に委譲する：
+   - `platform_clean_package_cache`
+   - `platform_clean_yay_cache`
+   - `platform_clean_system_logs`
+   - `platform_remove_orphan_packages`
+6. `platform_remove_orphan_packages` は no-op とする（孤児パッケージの自動削除は
+   影響範囲が読めないため、初期実装では対象外）
+7. `setup_maintenance()` を `setup_core()` 末尾で呼び出す
+
+### タスク一覧と頻度
+
+| タスク | 間隔 | 実装 |
+|---|---|---|
+| pacman cache（`paccache -rk 2`） | 週1 | platform hook（arch_based）|
+| yay cache | 週1 | platform hook（arch_based）|
+| journald vacuum（50MB 制限） | 月1 | platform hook（arch_based）|
+| npm cache | 月1 | component 直接 |
+| Go build cache | 月1 | component 直接 |
+| mise prune | 月1 | component 直接 |
+| browser caches | 月1 | component 直接 |
+| 孤児パッケージ | — | no-op（hook のみ）|
+
+### ホスト側のカスタマイズ例
+
+```bash
+# hosts/udon/setup.bash — このマシンではブラウザキャッシュは手動
+main() {
+    setup_core
+    # ...
+    maintain_package_cache
+    maintain_system_logs
+    maintain_build_caches
+    # maintain_browser_caches ← 呼ばない
+}
+```
+
+### 理由
+
+- **責務の分離**: メンテナンスは setup とは独立した横断的関心事であり、
+  独立したコンポーネントにすることで見通しが良くなる
+- **拡張性**: 新しいメンテナンスタスクの追加が同一パターンで行える
+- **選択可能性**: ホストごとにメンテナンス範囲を変えられる
+- **既存パターンの踏襲**: stamp による頻度制御（ADR-005, ADR-006）や
+  platform hook（ADR-009）は確立された設計パターンをそのまま利用している
+
+### トレードオフ
+
+- タスクごとに個別の stamp ファイルが必要になり、ファイル数が増える
+- ブラウザキャッシュのようにホストごとの意向が分かれるタスクは、
+  ホスト側で明示的に管理する必要がある
+- 孤児パッケージ削除は手動運用が続く（自動化されない）
+
+### 今後の検討事項
+
+- 孤児パッケージの自動削除（`platform_remove_orphan_packages` の実装）。
+  判断が難しいため、実装する場合は dry-run モードや明示的な確認を
+  挟む仕組みと合わせて検討する
+- mise や aqua の管理ツール更新を maintenance に組み込むかどうか
+- `myenv doctor` や `myenv cleanup` のような明示コマンドとの役割分担
+
 ## ADR-011 真偽値関数は副作用を持たせない
 
 - **日付**: 2026-06-26
