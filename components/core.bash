@@ -19,6 +19,8 @@ setup_core() {
     setup_golang
     setup_nodejs
     setup_directories
+
+    setup_maintenance
 }
 readonly -f setup_core
 

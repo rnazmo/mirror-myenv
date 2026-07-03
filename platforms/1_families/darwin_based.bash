@@ -16,6 +16,12 @@ platform_install_delta()       { :; }  # Phase 2: brew install git-delta
 platform_install_yay()         { :; }  # Phase 2: N/A
 platform_install_mise()        { :; }  # Phase 2: brew install mise
 
+# ===== maintenance =====
+platform_clean_package_cache()   { :; }  # Phase 2: brew cleanup
+platform_clean_yay_cache()       { :; }  # Phase 2: N/A
+platform_clean_system_logs()     { :; }  # Phase 2: log rotate / vacuum
+platform_remove_orphan_packages(){ :; }  # Phase 2: brew autoremove
+
 # ===== util =====
 platform_install_tree()        { :; }
 platform_install_xclip()       { :; }

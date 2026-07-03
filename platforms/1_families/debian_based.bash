@@ -16,6 +16,12 @@ platform_install_delta()       { :; }  # Phase 2: sudo apt install -y git-delta
 platform_install_yay()         { :; }  # Phase 2: N/A (no AUR equivalent)
 platform_install_mise()        { :; }  # Phase 2: curl 経由でインストール
 
+# ===== maintenance =====
+platform_clean_package_cache()   { :; }  # Phase 2: sudo apt-get autoclean
+platform_clean_yay_cache()       { :; }  # Phase 2: N/A
+platform_clean_system_logs()     { :; }  # Phase 2: journalctl --vacuum (same as Arch)
+platform_remove_orphan_packages(){ :; }  # Phase 2: sudo apt autoremove
+
 # ===== util =====
 platform_install_tree()        { :; }
 platform_install_xclip()       { :; }

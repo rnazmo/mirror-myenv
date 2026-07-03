@@ -21,6 +21,12 @@ platform_install_delta()       { :; }
 platform_install_yay()         { :; }
 platform_install_mise()        { :; }
 
+# ===== maintenance コンポーネント用 =====
+platform_clean_package_cache()   { :; }
+platform_clean_yay_cache()       { :; }
+platform_clean_system_logs()     { :; }
+platform_remove_orphan_packages(){ :; }
+
 # ===== util コンポーネント用 =====
 platform_install_tree()        { :; }
 platform_install_xclip()       { :; }

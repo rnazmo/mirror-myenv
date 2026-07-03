@@ -151,6 +151,75 @@ platform_install_mise() {
 readonly -f platform_install_mise
 
 # ======================================================
+# ===== maintenance =====================================
+# ======================================================
+
+platform_clean_package_cache() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/maintenance/pacman_cache_cleaned"
+    local -r INTERVAL_SEC=$((7 * 24 * 60 * 60))
+
+    if [[ -f "$STAMP_FILE" ]]; then
+        local -r NOW=$(date +%s)
+        local -r LAST=$(date -r "$STAMP_FILE" +%s)
+        if ((NOW - LAST < INTERVAL_SEC)); then
+            log_info "paccache cleanup skipped (last cleaned within 7 days)"
+            return 0
+        fi
+    fi
+
+    sudo paccache -rk 2
+
+    mkdir -p "$(dirname "$STAMP_FILE")"
+    touch "$STAMP_FILE"
+}
+readonly -f platform_clean_package_cache
+
+platform_clean_yay_cache() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/maintenance/yay_cache_cleaned"
+    local -r INTERVAL_SEC=$((7 * 24 * 60 * 60))
+
+    if [[ -f "$STAMP_FILE" ]]; then
+        local -r NOW=$(date +%s)
+        local -r LAST=$(date -r "$STAMP_FILE" +%s)
+        if ((NOW - LAST < INTERVAL_SEC)); then
+            log_info "yay cache cleanup skipped (last cleaned within 7 days)"
+            return 0
+        fi
+    fi
+
+    if check_if_command_exists "yay"; then
+        rm -rf "${HOME}/.cache/yay" 2>/dev/null || true
+    fi
+
+    mkdir -p "$(dirname "$STAMP_FILE")"
+    touch "$STAMP_FILE"
+}
+readonly -f platform_clean_yay_cache
+
+platform_clean_system_logs() {
+    local -r STAMP_FILE="${XDG_CACHE_HOME:-${HOME}/.cache}/myenv/maintenance/system_logs_vacuumed"
+    local -r INTERVAL_SEC=$((30 * 24 * 60 * 60))
+
+    if [[ -f "$STAMP_FILE" ]]; then
+        local -r NOW=$(date +%s)
+        local -r LAST=$(date -r "$STAMP_FILE" +%s)
+        if ((NOW - LAST < INTERVAL_SEC)); then
+            log_info "journald vacuum skipped (last cleaned within 30 days)"
+            return 0
+        fi
+    fi
+
+    sudo journalctl --vacuum-size=50M --quiet
+
+    mkdir -p "$(dirname "$STAMP_FILE")"
+    touch "$STAMP_FILE"
+}
+readonly -f platform_clean_system_logs
+
+platform_remove_orphan_packages() { :; }
+readonly -f platform_remove_orphan_packages
+
+# ======================================================
 # ===== shell ===========================================
 # ======================================================
 
