@@ -14,8 +14,10 @@ readonly DEVEL_TOOLS_BIN_DIR="${MYENV_ROOT}/devel-tools/bin"
 readonly SHELLCHECK_CMD="shellcheck"
 readonly SHELLCHECK_CMD_PATH="${DEVEL_TOOLS_BIN_DIR}/${SHELLCHECK_CMD}"
 
-readonly TARGETS=(
+readonly TARGET_PATTERNS=(
     "${MYENV_ROOT}"/*.bash
+    "${MYENV_ROOT}"/components/*.bash
+    "${MYENV_ROOT}"/platforms/*/*.bash
     "${MYENV_ROOT}"/devel-tools/script/*.bash
     "${MYENV_ROOT}"/hosts/*/*.bash
     "${MYENV_ROOT}"/lib/*.bash
@@ -24,8 +26,8 @@ readonly TARGETS=(
 main() {
     log_debug "SHELLCHECK_CMD_PATH: ${SHELLCHECK_CMD_PATH}"
 
-    for TARGETS in "${TARGETS[@]}"; do
-        for TARGET in $TARGETS; do
+    for PATTERN in "${TARGET_PATTERNS[@]}"; do
+        for TARGET in $PATTERN; do
             log_info "TARGET: $TARGET"
             "$SHELLCHECK_CMD_PATH" "$TARGET"
         done
