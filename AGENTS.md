@@ -13,6 +13,8 @@
 - **`readonly -f`**: `lib/`, `components/`, `platforms/` の全関数に必須。`main` には付けない（source chain で再定義される可能性があるため）
 - **真偽値関数**: 副作用禁止（`return 0/1` のみ、`echo`/`log_*` を書かない）。ADR-011
 - **フック機構**: component は `platform_*` 関数を呼ぶだけで OS 知識を持たない。platform ファイルで上書きする
+- **メンテナンス機構**: `setup_core()` 末尾で `setup_maintenance()` を自動実行。ホスト側で個別の `maintain_*` 関数を呼び分けることでメンテナンス範囲を選択可能
+- **メンテナンス用 platform hook**（4 つ）: `platform_clean_package_cache`, `platform_clean_yay_cache`, `platform_clean_system_logs`, `platform_remove_orphan_packages`
 
 ## コマンド
 
@@ -27,7 +29,8 @@
 ./devel-tools/script/install_devel_tools.arch_based_x64.bash
 
 # 強制再実行（cache stamp を削除してから setup を再実行）
-rm ~/.cache/myenv/<stamp_file>
+rm ~/.cache/myenv/<stamp_file>         # pacman / mirror / mise 等
+rm ~/.cache/myenv/maintenance/<stamp>  # メンテナンスタスク
 ./setup.bash "$(hostname)"
 ```
 
@@ -48,5 +51,9 @@ CI 未導入。テスト未実装（bats-core 計画中）。
 
 - 新しい component を追加するときは `components/_init.bash` の source 行を依存順に挿入すること（glob 未使用）
 - pacman / mise / Neovim プラグインの更新は cache stamp で制御されている。強制実行するには `~/.cache/myenv/` 配下の該当 stamp を削除する
+- メンテナンスタスク一覧（詳細は `components/maintenance.bash`）:
+  - 週1回: pacman cache（`paccache -rk 2`）, yay cache
+  - 月1回: journald vacuum, npm cache, Go build cache, mise prune, browser caches
+  - 未実装（hook のみ）: 孤児パッケージ削除
 - Git remote: `git@gitlab.com:rnazmo/myenv.git`
 - `config/home/.bin/` は自作スクリプト（Git 管理）、`~/.local/bin/` は外部バイナリ（Git 管理外）
