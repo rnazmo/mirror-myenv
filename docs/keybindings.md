@@ -122,7 +122,7 @@ Move cursor to...
 ## Multiplexer - tmux
 
 - Notes:
-    - 今の空きキー→ `wvy@#$<>()-+=`
+    - 今の空きキー→ `wvy@#<>()-+=`
     - 使えない・使うべきでないキー：
         - Warn (SHOULD NOT):
             - `Ctrl-i`: = `Tab`
@@ -168,8 +168,8 @@ Move cursor to...
 
 #### movement
 
-- `<prefix> s` (`|f`): swap current position with previous/next position
-      <!-- - `<prefix> d` (`|e`): swap current with first/last -->
+- `<prefix> s` (`|f`): swap current pane with previous/next
+- `<prefix> d` (`|e`): swap current pane with first/last
 - `<prefix> b`: break current pane to new tabpage (∵ "b"reak)
 - `<prefix> [` (`|]`): break current pane to previous/next tabpage
 
@@ -239,17 +239,10 @@ Move cursor to...
 
 - `<prefix> Space`: enter copy-mode ☆
 - `<prefix> p`: paste buffer ☆
-- TODO: Add more
-    - Ref: <https://github.com/tmux/tmux/wiki/Getting-Started#copy-mode-key-bindings>
 
-<!--
-in copy-mode:
-
-TODO:
-- `Ctrl-e` (`y`): one-line down/up
-- `Ctrl-d` (`u`): half-page down/up
-- `PgDn` (`PgUp`): one-page down/up
--->
+in copy-mode (vi keys):
+- `v`: begin selection
+- `y`: copy selection
 
 ### command-mode
 
