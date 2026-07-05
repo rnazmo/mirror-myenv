@@ -23,7 +23,6 @@
 
 #### Git / LazyGit
 
-- [ ] Git 設定を見直す（discard alias の動作確認・修正など）
 - [ ] LazyGit の設定を確認する（現状課題なし → 現状維持で問題なければ close）
 - Ref:
     - `config/home/.config/git/config`
@@ -31,11 +30,6 @@
 
 #### tmux
 
-- [ ] tmux の設定を見直し、`tmux.conf` の TODO に対応する
-    - コピーモード設定（クリップボード周りと統合）
-    - セッション番号の振り直し設定
-    - キーバインドの TODO（フォーカス移動、swap など）
-    - tpm プラグインの導入を検討
 - Ref:
     - `config/home/.config/tmux/tmux.conf`
     - [tmuxのPane/Window移動を少し便利にする – Portablecode.info](https://portablecode.info/2026/02/14/tmux-pane-window-move/)
