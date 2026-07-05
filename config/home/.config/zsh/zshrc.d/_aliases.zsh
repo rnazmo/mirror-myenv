@@ -101,8 +101,6 @@ _sub_command_cd() {
 }
 
 _sub_command_apply() {
-  # TODO: Validate arguments?
-  # echo "executing _sub_command_apply with argument: $arg"
   "${MYENV_ROOT}/setup.bash" "$@"
 }
 
@@ -115,7 +113,6 @@ _sub_command_push() {
 }
 
 _sub_command_test() {
-  # TODO: Validate arguments?
   cd "$MYENV_ROOT" && \
     ./devel-tools/script/run-lint.arch_based_x64.bash
 }
