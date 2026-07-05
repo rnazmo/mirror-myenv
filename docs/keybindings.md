@@ -276,7 +276,7 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 - Notes:
     - 今の空きキー→ `wxvyu@#$<>()-+=`
     - `Ctrl-c` の使用は避けること！
-        - 「キャンセル」コマンドとして使われていることが多く、非常に衝突しやすい
+        - 「キャンセル」コマンドとして使われていて非常に衝突しやすい
 
 ### prefix
 
@@ -285,7 +285,7 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 
 ### pane
 
-("pane" is "window" officiay.)
+("pane" is "window" officially.)
 
 - `Ctrl-w h` (`|j|k|l`): change focus ☆
     - or `Ctrl-h` (`|j|k|l`) ☆
@@ -332,14 +332,15 @@ TODO: ?
 ### search
 
 - `<leader> s`: open "Search" menu (∵ "s"earch)
-- `<leader> s g`: search for string in project-root-dir(<-?) (∵ "g"rep)
-- `<leader> s r`: open "Search&Repalce" menu (∵ "r"eplace)
+- `<leader> s g`: grep in project root (∵ "s"earch -> "g"rep)
+- `<leader> s r`: open "Search & Replace" menu (∵ "s"earch -> "r"eplace)
 
 ### file
 
 - `<leader> f`: open "File/Find" menu (∵ "f"ile/"f"ind)
-- `<leader> f f`: search for file in project-root-dir (∵ "f"ind -> "f"ile)
-- `<leader> f r`: search for file in recent (∵ "f"ind -> "r"ecent)
+- `<leader> f f`: find file in project root (∵ "f"ind -> "f"ile)
+- `<leader> f r`: find recent file (∵ "f"ind -> "r"ecent)
+- `<leader> f c`: find file in Neovim config (∵ "f"ile -> "c"onfig)
 
 ### file explorer (neo-tree)
 
@@ -380,17 +381,17 @@ TODO:
 #### comment
 
 - `g c c`: toggle comment on line
-- `g c o`: add new comment line below current line (∵ like vim `o`)
-- `g c Shift-o`: add new comment line above current line (∵ like vim `Shift-o`)
+- `g c o`: add new comment line below (∵ like vim `o`)
+- `g c O`: add new comment line above (∵ like vim `O`)
 
 #### indentation
 
 While Normal Mode:
 
-- `>>`: Increase indentation of current line
-- `<<`: Decrease indentation of current line
+- `>>`: indent current line
+- `<<`: unindent current line
 
-While selecting rows in view mode:
+While selecting rows in visual mode:
 
 - `>`: Increase indentation of selected lines
 - `<`: Decrease indentation of selected lines
