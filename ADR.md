@@ -2,6 +2,59 @@
 
 <!-- ADRs are listed in reverse chronological order (newest first). -->
 
+## ADR-013 tmux + Alacritty の OSC 52 クリップボード連携
+
+- **日付**: 2026-07-05
+- **ステータス**: 記録
+
+### コンテキスト
+
+tmux の copy-mode で `y` によりコピーした内容が、システムクリップボードに届く。
+しかし tmux.conf にも Alacritty の設定にもクリップボードに関する明示的な設定は一切存在しない。
+なぜ動作するのか不明だったため、調査して記録する。
+
+### 調査結果
+
+#### tmux 側の設定
+
+tmux 3.3 以降、`set-clipboard` のデフォルト値は `external` である。
+これは OSC 52 エスケープシーケンスをターミナルエミュレータに通過させる設定であり、
+tmux 自身がクリップボードを管理するのではなく、ターミナルに委譲する。
+
+確認環境: tmux 3.7b、デフォルトのまま（`set-clipboard` 未設定）。
+
+#### Alacritty 側の設定
+
+Alacritty 0.13.0 以降、`[terminal]osc52` 設定が追加され、デフォルト値は `"OnlyCopy"` である。
+これは OSC 52 によるクリップボード書き込み（コピー）を受け入れるが、読み取り（ペースト）は拒否する設定である。
+
+確認環境: Alacritty 0.17.0、デフォルトのまま（`[terminal]osc52` 未設定）。
+
+#### データの流れ
+
+```
+tmux copy-mode: prefix + Space → v（選択開始）→ y（コピー実行）
+  → tmux 内部バッファに保存
+  → tmux が OSC 52 エスケープシーケンスを生成（set-clipboard = external）
+  → Alacritty が OSC 52 を受信（osc52 = "OnlyCopy"）
+  → システムクリップボードに書き込み
+```
+
+### 結論
+
+両者のデフォルト設定の組み合わせにより、何も設定しなくても OSC 52 経由の
+クリップボードコピーが動作する。明示的な設定変更は不要。
+
+### トレードオフ
+
+- Alacritty のデフォルト `osc52 = "OnlyCopy"` はコピー専用であり、OSC 52 経由の
+  ペースト（読み取り）は許可されない。ただし通常の `Ctrl+V` / クリック中ペーストは
+  Alacritty が別経路で処理するため、実用上の問題はないっぽい？
+- `set-clipboard external` は tmux が OSC 52 を通過させるだけであり、
+  tmux がクリップボードを直接管理しない。そのため tmux 外のターミナル出力が
+  勝手にクリップボードを書き換えるのを防ぐ機能は持たない（必要なら `set-clipboard on` に変更する）
+- 一部の Wayland 環境では、動作しない可能性がある。現状は X11 環境（udon）で確認済み
+
 ## ADR-012 メンテナンスサブシステムの設計
 
 - **日付**: 2026-07-04
@@ -39,26 +92,26 @@ OS 固有の処理は platform hook に委譲し、OS 横断の処理は compone
 3. これらを全て呼ぶ `setup_maintenance()` 便利関数も提供する
 4. 各タスクは `~/.cache/myenv/maintenance/` 配下の stamp ファイルで頻度制御する
 5. OS 固有の処理は 4 つの platform hook に委譲する：
-   - `platform_clean_package_cache`
-   - `platform_clean_yay_cache`
-   - `platform_clean_system_logs`
-   - `platform_remove_orphan_packages`
+    - `platform_clean_package_cache`
+    - `platform_clean_yay_cache`
+    - `platform_clean_system_logs`
+    - `platform_remove_orphan_packages`
 6. `platform_remove_orphan_packages` は no-op とする（孤児パッケージの自動削除は
    影響範囲が読めないため、初期実装では対象外）
 7. `setup_maintenance()` を `setup_core()` 末尾で呼び出す
 
 ### タスク一覧と頻度
 
-| タスク | 間隔 | 実装 |
-|---|---|---|
-| pacman cache（`paccache -rk 2`） | 週1 | platform hook（arch_based）|
-| yay cache | 週1 | platform hook（arch_based）|
-| journald vacuum（50MB 制限） | 月1 | platform hook（arch_based）|
-| npm cache | 月1 | component 直接 |
-| Go build cache | 月1 | component 直接 |
-| mise prune | 月1 | component 直接 |
-| browser caches | 月1 | component 直接 |
-| 孤児パッケージ | — | no-op（hook のみ）|
+| タスク                           | 間隔 | 実装                        |
+| -------------------------------- | ---- | --------------------------- |
+| pacman cache（`paccache -rk 2`） | 週1  | platform hook（arch_based） |
+| yay cache                        | 週1  | platform hook（arch_based） |
+| journald vacuum（50MB 制限）     | 月1  | platform hook（arch_based） |
+| npm cache                        | 月1  | component 直接              |
+| Go build cache                   | 月1  | component 直接              |
+| mise prune                       | 月1  | component 直接              |
+| browser caches                   | 月1  | component 直接              |
+| 孤児パッケージ                   | —    | no-op（hook のみ）          |
 
 ### ホスト側のカスタマイズ例
 
