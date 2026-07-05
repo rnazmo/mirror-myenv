@@ -12,35 +12,9 @@
 
 ### コード・機能
 
-#### Alacritty
-
-- [ ] Alacritty の設定を確認する（現状ミニマル設定で課題なし → 現状維持で問題なければ close）
-    - Ref: `config/home/.config/alacritty/alacritty.toml`
-
-#### Neovim / LazyVim
-
-- [ ] `lua/plugins/lsp.lua` の未対応フォーマッタ・リンターを追加する
-    - 不足: scss, toml, cpp, sql, jsx の formatter/linter 設定
-- [ ] `lua/config/keymaps.lua` のキーバインド TODO に対応する（ペイン/タブ移動など 6件）
-- [ ] `lua/plugins/editor.lua` に dial の `g<C-a>` / `g<C-x>` を追加する
-- [ ] `lua/plugins/coding.lua` の nvim-cmp 残骸を掃除する（blink.cmp 移行後のクリーンアップ）
-- [ ] `lua/plugins/ui.lua` のステータスライン（lualine）を改善する
-- Ref:
-    - `lua/plugins/lsp.lua`
-    - `lua/config/keymaps.lua`
-    - `lua/plugins/editor.lua`
-    - `lua/plugins/coding.lua`
-    - `lua/plugins/ui.lua`
-
 #### Zsh / p10k
 
-- [ ] `_aliases.zsh` の TODO に対応する
-    - `myenv sync` サブコマンドの追加
-    - 引数バリデーションの改善
-    - `_bump_nvim_plugins` のロジックを適切な場所に移動
-- [ ] `_completions.zsh` の TODO に対応する（補完追加、zcompdump キャッシュ）
 - [ ] Zsh のエイリアスを整える
-    - `l` で `ls` できない問題の解決
     - エイリアスの一覧と簡易解説のドキュメントも欲しい。 `docs/commands.md` などにまとめるのが良さそう。
 - Ref:
     - `zshrc.d/_aliases.zsh`
