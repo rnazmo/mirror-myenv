@@ -54,7 +54,6 @@ alias v="nvim"
 #         apply <hostname>: Run myenv setup as <hostname>
 #         pull: git pull
 #         push: git push
-#         TODO: sync: git pull && git push
 #         test: Run staticcheck (lint, format, unit-test, integ-test)
 #         bump: Update Neovim plugins, then commit and push lazy-lock.json changes
 #
