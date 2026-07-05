@@ -24,7 +24,7 @@ return {
         sh = { "shfmt" },
         lua = { "stylua" },
         -- python = { "isort", "black" },
-        -- TODO: scss, ...
+        scss = { "prettier" },
       },
     },
   },
@@ -51,10 +51,7 @@ return {
         dockerfile = { "hadolint" },
         ghaction = { "actionlint" },
         -- terraform = { "tflint" },
-        -- TODO: jsx? scss? tailwindcss?
-        -- TODO: toml
-        -- TODO: cpp
-        -- TODO: sql
+        scss = { "stylelint" },
         -- ["*"] = { "typos" }, -- Run typos linter on all filetypes
         -- ["*"] = { "cspell" },
         -- ["_"] = { "fallback_linter" }, -- Use this linter for filetypes without specific linters
