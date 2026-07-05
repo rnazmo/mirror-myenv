@@ -104,9 +104,7 @@
     #  https://intellipaat.com/community/2841/git-discard-changes-how-do-i-discard-unstaged-changes-in-git
     #  https://blog.web-apps.tech/git-aliases/
     #  https://fumiyas.github.io/2016/12/15/positional-parameters.sh-advent-calendar.html
-    # TODO:
-    #  - This may not work well.
-    discard = "!f(){ git clean -df \"$*\" && git checkout -- \"$*\";}; f"
+    discard = "!f(){ git clean -df \"$@\" && git checkout -- \"$@\";}; f"
 
     # # Uncommit
     # # Ref:
