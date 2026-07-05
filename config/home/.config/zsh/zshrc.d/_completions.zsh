@@ -19,5 +19,11 @@ zstyle ':completion:*:*:git:*' script "${ZSH_COMPLETION_DIR}/git-completion.bash
 # TODO: Add more completion for commands...
 
 # ======== compile
-# TODO: Cache zcompdump
-compinit -d ~/.cache/zcompdump
+# Cache zcompdump for faster shell startup
+# Ref: https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Use-of-compinit
+readonly ZCOMPDUMP_PATH="${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"
+if [[ -f "$ZCOMPDUMP_PATH" ]] && [[ "$ZCOMPDUMP_PATH" -nt "${ZDOTDIR}/zshrc.d/_completions.zsh" ]]; then
+  compinit -C -d "$ZCOMPDUMP_PATH"
+else
+  compinit -d "$ZCOMPDUMP_PATH"
+fi
