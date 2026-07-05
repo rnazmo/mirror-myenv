@@ -25,6 +25,7 @@ fi
 
 # alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 # alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time"
+alias l="eza --color=always --icons=always"
 alias ls="eza --color=always --icons=always"
 alias ll="eza --color=always --icons=always --long"
 alias la="eza --color=always --icons=always --long --all"
