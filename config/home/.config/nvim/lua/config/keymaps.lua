@@ -4,8 +4,12 @@
 ---------------------------------------------------------------------
 --- Info:
 ---     About `vim.map()`
+---         NOTE(2026-07-05): `vim.map()` does NOT exist in modern Neovim.
+---         `vim.keymap.set` is the standard API for Neovim 0.5+.
 ---         TODO:
 ---     Defference between `map` and `noremap`
+---         NOTE(2026-07-05): `vim.keymap.set` uses noremap (non-recursive) by default.
+---         Pass `remap = true` to make it recursive.
 ---         TODO:
 ---         Ref: https://cocopon.me/blog/2013/10/vim-map-noremap/
 ---
