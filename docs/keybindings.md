@@ -155,9 +155,9 @@ Move cursor to...
 #### create/close
 
 - `<prefix> g`: create new (∵ 余ってるキーの中で押しやすそうなやつを割り当てた) ☆
-- `<prefix> ;` (`|'`): create new virtical/horizontal ☆
+- `<prefix> ;` (`|'`): create new horizontal/vertical ☆
 - `<prefix> q`: close (∵ "q"uit)
-- `<prefix> o`: close other panes (∵ "o"ther)
+- `<prefix> o`: close other panes (∵ "o"ther) (※ 現状未設定。使えない)
 - `<prefix> /`: create new floating
 
 #### edit
@@ -185,7 +185,7 @@ Move cursor to...
 
 - `<prefix> Ctrl-h` (`|l`): change focus ☆
 - `<prefix> Ctrl-j` (`|k`): change focus to first/last
-      <!--TODO: Change focus to previous/next with Ctrl-r/n ?-->
+  <!--TODO: Change focus to previous/next with Ctrl-r/n ?-->
 
 #### create/close
 
@@ -241,6 +241,7 @@ Move cursor to...
 - `<prefix> p`: paste buffer ☆
 
 in copy-mode (vi keys):
+
 - `v`: begin selection
 - `y`: copy selection
 
