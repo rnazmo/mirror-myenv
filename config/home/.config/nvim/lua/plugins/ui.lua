@@ -32,7 +32,6 @@ return {
     event = "VeryLazy",
     opts = {
       -- statusline
-      -- TODO: Improve statusline (Display buffer?, ...)
       sections = {
         -- Remove the time info (= luzline_z) from lualine
         lualine_z = {},
@@ -55,8 +54,8 @@ return {
           -- Use pretty *full* path
           --     pretty_path truncates path to 3 directories or ress by default.
           --     I want to display full path (from the project root).
+          --     NOTE(2026-07-05): Resolved. `length = 0` works as intended.
           -- Ref:
-          --     TODO:
           --     https://github.com/LazyVim/LazyVim/issues/3059
           --     https://github.com/LazyVim/LazyVim/issues/2752
           --     https://github.com/LazyVim/LazyVim/blob/13a4a84e3485a36e64055365665a45dc82b6bf71/lua/lazyvim/util/lualine.lua#L76
