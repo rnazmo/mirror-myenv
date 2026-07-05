@@ -142,9 +142,12 @@ map("n", "<C-Right>", resize_window_to_right, { desc = "Resize pane to right", s
 map("n", "<C-Up>", resize_window_to_up, { desc = "Resize pane to up", silent = true })
 map("n", "<C-Down>", resize_window_to_down, { desc = "Resize pane to down", silent = true })
 
--- TODO: swap pane with previous/next?
--- This is not the behaviour I expected.
--- map("n", "<C-w>f", "<cmd>wincmd x<CR>", { desc = "Swap pane with next??" })
+map("n", "<C-w>s", function()
+  vim.cmd("wincmd W")
+  vim.cmd("wincmd x")
+  vim.cmd("wincmd p")
+end, { desc = "Swap pane with previous", silent = true })
+map("n", "<C-w>f", "<cmd>wincmd x<CR>", { desc = "Swap pane with next", silent = true })
 
 map("n", "<C-w>b", "<C-w>T", { desc = "Break pane to new tab", noremap = true })
 -- TODO: break pane to previous/next tab
@@ -158,7 +161,8 @@ map("n", "<C-w><C-g>", "<cmd>tabnew<CR>", { desc = "New tab", silent = true })
 map("n", "<C-w><C-q>", "<cmd>tabclose<CR>", { desc = "Close tab", silent = true })
 map("n", "<C-w><C-o>", "<cmd>tabonly<CR>", { desc = "Close other tabs", silent = true })
 
--- TODO: swap tab with previous/next?
+map("n", "<C-w><C-s>", "<cmd>tabmove -1<CR>", { desc = "Swap tab with previous", silent = true })
+map("n", "<C-w><C-f>", "<cmd>tabmove +1<CR>", { desc = "Swap tab with next", silent = true })
 
 -- ========= session
 

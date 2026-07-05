@@ -296,6 +296,7 @@ Ref: [tpm／docs／managing_plugins_via_cmd_line.md](https://github.com/tmux-plu
 - `Ctrl-w h` (`|j|k|l`): change focus ☆
     - or `Ctrl-h` (`|j|k|l`) ☆
     - or `<leader> w h` (`|j|k|l`)
+- `Ctrl-w s` (`|f`): swap pane with previous/next (∵ like tmux) ☆
 - TODO:??: resize
     - or `Ctrl ←` (`|↓|↑|→`)?? ☆
 - TODO:
@@ -316,6 +317,7 @@ TODO: Setup my keybindings to manage buffers?
 
 - `g t` (`g Shift-t`): change focus ☆
     - (or `<leader> Tab [` (`]`)
+- `Ctrl-w Ctrl-s` (`|f`): swap tab with previous/next (∵ like tmux) ☆
 - TODO:??: create new
     - (or `<leader> Tab Tab`
 - TODO:??: close
